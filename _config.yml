@@ -31,3 +31,5 @@ kramdown:
 # Code indention (tab)
 pygments_options:
   tabsize:  4
+
+excerpt_separator: '<!--more-->'

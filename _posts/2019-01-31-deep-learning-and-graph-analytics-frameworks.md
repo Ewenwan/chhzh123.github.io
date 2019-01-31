@@ -9,6 +9,8 @@ title: 深度学习框架与图分析框架的异同
 * 在**现有**编程语言（Python/C++）基础上提供**API接口**
 * 注意尚未达到编程语言的级别，如果连语法语义也一并规定，那就变成领域特定语言(Domain Specific Language, DSL)
 
+<!--more-->
+
 | | 深度学习框架 | 图框架 |
 | :---: | :---: | :---: |
 | 算子 | 卷积conv<br/>池化pooling<br/>激活relu | 收集gather<br/>应用apply<br/>分发scatter |
