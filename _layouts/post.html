@@ -1,0 +1,43 @@
+---
+layout: default
+---
+
+<div class="post">
+  <h1 class="post-title">{{ page.title }}</h1>
+  <span class="post-date">{{ page.date | date_to_string }}</span>
+  {{ content }}
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    {% for post in site.related_posts limit:3 %}
+      <li>
+        <h3>
+          <a href="{{ site.baseurl }}{{ post.url }}">
+            {{ post.title }}
+            <small>{{ post.date | date_to_string }}</small>
+          </a>
+        </h3>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+  <script type="text/javascript">
+  $("script[type='math/tex']").replaceWith(
+  function(){
+    var tex = $(this).text();
+    return "<span class=\"inline-equation\">" + 
+           katex.renderToString(tex) +
+           "</span>";
+  });
+
+  $("script[type='math/tex; mode=display']").replaceWith(
+  function(){
+    var tex = $(this).text();
+    return "<div class=\"equation\">" + 
+           katex.renderToString("\\displaystyle "+tex) +
+           "</div>";
+  });
+  </script>

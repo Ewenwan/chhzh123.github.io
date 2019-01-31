@@ -1,0 +1,33 @@
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+# relative_permalinks: true
+
+# Setup
+title:               Chhzh123
+tagline:             'Blog'
+description:         '<p style="text-indent:2em">永不屈服于荒诞的世界，不停止自由地追逐繁星。 </p><br/>'
+url:                 http://chhzh123.github.io/
+paginate:            5
+
+# About/contact
+author:
+  name:              chhzh123
+  url:               https://github.com/chhzh123
+  email:             chenhzh37@mail2.sysu.edu.cn
+
+# Custom vars
+version:             0.0.1
+
+# Gems
+gems: [jekyll-paginate]
+
+# KaTeX
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
+
+# Code indention (tab)
+pygments_options:
+  tabsize:  4
