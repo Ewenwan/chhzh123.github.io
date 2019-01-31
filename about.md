@@ -10,7 +10,7 @@ title: 关于
 
 研究方向：
 * 高层次综合(High-Level Synthesis, HLS)
-* 图处理系统与加速器(Graph processing)
+* 图处理/图分析系统与加速器(Graph Processing/Graph Analytics)
 
 涉及到的大方向：
 * 编译器设计与优化
