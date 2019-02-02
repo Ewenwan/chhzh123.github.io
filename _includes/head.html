@@ -21,7 +21,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
 
   <!-- Icons -->
-  <link rel="little-prince-icon" sizes="144x144" href="{{ site.baseurl }}/public/little-prince-icon.jpg">
+  <link rel="little-prince-icon" sizes="144x144" href="{{ site.baseurl }}/public/icon/little-prince-icon.jpg">
+  <link rel="shortcut icon" href="{{ site.baseurl }}/public/icon/favicon.ico">
 
   <!-- RSS -->
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
@@ -30,7 +31,22 @@
   <!-- Load jQuery -->
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
   <!-- Load KaTeX -->
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.1.1/katex.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.1.1/katex.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/contrib/auto-render.min.js"></script>
+
+  <script>
+    renderMathInElement(
+        document.getElementById("test"),
+        {
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "\\[", right: "\\]", display: true},
+                {left: "$", right: "$", display: false},
+                {left: "\\(", right: "\\)", display: false}
+            ]
+        }
+    );
+  </script>
 
 </head>

@@ -45,21 +45,54 @@
     </script>
   </body>
 
-    <script type="text/javascript">
+  <script>
+    renderMathInElement(
+        document.getElementById("test"),
+        {
+            delimiters: [
+                {left: "\[", right: "\]", display: true},
+                {left: "$$", right: "$$", display: true},
+                {left: "\\[", right: "\\]", display: true},
+                {left: "$", right: "$", display: false},
+                {left: "\\(", right: "\\)", display: false}
+            ]
+        }
+    );
+  </script>
+
+  <script type="text/javascript">
   $("script[type='math/tex']").replaceWith(
   function(){
-    var tex = $(this).text();
-    return "<span class=\"inline-equation\">" + 
-           katex.renderToString(tex) +
-           "</span>";
+    try {
+        var tex = katex.renderToString($(this).text());
+        return "<span class=\"inline-equation\">" + tex + "</span>";
+    } catch (e) {
+        if (e instanceof katex.ParseError) {
+            // KaTeX can't parse the expression
+            html = ("Error in LaTeX '" + texString + "': " + e.message)
+                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            return html;
+        } else {
+            throw e;  // other error
+        }
+    }
   });
 
   $("script[type='math/tex; mode=display']").replaceWith(
   function(){
-    var tex = $(this).text();
-    return "<div class=\"equation\">" + 
-           katex.renderToString("\\displaystyle "+tex) +
-           "</div>";
+    try {
+        var tex = katex.renderToString($(this).text());
+        return "<div class=\"equation\"><center>" + tex + "</center></div>";
+    } catch (e) {
+        if (e instanceof katex.ParseError) {
+            // KaTeX can't parse the expression
+            html = ("Error in LaTeX '" + texString + "': " + e.message)
+                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            return html;
+        } else {
+            throw e;  // other error
+        }
+    }    
   });
   </script>
 

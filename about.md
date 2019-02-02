@@ -35,7 +35,9 @@ E-mail: `chenhzh37@mail2.sysu.edu.cn`
 - [ ] 加入简洁的背景
 - [ ] 加入标签页
 - [ ] 修改页面字体及字号
-- [ ] 首页设置摘要阅读
+- [x] 首页设置摘要阅读
+- [x] 添加icon
+- [x] 添加[KaTeX支持](https://www.jianshu.com/p/f2b28954d902)
 
 ### Change Log
 #### 2019/01/31
