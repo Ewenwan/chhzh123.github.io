@@ -38,6 +38,7 @@ E-mail: `chenhzh37@mail2.sysu.edu.cn`
 - [x] 首页设置摘要阅读
 - [x] 添加icon
 - [x] 添加[KaTeX支持](https://www.jianshu.com/p/f2b28954d902)
+- [x] 添加[Mermaid支持](https://github.com/gnab/remark/wiki/Adding-graphs-via-Mermaid)
 
 ### Change Log
 #### 2019/01/31

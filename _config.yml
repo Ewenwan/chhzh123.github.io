@@ -23,10 +23,6 @@ version:             0.0.1
 # Gems
 gems: [jekyll-paginate]
 
-# Code indention (tab)
-pygments_options:
-  tabsize:  4
-
 # KaTeX
 kramdown:
   math_engine: mathjax
