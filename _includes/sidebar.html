@@ -29,6 +29,16 @@
   </nav>
 
   <div class="sidebar-item">
+        <!-- Index page do not have toc -->
+        {% if page.layout == "post" %}
+        <div id="toc"></div>
+        <script type="text/javascript">
+          $(document).ready(function() {
+            $('#toc').toc();
+          });
+        </script>
+        {% endif %}
+
          <p>
             <!-- 运行时间 -->
             <div id="days">

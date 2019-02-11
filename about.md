@@ -30,8 +30,8 @@ E-mail: `chenhzh37@mail2.sysu.edu.cn`
 
 ### TODO
 
-- [ ] 加入博文目录插件
-- [x] 加入评论功能
+- [x] 加入[侧边栏目录插件](https://github.com/ghiculescu/jekyll-table-of-contents)
+- [x] 加入[Valine](https://valine.js.org/)评论功能
 - [ ] 加入简洁的背景
 - [ ] 加入标签页
 - [ ] 修改页面字体及字号
