@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 编译器设计（1）-- 编译概观
+tag: compiler
 ---
 
 本课程采用橡书，Keith D. Cooper和Linda Torczon著，《编译器设计》（第二版）(Engineering a Compiler)。

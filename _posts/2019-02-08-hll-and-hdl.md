@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 高级编程语言vs硬件描述语言
+tag: pl
 ---
 
 ## 对比

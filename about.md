@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 关于
+title: About
 ---
 
 ## 我
@@ -23,6 +23,7 @@ Github: [`chhzh123`](https://github.com/chhzh123)
 E-mail: `chenhzh37@mail2.sysu.edu.cn`
 
 ## 本站
+关于这个博客的由来，可见[Why blog?]({% post_url 2019-01-30-why-blog %})
 * 托管于[Github Pages](https://pages.github.com)
 * 由[jekyll/jekyll](https://github.com/jekyll/jekyll)驱动
 * 基于[poole/lanyon](https://github.com/poole/lanyon)主题进行修改
@@ -33,8 +34,7 @@ E-mail: `chenhzh37@mail2.sysu.edu.cn`
 - [x] 加入[侧边栏目录插件](https://github.com/ghiculescu/jekyll-table-of-contents)
 - [x] 加入[Valine](https://valine.js.org/)评论功能
 - [ ] 加入简洁的背景
-- [ ] 加入标签页
-- [ ] 修改页面字体及字号
+- [x] 加入[标签页](http://chris.house/blog/building-a-simple-archive-page-with-jekyll/)
 - [x] 首页设置摘要阅读
 - [x] 添加icon
 - [x] 添加[KaTeX支持](https://www.jianshu.com/p/f2b28954d902)

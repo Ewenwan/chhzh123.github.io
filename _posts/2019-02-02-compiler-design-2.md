@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 编译器设计（2）-- 词法分析器
+tag: compiler
 ---
 
 词法分析器/扫描器(scanner)的任务是将**字符流**转化为输入语言的**单词流**，每个单词都必须归类到某个语法范畴(syntactic category)中，也叫词类。
