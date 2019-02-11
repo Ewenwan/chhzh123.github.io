@@ -29,18 +29,18 @@ E-mail: `chenhzh37@mail2.sysu.edu.cn`
 * 基于[poole/lanyon](https://github.com/poole/lanyon)主题进行修改
 * 参考[WuKan大佬](https://wu-kan.github.io/)的博客进行设计，特别鸣谢！
 
-### TODO
-
-- [x] 加入[侧边栏目录插件](https://github.com/ghiculescu/jekyll-table-of-contents)
-- [x] 加入[Valine](https://valine.js.org/)评论功能
-- [ ] 加入简洁的背景
-- [x] 加入[标签页](http://chris.house/blog/building-a-simple-archive-page-with-jekyll/)
+### Change Log
+#### 2019/02/11
+版本v1.0
 - [x] 首页设置摘要阅读
 - [x] 添加icon
 - [x] 添加[KaTeX支持](https://www.jianshu.com/p/f2b28954d902)
+- [x] 加入[Valine](https://valine.js.org/)评论功能
 - [x] 添加[Mermaid支持](https://github.com/gnab/remark/wiki/Adding-graphs-via-Mermaid)
+- [x] 加入[标签页](http://chris.house/blog/building-a-simple-archive-page-with-jekyll/)
+- [x] 加入[侧边栏目录插件](https://github.com/ghiculescu/jekyll-table-of-contents)
+- [x] 加入[Particles](https://github.com/VincentGarreau/particles.js)背景
 
-### Change Log
 #### 2019/01/31
 写了第一篇博客
 

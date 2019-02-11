@@ -18,7 +18,7 @@ author:
   email:             chenhzh37@mail2.sysu.edu.cn
 
 # Custom vars
-version:             0.1
+version:             1.0
 
 # Gems
 gems: [jekyll-paginate]
