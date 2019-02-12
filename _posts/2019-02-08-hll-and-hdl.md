@@ -56,6 +56,10 @@ Chisel (Constructing Hardware In a Scala Embedded Language)
 ### Spatial
 Spatial (Specify Parameterized Accelerators Through Inordinately Abstract Language)
 
+#### 简介
+* C/C++并不适合用作硬件综合语言，因无法显式控制内存、无法并行（不加并行库）
+* Chisel寄于Scala做了抽象，具有强大的元编程能力，但依然是在有时序的电路层进行电路设计
+
 HDL
 * 性能(performance)高：能够生成任意RTL结构
 * 生产力(productivity)低：没有高层抽象
@@ -66,10 +70,24 @@ HLS (C+Pragmas)
 * 生产力一般：可以处理嵌套循环，但混杂着软件和硬件的特性(ac-hoc mix of sw/hw)，且难优化
 * 可移植性：针对单一生产商
 
-Rethink outside of the C box for HLS
-* Memory hierarchy for optimization
-* Design parameters for tuning
-* Arbitrarily nestable pipelines
+> Rethink outside of the C box for HLS
+
+一门好的高层硬件语言应该可以
+* 依赖分支、嵌套循环
+* 存储层次结构
+    - 片外(DRAM)
+    - 片上(BRAM)
+    - 寄存器
+* 异构主机接口(host interfaces)
+* 设计空间探索
+
+#### 语法
+![Experimental results]({{"/assets/images/TVM/Spatial-syntax.PNG"|absolute_url}})
+
+#### 编译器
+Scala写的编译器，编译到Chisel
+![Spatial passes]({{"/assets/images/TVM/Spatial-passes.PNG"|absolute_url}})
+HyperMapper调参
 
 ## 参考资料
 1. 硬件描述语言的可综合性是什么？如何保证它的实现？ - 林名的回答 - 知乎 <https://www.zhihu.com/question/263578952/answer/295405073>
