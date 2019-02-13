@@ -8,6 +8,8 @@ tag: [pl,architecture,system]
 
 > 本文转载自知乎[@圆角骑士魔理沙](https://www.zhihu.com/people/0251012c87c2d3f56ac34de7d71cdcbc) [什么才算是真正的编程能力？](https://www.zhihu.com/question/31034164/answer/553533545)
 
+<!--more-->
+
 0.**可以完全理解问题并给出代码**
 
 往窄了点说，这就是acm在培养的东西。
