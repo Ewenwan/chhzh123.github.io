@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Tools Setup!
-tag: research
+tag: [research, tools]
 ---
 
 **工具是重要的！**这点其实很多老师都不会讲述。
@@ -150,3 +150,20 @@ Pytorch对应的可视化工具，界面还可以接受，但目前还不够完�
 * [IBM CPLEX](https://ibm.onthehub.com/WebStore/OfferingDetails.aspx?o=733c3d21-0ce1-e711-80fa-000d3af41938&pmv=00000000-0000-0000-0000-000000000000)：学生可以申请免费
 * [CBC](https://projects.coin-or.org/Cbc)：免费，有Python支持
 * [PuLP](https://pythonhosted.org/PuLP/)：Python包集成了几个求解器，CBC是其中之一
+
+### 其他东西
+* [Github Page](https://pages.github.com)+[Jekyll](https://github.com/jekyll/jekyll)：就是这个博客啦
+* [Google Calendar](https://www.google.com/calendar)：有Google账号可以同步，界面非常清爽
+* [Gnu Privacy Guard(GPG)](https://www.gnupg.org)：Linux平台下文件加密系统，配合[Mailvelope](https://www.mailvelope.com/en/help)食用更加
+	- 原理是用对方的公钥加密，邮件发送给对方后，对方用自己的密钥解密
+	- `gpg --version`查看是否有安装
+	- `gpg --genkey`生成密钥
+	- `gpg -k --keyid-format long`查看公(k)/私(K)钥
+	- `gpg --send-keys [ID] --keyserver pgp.mit.edu`上传公钥
+	- `gpg --search-keys [ID]`搜索密钥
+	- `gpg --export -a "[user]" > [user].pub`导出公钥
+	- `gpg --export-secret-keys -a "[user]" > [user].priv`导出私钥
+	- `gpg --delete(-secret)-keys [Email]`删除密钥
+	- `gpg --import [key].pub`导入公/私钥
+	- `gpg --encrypt --armor -r [Email] [file]`生成ASCII码加密文件
+	- `gpg -d [file].asc`解密文件
