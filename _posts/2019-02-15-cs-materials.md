@@ -15,6 +15,7 @@ This is a summary article, collecting CS-related books and courses that I have/w
 ## Algorithms & Data Structures
 * Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein, **Introduction to Algorithms (3nd ed.)**, MIT Press, 2009, [Chinese](https://book.douban.com/subject/20432061/)
 * [[Course]](https://learning-modules.mit.edu/materials/index.html?uuid=/course/6/fa18/6.006#materials), MIT 6.006: Introduction to Algorithms, Zachary R Abel
+* [[Course]](http://www.cs.princeton.edu/courses/archive/fall14/cos521/), Princeton CS 521: Advanced Algorithm Design, Sanjeev Arora
 
 ## Programming Languages
 * C/C++
@@ -42,6 +43,7 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](https://homepages.dcc.ufmg.br/~fernando/classes/dcc888/), Universidade Federal de Minas Gerais DC888: Static Program Analysis, Fernando Magno Quintão Pereira
 * [[Course]](https://suif.stanford.edu/~courses/cs243/), Stanford CS 243: Program Analysis and Optimization, Monica Lam
 * [[Course]](http://www.cs.cmu.edu/~15745/), CMU 15-745: Optimizing Compilers for Modern Architectures, Phil Gibbons
+* [[Course]](https://www.clear.rice.edu/comp412/Lectures/), Rice COMP 412: Compiler Construction for Undergraduates, Keith Cooper
 
 ## Math
 * Abstract Algebra
@@ -51,3 +53,4 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [Stack Overflow Recommendations](https://stackoverflow.com/questions/1711/what-is-the-single-most-influential-book-every-programmer-should-read)
 * [MIT Online Resources](https://ocw.mit.edu/courses/audio-video-courses/#electrical-engineering-and-computer-science)
 * [[Course]](https://people.csail.mit.edu/jshun/6886-s18/), MIT 6.886: Graph Analytics, Julian Shun
+* [[Course]](http://stellar.mit.edu/S/course/6/fa14/6.172/materials.html), MIT 6.172: Performance Engineering of Software Systems
