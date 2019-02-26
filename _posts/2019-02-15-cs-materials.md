@@ -33,6 +33,8 @@ This is a summary article, collecting CS-related books and courses that I have/w
 ## Computer System & Architecture
 * Randal E. Bryant, David R. O'Hallaron, **Computer Systems: A Programmer's Perspective (3rd ed.)**<font color="blue">(CSAPP)</font>, Pearson, 2016, [Chinese](https://book.douban.com/subject/5333562/)
 * [x] David A. Patterson, John L. Hennessy, **Computer Organization and Design: The Hardware/Software Interface (5th.ed)**, Elsevier, 2014, [Chinese](https://book.douban.com/subject/25813550/)
+* [[Course]](http://csg.csail.mit.edu/6.823/index.html), MIT 6.823: Computer System Architecture, Daniel Sanchez
+* [[Course]](https://6004.mit.edu/web/spring19/), MIT 6.004: Computation Structures, Arvind
 
 ## Compiler
 * Alfred V. Aho, Monica S. Lam, Ravi Sethi, Jeffrey Ullman, **Compilers: Principles, Techniques, and Tools (2nd ed.)**<font color="blue">(Dragon)</font>, Pearson, 2006, [Chinese](https://book.douban.com/subject/3296317/)
@@ -45,7 +47,21 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](http://www.cs.cmu.edu/~15745/), CMU 15-745: Optimizing Compilers for Modern Architectures, Phil Gibbons
 * [[Course]](https://www.clear.rice.edu/comp412/Lectures/), Rice COMP 412: Compiler Construction for Undergraduates, Keith Cooper
 
+## Operating Systems
+* Avi Silberschatz, Peter Baer Galvin, Greg Gagne, **Operating System Concepts (10th ed.)**, John Wiley & Sons, Inc., 2018, [Online](http://www.os-book.com/OS10/slide-dir/index.html)
+* [[Course]](http://www.scs.stanford.edu/19wi-cs140/), Stanford CS 140: Operating Systems, David Mazières
+* [[Course]](https://www.cs.cmu.edu/~410/), CMU 15-410: Operating System Design and Implementation
+
+## Parallel Computing
+* Grama, Gupta, Kumar, Karypis, **Introduction to Parallel Computing**, Addison Wesley, 2003, [Online](https://www.cs.purdue.edu/homes/ayg/book/Slides/)
+* [[Course]](https://www.cs.swarthmore.edu/~newhall/cs87/s12/), Swarthmore CS 87: Parallel & Distributed Computing, Tia Newhall
+* [[Course]](http://cs.brown.edu/courses/csci1780/), Brown CS 0178: Programming Parallel and Distributed Systems, Steve Reiss
+* [[Course]](http://www.cs.cmu.edu/afs/cs/academic/class/15418-s11/www/), CMU CS418: Parallel Computer Architecture and Programming, Todd C. Mowry
+
 ## Math
+* Convex Optimization
+	- Stephen Boyd, Lieven Vandenberghe, **Convex Optimization**, Cambridge, 2004, [Chinese](https://book.douban.com/subject/21249088/)
+	- [[Course]](http://bicmr.pku.edu.cn/~wenzw/opt-2018-fall.html), PKU 0013660: Convex Optimization, Zaiwen Wen
 * Abstract Algebra
 	- [[Course]](https://canvas.harvard.edu/courses/30943/files/folder/Notes), Harvard Math 122: Algebra I: Theory of Groups and Vector Spaces
 
