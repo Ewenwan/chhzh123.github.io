@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 并行编程
-tag: tools
+tag: [tools, parallel]
 ---
 
 这里简要介绍并行编程的一些基本概念，以及几种用于并行编程的工具/框架。

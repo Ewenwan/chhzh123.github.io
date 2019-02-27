@@ -52,6 +52,11 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](http://www.scs.stanford.edu/19wi-cs140/), Stanford CS 140: Operating Systems, David Mazières
 * [[Course]](https://www.cs.cmu.edu/~410/), CMU 15-410: Operating System Design and Implementation
 
+## Computer Networking
+* James F. Kurose, Keith W. Ross, **Computer Networking - A Top-Down Approach (7th ed.)**, Pearson, 2017
+* [[Course]](http://web.mit.edu/6.829/www/currentsemester/), MIT 6.829: Computer Networks, Hari Balakrishnan
+* [[Course]](https://www.cs.cmu.edu/~prs/15-441-F16/), CMU 15-441: Computer Networks, Peter Steenkiste
+
 ## Parallel Computing
 * Grama, Gupta, Kumar, Karypis, **Introduction to Parallel Computing**, Addison Wesley, 2003, [Online](https://www.cs.purdue.edu/homes/ayg/book/Slides/)
 * [[Course]](https://www.cs.swarthmore.edu/~newhall/cs87/s12/), Swarthmore CS 87: Parallel & Distributed Computing, Tia Newhall
@@ -67,6 +72,6 @@ This is a summary article, collecting CS-related books and courses that I have/w
 
 ## Miscellaneous
 * [Stack Overflow Recommendations](https://stackoverflow.com/questions/1711/what-is-the-single-most-influential-book-every-programmer-should-read)
-* [MIT Online Resources](https://ocw.mit.edu/courses/audio-video-courses/#electrical-engineering-and-computer-science)
+* [MIT Online Resources](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/)
 * [[Course]](https://people.csail.mit.edu/jshun/6886-s18/), MIT 6.886: Graph Analytics, Julian Shun
 * [[Course]](http://stellar.mit.edu/S/course/6/fa14/6.172/materials.html), MIT 6.172: Performance Engineering of Software Systems
