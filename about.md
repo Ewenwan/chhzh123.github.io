@@ -9,12 +9,12 @@ title: About
 目前在国家超级计算广州中心计算机体系结构组进行科研
 
 研究方向：
-* 高层次综合(High-Level Synthesis, HLS)
+* [高层次综合]({% post_url 2019-02-12-hls %})(High-Level Synthesis, HLS)
 * 图处理/图分析系统与加速器(Graph Processing/Graph Analytics)
 
 涉及到的大方向：
 * 编译器设计与优化
-* 计算机体系结构
+* 计算机体系结构（主要是[FPGA]({% post_url 2019-02-08-fpga-all %})和CPU）
 * 编程语言
 * 机器学习、深度学习
 
@@ -29,11 +29,15 @@ E-mail: `chenhzh37@mail2.sysu.edu.cn`
 * 基于[poole/lanyon](https://github.com/poole/lanyon)主题进行修改
 * 参考[WuKan大佬](https://wu-kan.github.io/)的博客进行设计，特别鸣谢！
 
+## TODO
+* 单独总结页
+* 单独CV页
+
 ### Change Log
 #### 2019/02/11
 版本v1.0
 - [x] 首页设置摘要阅读
-- [x] 添加icon
+- [x] 添加icon(Little Prince)
 - [x] 添加[KaTeX支持](https://www.jianshu.com/p/f2b28954d902)
 - [x] 加入[Valine](https://valine.js.org/)评论功能
 - [x] 添加[Mermaid支持](https://github.com/gnab/remark/wiki/Adding-graphs-via-Mermaid)
@@ -45,4 +49,4 @@ E-mail: `chenhzh37@mail2.sysu.edu.cn`
 写了第一篇博客
 
 #### 2019/01/30
-开始建站，加入KaTeX支持
+建站！

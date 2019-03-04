@@ -17,11 +17,12 @@ tag: [tools, parallel]
 
 ## SIMD
 Single Instruction Multiple Data ([SIMD](https://www.codingame.com/playgrounds/283/sse-avx-vectorization/what-is-sse-and-avx))是提升CPU性能一个很重要的技术，即数据并行---在CPU内部添加向量寄存器
-* [MMX](https://en.wikipedia.org/wiki/MMX_(instruction_set))：Intel最早的SIMD尝试(1997)，于Pentium系列CPU
+* Multi Media Extensions ([MMX](https://en.wikipedia.org/wiki/MMX_(instruction_set)))：Intel最早的SIMD尝试(1997)，于Pentium系列CPU
 * Streaming SIMD Extensions ([SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions))：最早在Pentium III引入，由SSE1到SSE4.2，均为128位寄存器
-* Advanced Vector Extensions ([AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions))：Intel Sandy bridge架构引入256位向量寄存器(2011)，后来又引入512位向量寄存器(2016)
+* Advanced Vector Extensions ([AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions))：Intel Sandy bridge架构引入256位向量寄存器(2008)，后来又引入512位向量寄存器(2016)
     - `#include <immintrin.h>`
-    - 之后有空再开文讲
+    - 详情见[AVX指令集]({% post_url 2019-03-03-AVX %})
+    - AVX2: Haswell, 2011
 ![AVX-256](https://www.codingame.com/servlet/fileservlet?id=16426525647340)
 
 ## Tools
