@@ -54,7 +54,6 @@ This is a summary article, collecting CS-related books and courses that I have/w
 
 ## Computer Networking
 * James F. Kurose, Keith W. Ross, **Computer Networking - A Top-Down Approach (7th ed.)**, Pearson, 2017
-* [[Course]](http://web.mit.edu/6.829/www/currentsemester/), MIT 6.829: Computer Networks, Hari Balakrishnan
 * [[Course]](https://www.cs.cmu.edu/~prs/15-441-F16/), CMU 15-441: Computer Networks, Peter Steenkiste
 
 ## Parallel Computing
