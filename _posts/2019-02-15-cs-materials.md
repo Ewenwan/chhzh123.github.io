@@ -60,7 +60,7 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * Grama, Gupta, Kumar, Karypis, **Introduction to Parallel Computing**, Addison Wesley, 2003, [Online](https://www.cs.purdue.edu/homes/ayg/book/Slides/)
 * [[Course]](https://www.cs.swarthmore.edu/~newhall/cs87/s12/), Swarthmore CS 87: Parallel & Distributed Computing, Tia Newhall
 * [[Course]](http://cs.brown.edu/courses/csci1780/), Brown CS 0178: Programming Parallel and Distributed Systems, Steve Reiss
-* [[Course]](http://www.cs.cmu.edu/afs/cs/academic/class/15418-s11/www/), CMU CS418: Parallel Computer Architecture and Programming, Todd C. Mowry
+* [[Course]](http://www.cs.cmu.edu/afs/cs/academic/class/15418-s11/www/), CMU [CS418](http://www.cs.cmu.edu/~418/): Parallel Computer Architecture and Programming, Todd C. Mowry
 
 ## Math
 * Convex Optimization
