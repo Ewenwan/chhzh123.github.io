@@ -30,10 +30,13 @@ E-mail: `chenhzh37@mail2.sysu.edu.cn`
 * 参考[WuKan大佬](https://wu-kan.github.io/)的博客进行设计，特别鸣谢！
 
 ## TODO
-* 单独总结页
 * 单独CV页
+* 搜索功能
 
 ### Change Log
+#### 2019/04/19
+* 单独总结/课程页
+
 #### 2019/02/11
 版本v1.0
 - [x] 首页设置摘要阅读
