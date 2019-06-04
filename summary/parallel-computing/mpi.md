@@ -126,6 +126,8 @@ MPI_Bcast(
     MPI_Comm communicator)
 ```
 
+尽管根节点和接收节点做不同的事情，它们都是调用同样的这个`MPI_Bcast`函数来实现广播。当根节点调用`MPI_Bcast`函数的时候，`data`变量里的值会被发送到其他的节点上。当其他的节点调用`MPI_Bcast`的时候，`data`变量会被赋值成从根节点接受到的数据。
+
 `MPI_Bcast`的实现使用了一个类似的**树形广播算法**来获得比较好的网络利用率。
 ![tree boardcast](https://mpitutorial.com/tutorials/mpi-broadcast-and-collective-communication/broadcast_tree.png)
 
@@ -148,6 +150,31 @@ MPI_Scatter(
 
 函数定义里面接收数据的参数跟发送的参数几乎相同。`recv_data`参数是一个缓存，它里面存了`recv_count`个`recv_datatype`数据类型的元素。最后两个参数，`root`和`communicator`分别指定开始分发数组的了根进程以及对应的communicator。
 
+`MPI_Scatterv`可解决处理器数目与分配数目不整除的问题。
+```cpp
+int MPI_Scatterv(
+    void *sendbuf,
+    int *sendcounts, // 整数数组(长度为组的大小),其值为发送到每个进程的数据个数(整型)
+    int *displs, // 整数数组(长度为组的大小),每个入口i存放着相对于sendbuf的位移,此位移处存放着从进程i中接收的输入数据
+    MPI_Datatype sendtype,
+    void *recvbuf,
+    int recvcount,
+    MPI_Datatype recvtype,
+    int root,
+    MPI_Comm comm)
+
+int MPI_Gatherv(
+    const void *sendbuf,
+    int sendcount,
+    MPI_Datatype sendtype,
+    void *recvbuf,
+    const int recvcounts[],
+    const int displs[],
+    MPI_Datatype recvtype,
+    int root,
+    MPI_Comm comm)
+```
+
 `MPI_Gather`跟`MPI_Scatter`是相反的。`MPI_Gather`从好多进程里面收集数据到一个进程上面而不是从一个进程分发数据到多个进程。
 ![MPI_Gather](https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/gather.png)
 
@@ -164,7 +191,7 @@ MPI_Gather(
     MPI_Comm communicator)
 ```
 
-在`MPI_Gather`中，只有根进程需要一个有效的接收缓存。所有其他的调用进程可以传递`NULL`给`recv_data`。另外，别忘记`recv_count`参数是从每个进程接收到的数据数量，而不是所有进程的数据总量之和。
+在`MPI_Gather`中，只有根进程需要一个有效的接收缓存。所有其他的调用进程可以传递`NULL`给`recv_data`。另外，别忘记`recv_count`参数是从*每个进程*接收到的数据数量，而不是所有进程的数据总量之和。
 
 多对多通信的话，则采用`MPI_Allgather`，它会收集数据到所有进程上。
 
