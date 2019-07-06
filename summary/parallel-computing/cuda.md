@@ -3,7 +3,19 @@ layout: summary
 title: 并行编程-CUDA
 ---
 
-CUDA(Compute Unified Device Architecture)主要用于GPU上的编程。
+CUDA(Compute Unified Device Architecture)主要用于GPU上的编程，让SIMD能够对应用更加通用
+
+## GPU与CUDA简介
+GPU利用Moore定律
+* 增加片上并行性及DRAM带宽
+* 为图形应用提升灵活性和性能
+* 加速通用数据并行任务
+
+CUDA的目标：
+* 可扩展性：任意顺序执行的独立块，线性加速比
+* SIMD编程性：充分利用硬件架构，但CPU的SIMD往往很难使用，CUDA抽象提供编程性
+
+CUDA GPU是流多处理器(streaming multiprocessors, SM)的集合，每一个SM都是一个SIMD执行流水的集合(scalar processors)，共享控制逻辑、寄存器堆、L1 cache。
 
 ## 安装
 * <https://developer.nvidia.com/cuda-downloads>
@@ -79,6 +91,7 @@ int main(void)
 * `cudaError_t cudaMallocManaged(void **devPtr, size_t size, unsigned int flag=0)`：自CUDA 6.0开始，统一管理内存，自动进行数据传输
 
 ## 层次结构
+CUDA编程模型分为4级层次结构（同样可以map到其他硬件上）
 * Stream = list of grids (whole GPU)
 * Grid = $$2^32$$ thread blocks
 * Thread Block = up to 1024 cuda threads

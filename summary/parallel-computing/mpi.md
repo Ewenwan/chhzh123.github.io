@@ -3,7 +3,9 @@ layout: summary
 title: 并行编程-MPI
 ---
 
-消息传递模型在上个世纪90年代十分盛行，通常主进程(master process)通过对从进程(slave process)发送一个描述工作的消息来把这个工作分配给它。由于当时很多软件库都采用了这个模型，但由于不同软件定义上的区别存在大量差异，故在SC'92上制定了消息传递接口(Message Passing Interface, MPI)的标准。过了两年一个完整的接口定义(MPI-1)就已经被实现出来，这是MPI的前身
+消息传递模型在上个世纪90年代十分盛行，通常主进程(master process)通过对从进程(slave process)发送一个描述工作的消息来把这个工作分配给它。由于当时很多软件库都采用了这个模型，但由于不同软件定义上的区别存在大量差异，故在SC'92上制定了消息传递接口(Message Passing Interface, MPI)的标准。过了两年一个完整的接口定义(MPI-1)就已经被实现出来，这是MPI的前身。
+
+Principles：MPI的编程模型是SPMD（单程序多数据流），异步或松同步(loosely synchronous)的方式（只有信息传递时才同步）。
 
 ## 基本概念
 * 通信子(communicator)：通信子定义了一组能够互相发消息的进程。在这组进程中，每个进程会被分配一个序号，称作秩(rank)，进程间显性地通过指定秩来进行通信。通信的基础建立在不同进程间发送和接收操作。一个进程可以通过指定另一个进程的秩以及一个独一无二的消息标签(tag)来发送消息给另一个进程。
@@ -61,12 +63,19 @@ $ export MPI_HOSTS=host_file
 MPI_Request *request)`
 * `int MPI_Irecv(void *buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request *request)`
 
+* 非缓冲(non-buffered)阻塞：发送方不会返回，直到接收方执行对应的receive（实际过程是先要发握手信号），空闲（若发送接收存在时间差）和死锁会发生
+* 缓冲阻塞(blocking)：发送方直接将数据拷贝入指定的缓冲区后就返回，不会空闲，但有拷贝开销；接收方也会先接收到缓冲区，等到receive指令操作时才读出来；死锁依然有可能（接收方顺序不对，前面的receive被阻塞了）
+* 非阻塞(non-blocking)：直接返回，通常需要再次检查(check-status)，用得好可以**重叠通信与计算**
+
 MPI的发送模式
 * `MPI_Send`/`MPI_Isend`：标准模式（阻塞/非阻塞），直到使用发送缓冲才返回
 * `MPI_Bsend`/`MPI_Ibsend`：缓冲模式，立即返回，可以使用发送缓冲
     - 相关操作：`MPI_buffer_attach`、`MPI_buffer_detach`
-* `MPI_Ssend`/`MPI_Issend`：同步模式，不会返回直到收到posted
-* `MPI_Rsend`/`MPI_Irsend`：只有在matching receive已经就绪时才使用
+* `MPI_Ssend`/`MPI_Issend`：同步模式，不会返回直到收到posted，send+synchronous
+* `MPI_Rsend`/`MPI_Irsend`：就绪模式，只有在matching receive已经就绪时才使用
+
+阻塞模式常结合`Wait`和`Test`一起使用。
+source可设成`MPI_ANY_SOURCE`，tag可设成`MPI_ANY_TAG`。
 
 ```cpp
 MPI_Send(
@@ -114,7 +123,10 @@ if (world_rank == 0) {
 }
 ```
 
+* `int MPI_Get_count(MPI_Status* status, MPI_Datatype datatype, int* count)`：获取精确收到的数据数目
+
 ## 群组通信
+一对全部广播
 ![boardcast](https://mpitutorial.com/tutorials/mpi-broadcast-and-collective-communication/broadcast_pattern.png)
 
 ```cpp
@@ -204,30 +216,36 @@ MPI_Allgather(
     MPI_Datatype send_datatype,
     void* recv_data,
     int recv_count,
+    // v: int* recvcnt, int* disp
     MPI_Datatype recv_datatype,
     MPI_Comm communicator)
 ```
 
 * 阻塞到所有进程完成调用：`int MPI_Barrier(MPI_Comm comm)`
-* 一对全部广播：`int MPI_Bcast(void *buf, int count, MPI_Datatype datatype, int source, MPI_Comm comm)`
-* 全部对一约简：`int MPI_Reduce(void *sendbuf, void *recvbuf, int count,MPI_Datatype datatype, MPI_Op op, int target, MPI_Comm comm)`
+* 全部对一约简：`int MPI_Reduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, int target, MPI_Comm comm)`
+* 全部对一约简同时发布到全部进程：`int MPI_Allreduce(void *sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm)`
 * 全部对全部：`int MPI_Alltoall(void *sendbuf, int sendcount, MPI_Datatype senddatatype, void *recvbuf, int recvcount, MPI_Datatype recvdatatype, MPI_Comm comm)`
-* 将数据分配到不同进程：`MPI_Scatter`
-* 将不同进程的数据合并到同一进程中：`MPI_Gather`，若全部拷贝一份则用`MPI_AllGather`
+* 前缀和：`int MPI_Scan(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm)`
 * 划分群组：`int MPI_Comm_split(MPI_Comm comm, int color, int key, MPI_Comm *newcomm)`
 
-## 其他操作
-两个基本操作send和receive，有三种类型
-* buffered blocking：拷贝到通信缓存后立即返回
-* buffered non-blocking：初始化后DMA后就返回
-* non-buffered blocing：收到receive操作后才返回
+### 自己创建通信子
+* `int MPI_Dims_create(int nodes, int dims, int* size)`：nodes为期待grid里面的进程数目，通过size返回每个dim的进程数目，size也可以预设某个维度的值
+* `int MPI_Cart_create(MPI_Comm old_comm, int dims, int* size, int* periodic, int reorder, MPI_Comm *cart_comm)`：创建笛卡尔拓扑结构的通信子
 
-解决死锁：
+## 死锁
 * 顺序调整：P0 send完receive，P1 receive完后send
-* **同时发送和接收**：`sendrecv`
+* **同时发送和接收**：`int MPI_sendrecv(void *sendbuf, int sendcount, MPI_Datatype senddatatype, int dest, int sendtag, void* recvbuf, int recvcount, MPI_Datatype recvdatatype, int source, int recvtag, MPI_Comm comm, MPI_Status* status`，如果要用同一个buffer，可用`MPI_Sendrecv_replace`，没有中间recv那几项参数
 * 将自己的空间作为发送缓存：`Bsend`+`recv`
 * 非阻塞操作：`lsend`+`lrecv`+`waitall`
+
+## MPI+OpenMP
+* 更低通信开销：只用MPI需要在mk个进程通信，而加上OpenMP只需在m个进程与k个线程通信
+* 不同粒度的并行
+* 重叠通信与计算：如3个进程都在等待，多线程加快最后一个进程
+
+少核时共享内存带宽，纯MPI会快；多核时通信代价低，MPI+OpenMP会快
 
 ## 参考资料
 * 官网，<http://www.mpich.org/>
 * MPI Tutorial, <https://mpitutorial.com/tutorials/>
+* 调试，<https://stackoverflow.com/questions/329259/how-do-i-debug-an-mpi-program>
