@@ -27,12 +27,15 @@ MapReduce的局限性
 * 大规模集群可扩展性
 
 ## [Spark](spark.apache.org)
-用一个分布式数据结构集合扩展编程语言，即恢复分布式数据集(resilient distributed datasets, RDD)。
+Spark是UC Berkeley AMP lab所开源的类Hadoop MapReduce的通用并行框架，不同的是Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark能更好地适用于数据挖掘与机器学习等需要迭代的MapReduce的算法（适应多趟应用）。
+
+Spark采用了弹性分布式数据集(Resilient Distributed Datasets, RDD)进行数据存储。其提供了一种高度受限的共享内存模型，即RDD是只读的记录分区的集合，只能通过在其他RDD执行确定的转换操作（如map、join和group by）而创建，这些限制使得实现容错的开销很低。
+对开发者而言，RDD可以看作是Spark的一个对象，它本身运行于内存中，如读文件是一个RDD，对文件计算是一个RDD，结果集也是一个RDD，不同的分片、数据之间的依赖、key-value类型的map数据都可以看做RDD。
 * 不可变的对象集合，用户控制的划分与存储(memory, disk)，扩展(spread)至整个集群
 * 静态类型`RDD[T]`
 * 通过并行变换实现(map, filter)
 * 实现在错误上自动重建
 
-在Apache上开源，有Scala、Java、Python、R等API。
+Spark在Apache上开源，有Scala、Java、Python、R等API。
 
-**同一个引擎**上实现数据提取，模型训练以及询问交互（针对同一个分布式文件系统DFS）
+Spark实现在**同一个引擎**上的数据提取，模型训练以及询问交互（针对同一个分布式文件系统DFS）。

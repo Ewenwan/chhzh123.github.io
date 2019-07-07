@@ -3,8 +3,7 @@ layout: summary
 title: 并行编程-OpenMP
 ---
 
-
-开放多处理过程(Open Multi-Processing, OpenMP)显式地控制线程，属于共享内存模型。
+开放多处理过程(Open Multi-Processing, OpenMP)属于共享内存的并行编程模型。
 * 并行应用编译指令/库过程(routine)的集合
 * 大大简化写多线程的难度(C/C++/Fortran)
 * 标准化过去20年SMP的实践
@@ -12,17 +11,6 @@ title: 并行编程-OpenMP
 ## [Fork-join](https://en.wikipedia.org/wiki/Fork%E2%80%93join_model)
 ![fork-join](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Fork_join.svg/400px-Fork_join.svg.png)
 注意这里fork的东西是任务(task)或纤程(fiber/lightweight thread)，而不是线程
-
-## 编译指令
-* `#include <omp.h>`
-* `#pragma omp task`
-* `#pragma omp taskwait`
-* `#pragma omp parallel for`
-`g++ -O3 -fopenmp <source>`
-
-一般来讲，icpc的性能要比普通的OpenMP强不少
-
-实际上OpenMP的编译器就是将OpenMP的语法转为pthreads
 
 ## API
 OpenMP提供了三种API
@@ -159,7 +147,7 @@ OpenMP中的同步机制
 ### 衡量指标
 * 加速比：$$R=T_{seq}/T_{par}$$，核数增加加速比会趋于平缓
 * 效率：$$R/N$$，核数增加效率会降低
-* 改进的Amdahl公式：$$\psi(n,p)\leq\frac{\sigma(n)+\phi(n)}{\sigma(n)+\phi(n)/p+\kappa(n,p)}$$
+* 改进的Amdahl公式：$$\psi(n,p)\leq\frac{\sigma(n)+\varphi(n)}{\sigma(n)+\varphi(n)/p+\kappa(n,p)}$$
 
 ### 局部性
 多核意味着有多个cache，就会有cache一致性问题：一个核cache的写会导致另一个核cache的失效
@@ -185,6 +173,12 @@ OpenMP中的同步机制
 * 增量式并行，串行等价
 * 对数据划分友好，对任务划分并不友好
 * 编译器无法查死锁或RC问题，因是编译指令
+
+## 编译运行
+* `#include <omp.h>`
+* `g++ -O3 -fopenmp <source>`
+
+实际上OpenMP的编译器就是将OpenMP的语法转为pthreads
 
 ## 参考资料
 * 官网，<https://www.openmp.org/>

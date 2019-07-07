@@ -98,7 +98,7 @@ CUDA编程模型分为4级层次结构（同样可以map到其他硬件上）
 * Cuda Thread: SIMD lane
 * Warps: logical SIMD width
 
-每一个cuda线程都有自己的控制流、PC、寄存器、堆栈，能够访问GPU任意全局内存地址
+每一个cuda线程都有自己的**控制流、PC、寄存器、堆栈**，能够访问GPU任意全局内存地址
 ```
 threadIdx.{x,y,z}
 blockIdx.{x,y}
