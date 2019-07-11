@@ -100,3 +100,4 @@ int main(void)
 * GCC-Inline-Assembly-HOWTO, <https://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html>
 * Inline Assembler(Wiki), <https://en.wikipedia.org/wiki/Inline_assembler>
 * 内核例子, <https://github.com/embedded2014/rtenv/blob/master/kernel.c>
+* GNU C内联汇编介绍，<https://www.cnblogs.com/rain-blog/p/gnu-gcc-insert-asm.html>
