@@ -8,3 +8,4 @@ title: Deep Thoughts in Computer Science
 3. [指令集架构]({{ site.baseurl }}/summary/instruction-set)
 4. [操作系统]({{ site.baseurl }}/summary/os-dev)
 5. [并行计算]({{ site.baseurl }}/summary/parallel-computing)
+6. [分布式系统]({{ site.baseurl }}/summary/distributed-systems)
