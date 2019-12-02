@@ -1,9 +1,9 @@
 # Setup
-title:               Hongzheng Chen (陈鸿峥)
-tagline:             'Blog'
-description:         '<p style="text-indent:2em">永不屈服于荒诞的世界，不停止自由地追逐繁星。 </p><br/>'
-url:                 http://chhzh123.github.io/
-paginate:            10
+title              : Hongzheng Chen (陈鸿峥)
+title_separator    : "-"
+tagline            : 'Blog'
+description        : '<p style="text-indent:2em">永不屈服于荒诞的世界，不停止自由地追逐繁星。 </p><br/>'
+url                : http://chhzh123.github.io/
 
 # About/contact
 author:
@@ -77,7 +77,7 @@ defaults:
 permalink:           /blogs/:year-:month-:day-:title/
 
 # Gems
-plugins: [jekyll-paginate]
+# plugins: [jekyll-paginate]
 
 # KaTeX
 kramdown:
