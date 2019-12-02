@@ -1,81 +1,21 @@
-<head>
-  <link href="http://gmpg.org/xfn/11" rel="profile">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+{% include base_path %}
 
-  <!-- Enable responsiveness on mobile devices-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta charset="utf-8">
 
-  <!-- title in header bar -->
-  <title>
-    {% if page.title == "Home" %}
-      {{ site.title }} &middot; {{ site.tagline }}
-    {% else %}
-      {{ page.title }} &middot; {{ site.title }}
-    {% endif %}
-  </title>
+{% include seo.html %}
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="{{ site.baseurl }}/public/css/poole.css">
-  <link rel="stylesheet" href="{{ site.baseurl }}/public/css/syntax.css">
-  <link rel="stylesheet" href="{{ site.baseurl }}/public/css/lanyon.css">
-  <link rel="stylesheet" media="screen" href="{{ site.baseurl }}/public/css/particles.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+<link href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ base_path }}/feed.xml{% endif %}" type="application/atom+xml" rel="alternate" title="{{ site.title }} Feed">
 
-  <!-- Icons -->
-  <link rel="little-prince-icon" sizes="144x144" href="{{ site.baseurl }}/public/icon/little-prince-icon.jpg">
-  <link rel="shortcut icon" href="{{ site.baseurl }}/public/icon/favicon.ico">
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- RSS -->
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
 
-  <!-- KaTeX -->
-  <!-- Load jQuery -->
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-  <!-- Load KaTeX -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/contrib/auto-render.min.js"></script>
+<!-- For all browsers -->
+<link rel="stylesheet" href="{{ base_path }}/assets/css/main.css">
 
-  <script>
-    renderMathInElement(
-        document.getElementById("test"),
-        {
-            delimiters: [
-                {left: "$$", right: "$$", display: true},
-                {left: "\\[", right: "\\]", display: true},
-                {left: "$", right: "$", display: false},
-                {left: "\\(", right: "\\)", display: false}
-            ]
-        }
-    );
-  </script>
-
-  <!-- mermaid -->
-  <script src="{{ site.baseurl }}/assets/mermaid/mermaid.min.js"></script>
-  <link rel="stylesheet" href="{{ site.baseurl }}/assets/mermaid/mermaid.css">
-  <script>mermaid.initialize({
-    startOnLoad:true
-  });</script>
-
-  <!-- Valine -->
-  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-
-  <!-- toc -->
-  <script src="{{ site.baseurl }}/assets/jekyll-table-of-contents/toc.js"></script>
-
-  <!-- particles.js -->
-  {% if page.title == "Home" %}
-  <div class="body-particles">
-  <!-- Wrapper -->
-      <div id="wrapper">
-          <!-- MY STUFF HERE, STYLED WITH MY CSS -->
-      </div>
-  </div>
-  <div id="particles-js"></div>
-  <script src="{{ site.baseurl }}/assets/particles-js/particles.js"></script>
-  <script src="{{ site.baseurl }}/assets/particles-js/app.js"></script>
-  {% endif %}
-
-</head>
+<meta http-equiv="cleartype" content="on">

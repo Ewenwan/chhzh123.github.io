@@ -1,11 +1,5 @@
-# Permalinks
-#
-# Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           /:year-:month-:day-:title/
-# relative_permalinks: true
-
 # Setup
-title:               Chhzh123
+title:               Hongzheng Chen (陈鸿峥)
 tagline:             'Blog'
 description:         '<p style="text-indent:2em">永不屈服于荒诞的世界，不停止自由地追逐繁星。 </p><br/>'
 url:                 http://chhzh123.github.io/
@@ -13,12 +7,74 @@ paginate:            10
 
 # About/contact
 author:
-  name:              chhzh123
-  url:               https://github.com/chhzh123
-  email:             chenhzh37@mail2.sysu.edu.cn
+  name             : Hongzheng Chen
+  email            : chenhzh37@mail2.sysu.edu.cn
+  avatar           : "profile-meow.jpg"
+  bio              : "A junior student in Sun Yat-sen University"
+  location         : "Guangzhou, China"
+  employer         :
+  googlescholar    :
+  email            :
+  researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
+  uri              :
+  bitbucket        :
+  codepen          :
+  dribbble         :
+  flickr           :
+  facebook         :
+  foursquare       :
+  github           : "chhzh123"
+  google_plus      :
+  keybase          :
+  instagram        :
+  impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
+  lastfm           :
+  linkedin         :
+  orcid            : #"http://orcid.org/yourorcidurl"
+  pinterest        :
+  soundcloud       :
+  stackoverflow    : # http://stackoverflow.com/users/123456/username
+  steam            :
+  tumblr           :
+  twitter          :
+  vine             :
+  weibo            :
+  xing             :
+  youtube          :
+  wikipedia        :
 
 # Custom vars
 version:             1.0
+
+# Reading Files
+include:
+  - .htaccess
+  - _pages
+  - files
+
+# Defaults
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: true
+  # _pages
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+
+# Permalinks
+permalink:           /posts/:year-:month-:day-:title/
 
 # Gems
 gems: [jekyll-paginate]

@@ -1,99 +1,31 @@
-<!DOCTYPE html>
-<html lang="en-us">
+---
+layout: compress
+---
 
-  {% include head.html %}
+{% include base_path %}
+
+<!doctype html>
+<html lang="{{ site.locale | slice: 0,2 }}" class="no-js">
+  <head>
+    {% include head.html %}
+    {% include head/custom.html %}
+  </head>
 
   <body>
 
-    {% include sidebar.html %}
+    {% include browser-upgrade.html %}
+    {% include masthead.html %}
 
-    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
-         content to avoid any CSS collisions with our real content. -->
-    <div class="wrap">
-      <div class="masthead">
-        <div class="container">
-          <h3 class="masthead-title">
-            <a href="{{ site.baseurl }}/" title="Home">{{ site.title }}</a>
-            <small>{{ site.tagline }}</small>
-          </h3>
-        </div>
-      </div>
+    {{ content }}
 
-      <div class="container content">
-        {{ content }}
-      </div>
+    <div class="page__footer">
+      <footer>
+        {% include footer/custom.html %}
+        {% include footer.html %}
+      </footer>
     </div>
 
-    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+    {% include scripts.html %}
 
-    <script>
-      (function(document) {
-        var toggle = document.querySelector('.sidebar-toggle');
-        var sidebar = document.querySelector('#sidebar');
-        var checkbox = document.querySelector('#sidebar-checkbox');
-
-        document.addEventListener('click', function(e) {
-          var target = e.target;
-
-          if(!checkbox.checked ||
-             sidebar.contains(target) ||
-             (target === checkbox || target === toggle)) return;
-
-          checkbox.checked = false;
-        }, false);
-      })(document);
-    </script>
   </body>
-
-  <script>
-    renderMathInElement(
-        document.getElementById("test"),
-        {
-            delimiters: [
-                {left: "\[", right: "\]", display: true},
-                {left: "$$", right: "$$", display: true},
-                {left: "\\[", right: "\\]", display: true},
-                {left: "$", right: "$", display: false},
-                {left: "\\(", right: "\\)", display: false}
-            ]
-        }
-    );
-  </script>
-
-  <script type="text/javascript">
-  $("script[type='math/tex']").replaceWith(
-  function(){
-    try {
-        var tex = katex.renderToString($(this).text());
-        return "<span class=\"inline-equation\">" + tex + "</span>";
-    } catch (e) {
-        if (e instanceof katex.ParseError) {
-            // KaTeX can't parse the expression
-            html = ("Error in LaTeX '" + texString + "': " + e.message)
-                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            return html;
-        } else {
-            throw e;  // other error
-        }
-    }
-  });
-
-  $("script[type='math/tex; mode=display']").replaceWith(
-  function(){
-    try {
-        var tex = katex.renderToString($(this).text());
-        return "<div class=\"equation\"><center>" + tex + "</center></div>";
-    } catch (e) {
-        if (e instanceof katex.ParseError) {
-            // KaTeX can't parse the expression
-            html = ("Error in LaTeX '" + texString + "': " + e.message)
-                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            return html;
-        } else {
-            throw e;  // other error
-        }
-    }    
-  });
-  </script>
-
 </html>
