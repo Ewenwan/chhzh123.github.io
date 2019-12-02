@@ -1,5 +1,5 @@
 ---
-layout: summary-toc
+layout: archive
 title: Deep Thoughts in Computer Science
 ---
 

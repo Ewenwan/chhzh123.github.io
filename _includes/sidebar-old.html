@@ -1,0 +1,73 @@
+<!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>{{ site.description }}</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="{{ site.baseurl }}/">Home</a>
+
+    {% comment %}
+      The code below dynamically generates a sidebar nav of pages with
+      `layout: page` in the front-matter. See readme for usage.
+    {% endcomment %}
+
+    {% assign pages_list = site.pages | sort:"url" %}
+    {% for node in pages_list %}
+      {% if node.title != null %}
+        {% if node.layout == "page" or node.layout == "summary-toc" or node.layout == "archive" %}
+          <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url }}">{{ node.title }}</a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    <span class="sidebar-nav-item">Currently v{{ site.version }}</span>
+  </nav>
+
+  <div class="sidebar-item">
+        <!-- Index page do not have toc -->
+        {% if page.layout == "post" %}
+        <div id="toc"></div>
+        <script type="text/javascript">
+          $(document).ready(function() {
+            $('#toc').toc();
+          });
+        </script>
+        {% endif %}
+
+         <p>
+            <!-- 运行时间 -->
+            <div id="days">
+              <script language="javascript">
+                function show_date_time(){
+                  window.setTimeout("show_date_time()", 1000);
+                  BirthDay=new Date("01/30/2019 00:00:00");
+                  today=new Date();
+                  timeold=(today.getTime()-BirthDay.getTime());
+                  sectimeold=timeold/1000
+                  secondsold=Math.floor(sectimeold);
+                  msPerDay=24*60*60*1000
+                  e_daysold=timeold/msPerDay
+                  daysold=Math.floor(e_daysold);
+                  e_hrsold=(e_daysold-daysold)*24;
+                  hrsold=setzero(Math.floor(e_hrsold));
+                  e_minsold=(e_hrsold-hrsold)*60;
+                  minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+                  seconds=setzero(Math.floor((e_minsold-minsold)*60));
+                  document.getElementById('days').innerHTML="&copy; 2019 chhzh123<br>努力运行"+daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+                }
+                function setzero(i){
+                  if (i<10){i="0" + i};
+                  return i;
+                }
+                show_date_time();
+            </script>
+          </div>
+         </p>
+         <p>Theme <a href="https://github.com/poole/lanyon">Lanyon</a><br/>Proudly powered by <a href="https://github.com/jekyll/jekyll">Jekyll</a></p>
+  </div>
+</div>

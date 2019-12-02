@@ -59,7 +59,7 @@ defaults:
       path: ""
       type: posts
     values:
-      layout: single
+      layout: default-old
       author_profile: true
       read_time: true
       comments: true
@@ -74,10 +74,10 @@ defaults:
       author_profile: true
 
 # Permalinks
-permalink:           /posts/:year-:month-:day-:title/
+permalink:           /blogs/:year-:month-:day-:title/
 
 # Gems
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]
 
 # KaTeX
 kramdown:
