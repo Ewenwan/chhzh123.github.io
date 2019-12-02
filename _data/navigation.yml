@@ -4,7 +4,10 @@ main:
     url: /publications/
 
   - title: "CV"
-    url: /cv/
+    url: /files/HongzhengChen_CV.pdf
+
+  - title: "Seminar"
+    url: /seminar/
 
   - title: "Blog Posts"
     url: /blogs/
