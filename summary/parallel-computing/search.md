@@ -1,6 +1,7 @@
 ---
-layout: summary
+layout: post
 title: 并行计算-搜索算法
+tag: [summary, parallel]
 ---
 
 ## 深度优先搜索

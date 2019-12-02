@@ -1,6 +1,7 @@
 ---
-layout: summary
+layout: post
 title: 并行编程-MapReduce
+tag: [summary, parallel]
 ---
 
 动机：数据量越来越大，希望有更好更易用的编程框架，能够同时并行上百个CPU

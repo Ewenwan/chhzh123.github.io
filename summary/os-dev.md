@@ -1,7 +1,8 @@
 ---
-layout: summary
+layout: post
 title: 操作系统设计
 date: 2019-04-30
+tag: [summary]
 ---
 
 操作系统(Operating System, OS)是用户和计算机系统的一个交互界面。
@@ -85,14 +86,14 @@ Absolute (Exact) Memory Address = (Segment Address * 16(decimal)) + Offset
 ```assembly
 org		0x7c00				; We are loaded by BIOS at 0x7C00
 bits	16					; We are still in 16 bit Real Mode
- 
+
 Start:
 
 	cli					; Clear all Interrupts
 	hlt					; halt the system
-	
+
 times 510 - ($-$$) db 0				; We have to be 512 bytes. Clear the rest of the bytes with 0
- 
+
 dw 0xAA55					; Boot Signiture
 ```
 
@@ -815,7 +816,7 @@ void pit_handler_main(
 	curr_proc->regImg.edx = dx;
 	curr_proc->regImg.ebx = bx;
 
-	curr_proc->regImg.esp = sp; 
+	curr_proc->regImg.esp = sp;
 	curr_proc->regImg.ebp = bp;
 	curr_proc->regImg.esi = si;
 	curr_proc->regImg.edi = di;

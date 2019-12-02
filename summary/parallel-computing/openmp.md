@@ -1,6 +1,7 @@
 ---
-layout: summary
+layout: post
 title: 并行编程-OpenMP
+tag: [summary, parallel]
 ---
 
 开放多处理过程(Open Multi-Processing, OpenMP)属于共享内存的并行编程模型。

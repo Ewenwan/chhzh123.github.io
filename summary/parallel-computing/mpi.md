@@ -1,6 +1,7 @@
 ---
-layout: summary
+layout: post
 title: 并行编程-MPI
+tag: [summary, parallel]
 ---
 
 消息传递模型在上个世纪90年代十分盛行，通常主进程(master process)通过对从进程(slave process)发送一个描述工作的消息来把这个工作分配给它。由于当时很多软件库都采用了这个模型，但由于不同软件定义上的区别存在大量差异，故在SC'92上制定了消息传递接口(Message Passing Interface, MPI)的标准。过了两年一个完整的接口定义(MPI-1)就已经被实现出来，这是MPI的前身。

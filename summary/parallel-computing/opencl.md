@@ -1,6 +1,7 @@
 ---
-layout: summary
+layout: post
 title: 并行编程-OpenCL
+tag: [summary, parallel]
 ---
 
 OpenCL提供了主机和加速器设备交互的界面，允许在异构设备上并行(CPU, GPU, FPGA, DSP)

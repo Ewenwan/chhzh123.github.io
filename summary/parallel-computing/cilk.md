@@ -1,6 +1,7 @@
 ---
-layout: summary
+layout: post
 title: 并行编程-Cilk
+tag: [summary, parallel]
 ---
 
 Cilk是一个非常轻量的并行编程框架，仅仅添加了三个[关键词](https://www.cilkplus.org/tutorial-cilk-plus-keywords)

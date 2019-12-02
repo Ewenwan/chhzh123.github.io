@@ -1,7 +1,8 @@
 ---
-layout: summary
+layout: post
 title: 分布式系统
 date: 2019-08-29
+tag: [summary]
 ---
 
 本文为分布式系统的课程笔记。

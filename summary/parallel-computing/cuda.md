@@ -1,6 +1,7 @@
 ---
-layout: summary
+layout: post
 title: 并行编程-CUDA
+tag: [summary, parallel]
 ---
 
 CUDA(Compute Unified Device Architecture)主要用于GPU上的编程，让SIMD能够对应用更加通用
@@ -74,7 +75,7 @@ int main(void)
   // Free memory
   cudaFree(x);
   cudaFree(y);
-  
+
   return 0;
 }
 ```

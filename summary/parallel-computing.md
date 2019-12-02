@@ -1,7 +1,8 @@
 ---
-layout: summary
+layout: post
 title: 并行计算
 date: 2019-05-20
+tag: [summary]
 ---
 
 本文将主要介绍并行计算的一些基本概念，以及几种用于并行编程的工具/框架。

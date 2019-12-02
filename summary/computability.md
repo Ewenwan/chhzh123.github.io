@@ -1,7 +1,8 @@
 ---
-layout: summary
+layout: post
 title: 一切的源头
 date: 2019-04-19
+tag: [summary]
 ---
 
 > Wir müssen wissen, wir werden wissen.<br/>

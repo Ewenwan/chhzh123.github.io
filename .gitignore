@@ -44,3 +44,4 @@ bower_components
 
 .sass-cache
 vendor
+Gemfile.lock

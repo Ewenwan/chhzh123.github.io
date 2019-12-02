@@ -1,6 +1,7 @@
 ---
-layout: summary
+layout: post
 title: 并行编程-Spark
+tag: [summary, parallel]
 ---
 
 数据量远比处理的速度增长要快，只能在大规模集群上并行
