@@ -35,6 +35,7 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [x] David A. Patterson, John L. Hennessy, **Computer Organization and Design: The Hardware/Software Interface (5th.ed)**, Elsevier, 2014, [Chinese](https://book.douban.com/subject/25813550/)
 * [[Course]](http://csg.csail.mit.edu/6.823/index.html), MIT 6.823: Computer System Architecture, Daniel Sanchez
 * [[Course]](https://6004.mit.edu/web/spring19/), MIT 6.004: Computation Structures, Arvind
+* [[Course]](https://cs217.stanford.edu/), Stanford CS 217, Hardware Accelerators for Machine Learning, Kunle Olukotun
 
 ## Compiler
 * Alfred V. Aho, Monica S. Lam, Ravi Sethi, Jeffrey Ullman, **Compilers: Principles, Techniques, and Tools (2nd ed.)**<font color="blue">(Dragon)</font>, Pearson, 2006, [Chinese](https://book.douban.com/subject/3296317/)
