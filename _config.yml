@@ -3,7 +3,7 @@ title              : Hongzheng Chen (陈鸿峥)
 title_separator    : "-"
 tagline            : 'Blog'
 description        : '<p style="text-indent:2em">永不屈服于荒诞的世界，不停止自由地追逐繁星。 </p><br/>'
-url                : http://chhzh123.github.io/
+url                : http://chhzh123.github.io
 
 # About/contact
 author:
@@ -51,6 +51,30 @@ include:
   - .htaccess
   - _pages
   - files
+exclude:
+  - "*.sublime-project"
+  - "*.sublime-workspace"
+  - .asset-cache
+  - .bundle
+  - .jekyll-assets-cache
+  - .sass-cache
+  - CHANGELOG
+  - Capfile
+  - Gemfile
+  - Gruntfile.js
+  - LICENSE
+  - README
+  - Rakefile
+  - assets/js/_main.js
+  - assets/js/plugins
+  - assets/js/vendor
+  - config
+  - gulpfile.js
+  - log
+  - node_modules
+  - package.json
+  - tmp
+  - vendor
 
 # Defaults
 defaults:
@@ -72,12 +96,25 @@ defaults:
     values:
       layout: single
       author_profile: true
+encoding: "utf-8"
 
 # Permalinks
 permalink:           /blogs/:year-:month-:day-:title/
 
+# Sass/SCSS
+sass:
+  sass_dir: _sass
+  style: compressed # http://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
+
 # Gems
-# plugins: [jekyll-paginate]
+plugins:
+  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-sitemap
+
+# feed
+atom_feed:
+  path                   : # blank (default) uses feed.xml
 
 # KaTeX
 kramdown:
