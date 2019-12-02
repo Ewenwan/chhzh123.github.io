@@ -3,7 +3,7 @@ title              : Hongzheng Chen (陈鸿峥)
 title_separator    : "-"
 tagline            : 'Blog'
 description        : '<p style="text-indent:2em">永不屈服于荒诞的世界，不停止自由地追逐繁星。 </p><br/>'
-url                : http://chhzh123.github.io
+url                : https://chhzh123.github.io
 
 # About/contact
 author:
@@ -44,7 +44,7 @@ author:
   wikipedia        :
 
 # Custom vars
-version:             1.0
+version:             2.0
 
 # Reading Files
 include:
