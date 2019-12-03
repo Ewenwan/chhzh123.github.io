@@ -8,17 +8,16 @@ redirect_from:
   - /about.html
 ---
 
-I am a junior undergraduate in School of Data and Computer Science, [Sun Yat-sen University](http://www.sysu.edu.cn/2012/en/index.htm). Currently, I conduct research under the supervision of Dr. [Minghua Shen](https://ceca.pku.edu.cn/people/alumni_postgrad/class2017g/1206157.htm) and Prof. [Nong Xiao](http://sdcs.sysu.edu.cn/content/2484) in [National Supercomputer Center in Guangzhou (NSCC-GZ)](http://en.nscc-gz.cn/index.html). I rank the 5th out of 240 students in the department with GPA 3.90/4.00 (Major GPA: 4.00/4.00).
+I am a junior undergraduate in the School of Data and Computer Science, [Sun Yat-sen University](http://www.sysu.edu.cn/2012/en/index.htm). Currently, I conduct research under the supervision of Dr. [Minghua Shen](https://ceca.pku.edu.cn/people/alumni_postgrad/class2017g/1206157.htm) and Prof. [Nong Xiao](http://sdcs.sysu.edu.cn/content/2484) in [National Supercomputer Center in Guangzhou (NSCC-GZ)](http://en.nscc-gz.cn/index.html). I rank the 5th out of 240 students in the department with GPA 3.90/4.00 (Major GPA: 4.00/4.00).
 
-My research interests include computer systems, especially for graph processing and FPGA high-level synthesis (HLS).
-I try to bridge the gap between software and hardware, and make applications easier to be delopyed on hardware.
+My research interests cover computer systems and architecture, especially for graph processing systems and FPGA high-level synthesis (HLS). I attempt to bridge the gap between different software applications and hardware, and make applications run more efficiently via systematic methodologies.
 
 My Curriculum Vitae can be found [here](../files/HongzhengChen_CV.pdf).
 
-I will apply for EE/CS PhD program in 2020 fall, and now I am looking for summer intern.
+I will apply for CS/EE PhD program in 2020 fall, and now I am looking for a summer intern.
 
 ## Education
-* **B.Sc. in Computer Science**, Sun Yat-sen University, 2017.9-2021.6
+* **B.Sc. in Computer Science**, Sun Yat-sen University, 2017.9 - 2021.7 (expected)
 
 ## Publications
 1. **Hongzheng Chen**, Minghua Shen, "*A Deep-Reinforcement-Learning-Based Scheduler for FPGA HLS*", in Proceedings of the 38th International Conference on Computer-Aided Design (ICCAD), 2019.
