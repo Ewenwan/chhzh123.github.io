@@ -32,5 +32,5 @@ I will apply for CS/EE PhD program in 2020 fall, and now I am looking for a summ
 
 ## Skills
 * **Programming**: C, C++, Python, Haskell, Prolog, x86 assembly, Verilog
-* **Toolkits**: Pytorch, Wolfram Mathematica, Matlab, LaTeX
+* **Toolkits**: OpenMP, MPI, Pytorch, Wolfram Mathematica, Matlab, $$\LaTeX$$
 * **Languages**: English (fluent), Chinese (native)
