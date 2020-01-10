@@ -9,17 +9,36 @@ tag: [summary]
 
 Amir H. Payberah, *[Distributed Systems Consensus](https://payberah.github.io/files/download/dic14/paxos.pdf)*
 
-共识：使所有非故障进程就**由谁来执行命令**达成一致，而且在有限的步骤内就达成一致。
+共识：使所有非故障进程就**由谁来执行命令**达成一致，而且在**有限的步骤**内就达成一致。
 
 有一些结点提出了一些值或动作，并传送给其他结点，所有结点都应决定是否接受或者回绝这些值。
 
-共识的需求：
+## 共识协议分类
+* 失效容错
+	* 泛洪：准确检测失效
+	* 最终检测到失效：Pasox、Raft、ZAB
+* 拜占庭容错
+	* BFT、PBFT、PoW
+
+## 共识的需求
 * 安全性
 	* 合法性(validity)：只有一个被提出的值会被选择
 	* 一致性(agreement)：没有两个正确的结点选择了不同的值
 	* 正直性(integrity)：一个结点最多选择一次
 * 活性(liveness)
 	* 终止(termination)：每一个正确的结点最终总会选择一个值
+
+## 泛洪
+{% include image.html fig="DistributedSystems/flooding.png" width="70" %}
+
+只有获得所有进程提交的命令才做出决定
+* P2 获得所有进程提交的命令，因此作出决定
+* P3 可能已经检测到 P1 失效，但是不知道 P2 是否也检测到了失效，也就是说 P3 不知道自己的信息是否与P2一致，因此不做决定
+
+## 任意失效语义下的共识
+{% include image.html fig="DistributedSystems/3k1byzantine.png" width="70" %}
+
+需要$$3k+1$$个进程才能保证共识
 
 ## 两阶段提交(2PC)
 系统充满了一切未知，包括并发进程、未知时序、失效等
@@ -62,6 +81,10 @@ Amir H. Payberah, *[Distributed Systems Consensus](https://payberah.github.io/fi
 
 即使添加了恢复系统，2PC也不是真正容错的(safe but not live)，因为只要有一个机器崩溃了，它都会导致**阻塞**(blocked)。
 
+### 三阶段提交协议
+两节点提交的一个问题在于当协作者崩溃时，参与者不能做出最后的决定，处于阻塞状态，进而有三阶段提交协议
+* 协作者：INIT->WAIT->ABORT-/PRECOMMIT-COMMIT
+* 参与者：INIT->READY->ABORT-/PRECOMMIT-COMMIT
 
 ## PAXOS
 Fischer-Lynch-Paterson (FLP)在下面这篇论文
