@@ -8,6 +8,8 @@ tag: [summary, parallel]
 
 MapReduce能够自动并行化大规模计算，是一种并行编程模型和具体的实现。
 
+![MapReduce](https://d3i71xaburhd42.cloudfront.net/09d7bafe0e686fc7adc90b0519a33530209ea4a2/3-Figure1-1.png)
+
 ## 基本概念与简介
 * job：mapper和reducer在数据集上执行的全程序
 * task：一个mapper或reducer在数据**片段**(slice)上的执行，即task in progress(TIP)
@@ -52,12 +54,17 @@ MapReduce能够自动并行化大规模计算，是一种并行编程模型和�
 4. reduce：aggregate, summarize, filter, transform；worker将unique/associated键值传递进reduce，reduce输出并添加到partition output file
 5. 写结果：master在所有task执行完后唤醒用户进程
 
-## 优势
-最大化减少并行编程的复杂性
+## 优点和缺点
+优势：最大化减少并行编程的复杂性
 * 减少同步开销
 * 自动划分数据
 * 提供透明失败(failure transparency)
 * 处理负载均衡
+
+缺点：->导致了后来Spark的诞生
+* 没有数据局部性
+* 每一map/reduce操作都必须在下一阶段开始前完成（即都是同步的）
+* 不能存内操作，每一轮迭代完都要写入磁盘
 
 ## Hadoop
 开源的MapReduce实施。

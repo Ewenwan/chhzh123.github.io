@@ -19,3 +19,4 @@ tag: [summary]
 8. [容错]({{ site.baseurl }}/summary/distributed-systems/8-fault-tolerance)
 9. [共识]({{ site.baseurl }}/summary/distributed-systems/9-consensus)
 10. [文件系统]({{ site.baseurl }}/summary/distributed-systems/10-file-systems)
+11. [补充内容]({{ site.baseurl }}/summary/distributed-systems/11-supplement)
