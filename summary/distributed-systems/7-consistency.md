@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 分布式系统（7） - 一致性和复制
-date: 2019-12-02
+date: 2020-01-09
 tag: [summary]
 ---
 

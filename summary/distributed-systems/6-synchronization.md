@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 分布式系统（6） - 同步化
-date: 2019-12-12
+date: 2020-01-10
 tag: [summary]
 ---
 
