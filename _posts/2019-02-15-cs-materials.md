@@ -8,10 +8,6 @@ This is a summary article, collecting CS-related books and courses that I have/w
 
 <!--more-->
 
-## Interdisciplinary
-* Donald E. Knuth, **The Art of Computer Programming**<font color="blue">(TAOCP)</font>, Addison-Wesley, 2011
-* Douglas Hofstadter, **Gödel, Escher, Bach**, Basic Book, 1999
-
 ## Algorithms & Data Structures
 * Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein, **Introduction to Algorithms (3nd ed.)**, MIT Press, 2009, [Chinese](https://book.douban.com/subject/20432061/)
 * [[Course]](https://learning-modules.mit.edu/materials/index.html?uuid=/course/6/fa18/6.006#materials), MIT 6.006: Introduction to Algorithms, Zachary R Abel
@@ -29,6 +25,10 @@ This is a summary article, collecting CS-related books and courses that I have/w
 	- Harold Abelson, Gerald Jay Sussman, Julie Sussman, **Structure and Interpretation of Computer Programs (2nd ed.)**<font color="blue">(SICP)</font>, MIT Press, 1996, [Chinese](https://book.douban.com/subject/1148282/)
 * DSL Design
 	- [[Course]](http://web.stanford.edu/class/cs442/), Stanford CS 442: High Productivity and Performance with Domain Specific Languages in Scala, Kunle Olukotun
+* Programming Languages
+	- [[Course]](https://sites.google.com/cs.washington.edu/cse341-19wi), Washington CSE 341: Programming Languages, Zachary Tatlock
+* Principles of PL
+	- [[Course]](https://sites.google.com/cs.washington.edu/cse-p505-19sp), Washington CSE 505, Zachary Tatlock
 
 ## Computer System & Architecture
 * Randal E. Bryant, David R. O'Hallaron, **Computer Systems: A Programmer's Perspective (3rd ed.)**<font color="blue">(CSAPP)</font>, Pearson, 2016, [Chinese](https://book.douban.com/subject/5333562/)
@@ -36,6 +36,8 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](http://csg.csail.mit.edu/6.823/index.html), MIT 6.823: Computer System Architecture, Daniel Sanchez
 * [[Course]](https://6004.mit.edu/web/spring19/), MIT 6.004: Computation Structures, Arvind
 * [[Course]](https://cs217.stanford.edu/), Stanford CS 217, Hardware Accelerators for Machine Learning, Kunle Olukotun
+* [[Course]](https://courses.cs.washington.edu/courses/cse590g/17wi/), Washington CSE 590G: Architecture Seminar
+* [[Course]](https://www.csl.cornell.edu/courses/ece2400/handouts.html), Cornell ECE 2400: Computer Systems Programming, Christopher Batten
 
 ## Compiler
 * Alfred V. Aho, Monica S. Lam, Ravi Sethi, Jeffrey Ullman, **Compilers: Principles, Techniques, and Tools (2nd ed.)**<font color="blue">(Dragon)</font>, Pearson, 2006, [Chinese](https://book.douban.com/subject/3296317/)
@@ -47,6 +49,8 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](https://suif.stanford.edu/~courses/cs243/), Stanford CS 243: Program Analysis and Optimization, Monica Lam
 * [[Course]](http://www.cs.cmu.edu/~15745/), CMU 15-745: Optimizing Compilers for Modern Architectures, Phil Gibbons
 * [[Course]](https://www.clear.rice.edu/comp412/Lectures/), Rice COMP 412: Compiler Construction for Undergraduates, Keith Cooper
+* [[Course]](https://www.cs.cornell.edu/courses/cs6120/2019fa/), Cornell CS 6120: Advanced Compiler β, Adrian Sampson
+* [[Course]](http://www.cs.cmu.edu/afs/cs/academic/class/15745-s19/www/), CMU CS 15-745: Optimizing Compilers for Modern Architectures, Phil Gibbons
 
 ## Operating Systems
 * Avi Silberschatz, Peter Baer Galvin, Greg Gagne, **Operating System Concepts (10th ed.)**, John Wiley & Sons, Inc., 2018, [Online](http://www.os-book.com/OS10/slide-dir/index.html)
@@ -70,8 +74,22 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * Abstract Algebra
 	- [[Course]](https://canvas.harvard.edu/courses/30943/files/folder/Notes), Harvard Math 122: Algebra I: Theory of Groups and Vector Spaces
 
+## Distributed Systems
+* [[Course]](https://pdos.csail.mit.edu/6.824/index.html), MIT 6.824: Distributed Systems
+* [[Course]](http://www.cs.cmu.edu/~srini/15-440-all/2016.Fall/syllabus.html), CMU 15-440: Distributed Systems
+
 ## Miscellaneous
 * [Stack Overflow Recommendations](https://stackoverflow.com/questions/1711/what-is-the-single-most-influential-book-every-programmer-should-read)
 * [MIT Online Resources](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/)
 * [[Course]](https://people.csail.mit.edu/jshun/6886-s18/), MIT 6.886: Graph Analytics, Julian Shun
 * [[Course]](http://stellar.mit.edu/S/course/6/fa14/6.172/materials.html), MIT 6.172: Performance Engineering of Software Systems
+* Berkeley 61 series
+	- [[Course]](https://cs61c.org/), UCB cs61c: Great Ideas in Computer Architecture (Machine Structures)
+
+## Interdisciplinary
+* Donald E. Knuth, **The Art of Computer Programming**<font color="blue">(TAOCP)</font>, Addison-Wesley, 2011
+* Douglas Hofstadter, **Gödel, Escher, Bach**, Basic Book, 1999
+
+## General Institue Requirements
+* MIT, <http://catalog.mit.edu/degree-charts/computer-science-engineering-course-6-3/>
+* UCB, <https://eecs.berkeley.edu/resources/undergrads/cs/degree-reqs-lowerdiv>
