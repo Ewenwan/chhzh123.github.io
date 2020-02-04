@@ -38,6 +38,7 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](https://cs217.stanford.edu/), Stanford CS 217, Hardware Accelerators for Machine Learning, Kunle Olukotun
 * [[Course]](https://courses.cs.washington.edu/courses/cse590g/17wi/), Washington CSE 590G: Architecture Seminar
 * [[Course]](https://www.csl.cornell.edu/courses/ece2400/handouts.html), Cornell ECE 2400: Computer Systems Programming, Christopher Batten
+* [[Course]](http://web.mit.edu/6.033/www/), MIT 6.033: Computer System Engineering, Tim Kraska
 
 ## Compiler
 * Alfred V. Aho, Monica S. Lam, Ravi Sethi, Jeffrey Ullman, **Compilers: Principles, Techniques, and Tools (2nd ed.)**<font color="blue">(Dragon)</font>, Pearson, 2006, [Chinese](https://book.douban.com/subject/3296317/)
