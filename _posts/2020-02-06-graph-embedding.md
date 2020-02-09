@@ -57,7 +57,7 @@ tags: [dl,graph]
 
 $$\mathcal{W}_{v_i}:\mathcal{W}_{v_i}^1,\mathcal{W}_{v_i}^2,\ldots,\mathcal{W}_{v_i}^k$$
 
-使得$\mathcal{W}_{v_i}^{k+1}$是从$v_k$的邻居中随机挑选出的结点。
+使得$\mathcal{W}_{v_i}^{k+1}$是从$v_k$的**邻居中随机**挑选出的结点。
 
 随机游走的好处是明显的：
 * 并行性：显然可以同时开多个walker从不同结点出发进行游走
@@ -81,20 +81,46 @@ $$\mathrm{Pr}(w_n\mid w_0,w_1,\ldots,w_{n-1})$$
 
 $$\mathrm{Pr}\left(v_i\mid (\Phi(v_1),\Phi(v_2),\ldots,\Phi(v_{i-1}))\right)$$
 
-但由于计算量太大，因此我们还是看看NLP中是怎么做的。
+但由于计算量太大，所以需要采用其他方法。而该优化形式在NLP中已经被研究得很多，因此尝试采用NLP的方法来解决。
 在word2vec[^1]中提到了两种LM，一种CBOW，输入为前后$w$个词，输出为中间词；而另外一种是skip-gram，输入中间词，输出前后$w$，这可以大大减轻计算量，也是我们着重关注的。
 
 如下图展现了窗口大小为2的情况，skip-gram可以用于生成词语之间的共现(cooccurance)情况。
 ![skip-gram](http://mccormickml.com/assets/word2vec/training_data.png)
 
-假设映射为$\Phi$，则优化问题为
+最终得到**优化问题**为
 
 $$\min_{\Phi}\;-\log\mathrm{Pr}(\{v_{i-w},\ldots,v_{i-1},v_{i+1},\ldots,v_{i+w}\}\mid\Phi(v_i))$$
 
-注意这里符号的意思是在$[i-w,i+w]$区间上任取**一个**。
+注意这里符号的意思是在$[i-w,i+w]$区间上任取**一个**，即其将随机游走中的序给消除了。
 
+其实到这里，整体的算法流程就很清晰了：
+1. 每次随机选择一个起始点$v_i$
+2. 从$v_i$开始，做长为$|\mathcal{W}_{v_i}|=t$的随机游走
+3. 依据得到的$\mathcal{W}_{v_i}$，做skip-gram。即对每一$v_j\in\mathcal{W}_{v_i}$，每一$u_k\in\mathcal{W}_{v_i}[j-w:j+w]$，做梯度下降更新参数
 
-<!-- 这里使用的是**无监督方法**[^3] -->
+$$\begin{aligned}J(\Phi)&=-\log\mathrm{Pr}(u_k\mid\Phi(v_j))\\\Phi&=\Phi-\alpha\frac{\partial J}{\partial\Phi}\end{aligned}$$
+
+这里还有一些优化的地方：
+* 为了让SGD更快收敛，一般是将所有的顶点打乱后，再进行顺序遍历（如果完全随机，很难做到每个点都能被采样到）
+* 利用层次Softmax[^2]来加快计算，即$\mathrm{Pr}(u_k\mid\Phi(v_j))=\prod_{l=1}^{\lceil\log|V|\rceil}\mathrm{Pr}(b_l\mid\Phi(v_j))$，其中$b_i$是二叉树的结点，$b_0$是根
+* 进一步可以利用Haffman编码来加快二叉树的访问
+* 由于顶点十分稀疏，更新也是稀疏的，故可以直接上异步SGD，甚至不用加锁
+
+注意DeepWalk很强的一点在于它使用的是**无监督方法**，即只需知道图结构，就可以学出对应的隐含表示。
+
+### Experiments
+DeepWalk分别在BlogCatalog、Flicker和YouTube三个数据集上做多标签分类，下面给出这三个数据集的基本数据，以便有一个直观感受。
+
+| Name | BlogCatalog | Flickr | YouTube |
+| :--: | :---------: | :----: | :-----: |
+| \|V\| | 10,312      | 80,513 | 1,138,499 |
+| \|E\| | 333,983    | 5,899,882 | 2,990,443 |
+| \|Y\| | 39         | 195       | 47 |
+| Labels | Interests | Groups    | Groups |
+
+可以看到这些数据集相比起Graph500的规模是非常小的。
+
+但最终的实验结果是非常好的，只用1%的训练数据，宏F1和微F1指标都远超之前的方法。
 
 ## Reference
 [^1]: Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg Corrado, Jeffrey Dean (Google), *Efficient Estimation of Word Representations in Vector Space*, arXiv:1301.3781v3
