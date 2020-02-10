@@ -1,12 +1,16 @@
 ---
 layout: post
-title: 图嵌入(Graph Embedding)
+title: 图表示学习(1) - 图嵌入
 tags: [dl,graph]
 ---
 
 由于今年要着手一些图结合AI的工作，因此在此对一些经典文献做一些总结。
 
+这是**图表示学习(representation learning)的第一部分——图嵌入(graph embedding)**，主要涉及DeepWalk [KDD'14]、node2vec [KDD'16]和KnightKing [SOSP'19]三篇论文。
+
 <!--more-->
+
+关于图数据挖掘/表示学习的内容强烈建议去看Stanford [Jure Leskovec](https://cs.stanford.edu/people/jure/)的[Tutorial - Representation Learning on Networks (WWW'18)](http://snap.stanford.edu/proj/embeddings-www/)。
 
 ## Word Embeddding
 
@@ -174,7 +178,7 @@ $$\max_\Phi\sum_{u\in V}\left[-\log Z_u+\sum_{n_i\in N_S(u)}\Phi(n_i)^T \Phi(u)\
 下图则是node2vec的精髓，其定义了一个带$p$和$q$两参数的二阶随机游走，在每个结点处访问不同邻居的概率是不同的。
 ![search bias](https://miro.medium.com/max/987/1*44_Ys2JeD8B0NVdbJ4TQlg.png)
 
-其考虑的是**二阶邻居**的关系$t\to v\to x$，$t$到$x$的最短距离$d_{tx}$只能是$\{0,1,2\}$三个值。
+其考虑的是**二阶邻居**的关系$t\to v\to x$，$t$到$x$的最短距离$d_{tx}$只能是$\{0,1,2\}$三个值（比原来更近、和原来一样、比原来更远）。
 那么可定义搜索偏差(search bias)
 
 $$
@@ -237,3 +241,4 @@ $$g(u,v)=\Phi(u)\circ\Phi(v): V\times V\mapsto\mathbb{R}^{d'}$$
 [^3]: Bryan Perozzi, Rami Al-Rfou, Steven Skiena (Stony Brook), *DeepWalk: Online Learning of Social Representations*, KDD, 2014
 [^4]: Wayne W. Zachary, *An Information Flow Model for Conflict and Fission in Small Groups*, Journal of Anthropological Research, 1977
 [^5]: Aditya Grover, Jure Leskovec (Stanford), *node2vec: Scalable Feature Learning for Networks*, KDD, 2016
+[^6]: Ke Yang, MingXing Zhang, Kang Chen, Xiaosong Ma, Yang Bai, Yong Jiang (Tsinghua), *KnightKing: A Fast Distributed Graph Random Walk Engine*, SOSP, 2019
