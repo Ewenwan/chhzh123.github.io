@@ -125,10 +125,115 @@ DeepWalk分别在BlogCatalog、Flicker和YouTube三个数据集上做多标签�
 
 可以看到这些数据集相比起Graph500的规模是非常小的。
 
-但最终的实验结果是非常好的，只用1%的训练数据，宏F1和微F1指标都远超之前的方法。
+各超参数的值也附在这里，作为参考。
+| $\gamma$ | $w$ | $d$ |
+| :--: | :--: | :--: |
+| 80 | 10 | 128 |
+
+至于多标签分类，可见下图，即给出比如10%的标记结点作为训练集，剩下的90%则作为测试集。
+
+![Relational Learning via Latent Social Dimensions (SocDim)](https://image1.slideserve.com/2010663/sociodim-framework-l.jpg)
+
+得到隐含表示后，聚类则变得很简单，DeepWalk是采用了one-vs-rest的logistic回归来分类。最终的实验结果是非常好的，只用1%的训练数据，宏F1和微F1指标都远超之前的方法。
+
+
+## node2vec[^5]
+目标和DeepWalk一样，也是<u>自动地学习结点特征，生成隐含表示(latent representation)</u>。
+
+传统的方法常常是有监督的，需要人工进行特征工程，会加入大量前提假设；或者直接采用PCA等方法对图的邻接/Laplace矩阵进行变换，但是矩阵分解工程量很大，可扩展性极低。
+
+而DeepWalk一个很明显的缺点就是它**均匀**地对每个结点的邻居进行采样，这样会造成其无法很好控制其访问的邻居，因此node2vec的最大改进之处就是**将采样方式给参数化了**。
+
+形式化地来说，对于每一源结点$u\in V$，定义其由采样策略$S$得到的邻居为$N_S(u)\subset V$（<font color="red">这里一定要注意，采样策略得到的邻居并不一定是直接邻居，后面会再阐述</font>），希望在给定嵌入表示的前提下，最大化该邻居出现的概率，即
+
+$$\max_\Phi\sum_{u\in V}\log\mathrm{Pr}(N_S(u)\mid \Phi(u))$$
+
+为了解决上述优化问题，又有以下假设：
+* 条件独立性：即邻居之间都相互独立
+$$\mathrm{Pr}(N_S(u)\mid\Phi(u))=\prod_{n_i\in N_S(u)}\mathrm{Pr}(n_i\mid\Phi(u))$$
+* 特征空间对称性：源结点和其邻居在彼此的特征空间中应该有对称的影响，因此用点积进行模拟（$a\cdot b=b\cdot a$），有softmax函数
+$$\mathrm{Pr}(n_i\mid f(u))=\frac{\exp(\Phi(n_i)^T \Phi(u))}{\sum_{v\in V}\exp(\Phi(v)^T \Phi(u))}$$
+
+结合上述假设，优化问题变为
+
+$$\max_\Phi\sum_{u\in V}\left[-\log Z_u+\sum_{n_i\in N_S(u)}\Phi(n_i)^T \Phi(u)\right]$$
+
+其中$Z_u=\sum_{v\in V}\exp(\Phi(v)^T \Phi(u))$计算量非常大，采用负采样(negative sampling)[^2]的方法进行优化。
+
+### Equivalance
+在预测任务中其实主要关注两种相似性:
+* 同质性(homophily equiv)：相互连结或同属一个社群的结点，其嵌入应比较靠近，如下图的$s_1$和$u$
+* 结构性(structural equiv)：在社群中扮演同样的角色的结点，其嵌入应比较靠近，如下图的$u$和$s_6$都是各自社群的中心结点
+
+![bfs dfs](https://d3i71xaburhd42.cloudfront.net/36ee2c8bd605afd48035d15fdc6b8c8842363376/2-Figure1-1.png)
+
+而用BFS和DFS就可以分别生成对应的相似性，这里直观理解可能容易理解反，因此参考知乎的[评论](https://zhuanlan.zhihu.com/p/64200072)
+> BFS（微观特性）：对于两个结构性比较类似的结点，BFS构建两个节点在类似位置的context序列的概率更高，因此可以更好的学习到结构性；进一步假设，如果两个点有大量相同的邻居节点，那么node2vec训练时，具有相同context的概率更高，embedding向量应该更接近<br/>DFS（宏观特性）：对于两个距离比较近的节点，出现在相同sequence context的几率比较高，因此近距离的节点容易学习出相似的embedding向量
+
+### 2nd-Order Random Walk
+下图则是node2vec的精髓，其定义了一个带$p$和$q$两参数的二阶随机游走，在每个结点处访问不同邻居的概率是不同的。
+![search bias](https://miro.medium.com/max/987/1*44_Ys2JeD8B0NVdbJ4TQlg.png)
+
+其考虑的是**二阶邻居**的关系$t\to v\to x$，$t$到$x$的最短距离$d_{tx}$只能是$\{0,1,2\}$三个值。
+那么可定义搜索偏差(search bias)
+
+$$
+\alpha_{pq}(t,x)=
+\begin{cases}
+\frac{1}{p} & ,d_{tx}=0\\
+1 & ,d_{tx}=1\\
+\frac{1}{q} & ,d_{tx}=2
+\end{cases}
+$$
+
+其中，
+* $p$为return参数，控制在随机游走中立即返回上一结点的概率，如果设得很大（$>\max(q,1)$），则意味着更大机率往外走，且避免2-hop内的重复采样
+* $q$为in-out参数，控制在随机游走中往外/内走的概率，如果设得很大（$>1$），则更倾向于往里走(BFS)；否则，则倾向于往外走(DFS)
+
+最后进行归一化，可得到随机游走的转移概率
+
+$$
+\mathrm{Pr}=(c_i=x\mid c_{i-1}=v)=
+\begin{cases}
+\frac{\alpha_{pq}(t,x)\cdot w_{vx}}{Z} & (v,x)\in E\\
+0 & \mathrm{otherwise}
+\end{cases}
+$$
+
+其中$w_{vx}$为边权。
+
+随机游走比传统的BFS和DFS具有空间和时间复杂性的好处（依照原文），但这里存疑，暂缓不表。
+
+综上就有了node2vec的算法，相比起DeepWalk，它将三个阶段彻底分离，更加方便每个阶段的并行。
+1. 预处理计算转移概率
+2. 生成大量随机游走
+3. 利用这些游走进行SGD
+
+### Link Prediction
+node2vec还有一个创新之处在于，其将无监督嵌入表示方法拓展到了连边预测上。
+
+其实有了结点的嵌入表示$\Phi(u)$和$\Phi(v)$后，构造边的嵌入也比较简单，即将这两者做一个二元操作
+
+$$g(u,v)=\Phi(u)\circ\Phi(v): V\times V\mapsto\mathbb{R}^{d'}$$
+
+### Experiments
+最后的实验也做得很详实，果然数据挖掘顶会的平均水准还是远高于AI顶会的（10页双栏，与系统会议类似）。
+
+实验主要包括以下几个部分
+1. 在Les Misérables网络上对BFS/DFS随机游走的可视化（用k-means聚类），上图展现同质性，下图展现结构性
+![vis](https://pic2.zhimg.com/v2-94f4c7dfb29fc922d992c408f2448e8d_1200x500.jpg)
+2. 实验设置（Spectral clustering, DeepWalk, LINE），C/C++/Python实现， <http://snap.stanford.edu/node2vec>
+3. 多标签分类
+4. 敏感性分析
+5. 扰动(perturbation)分析（缺信息情况下的表现）
+6. 可扩展性（采样占据了绝大多数时间，优化的时间其实比较小，这才有了后面KnightKing的工作）
+7. 连边预测
+
+最终实验结果也是吊打前者，故在此不再赘述。
 
 ## Reference
 [^1]: Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg Corrado, Jeffrey Dean (Google), *Efficient Estimation of Word Representations in Vector Space*, arXiv:1301.3781v3
 [^2]: Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg Corrado, Jeffrey Dean (Google), *Distributed Representations of Words and Phrases and their Compositionality*, NeurIPS, 2013
 [^3]: Bryan Perozzi, Rami Al-Rfou, Steven Skiena (Stony Brook), *DeepWalk: Online Learning of Social Representations*, KDD, 2014
 [^4]: Wayne W. Zachary, *An Information Flow Model for Conflict and Fission in Small Groups*, Journal of Anthropological Research, 1977
+[^5]: Aditya Grover, Jure Leskovec (Stanford), *node2vec: Scalable Feature Learning for Networks*, KDD, 2016
