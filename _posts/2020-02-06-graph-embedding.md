@@ -6,7 +6,7 @@ tags: [dl,graph]
 
 由于今年要着手一些图结合AI的工作，因此在此对一些经典文献做一些总结。
 
-这是**图表示学习(representation learning)的第一部分——图嵌入(graph embedding)**，主要涉及DeepWalk [KDD'14]、node2vec [KDD'16]和KnightKing [SOSP'19]三篇论文。
+这是**图表示学习(representation learning)的第一部分——图嵌入(graph embedding)**，主要涉及DeepWalk [KDD'14]、node2vec [KDD'16]、KnightKing [SOSP'19]、GraphZoom [ICLR'20]四篇论文。
 
 <!--more-->
 
@@ -235,6 +235,13 @@ $$g(u,v)=\Phi(u)\circ\Phi(v): V\times V\mapsto\mathbb{R}^{d'}$$
 
 最终实验结果也是吊打前者，故在此不再赘述。
 
+
+## KnightKing[^6]
+
+
+## GraphZoom[^7]
+
+
 ## Reference
 [^1]: Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg Corrado, Jeffrey Dean (Google), *Efficient Estimation of Word Representations in Vector Space*, arXiv:1301.3781v3
 [^2]: Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg Corrado, Jeffrey Dean (Google), *Distributed Representations of Words and Phrases and their Compositionality*, NeurIPS, 2013
@@ -242,3 +249,4 @@ $$g(u,v)=\Phi(u)\circ\Phi(v): V\times V\mapsto\mathbb{R}^{d'}$$
 [^4]: Wayne W. Zachary, *An Information Flow Model for Conflict and Fission in Small Groups*, Journal of Anthropological Research, 1977
 [^5]: Aditya Grover, Jure Leskovec (Stanford), *node2vec: Scalable Feature Learning for Networks*, KDD, 2016
 [^6]: Ke Yang, MingXing Zhang, Kang Chen, Xiaosong Ma, Yang Bai, Yong Jiang (Tsinghua), *KnightKing: A Fast Distributed Graph Random Walk Engine*, SOSP, 2019
+[^7]: Chenhui Deng, Zhiqiang Zhao, Yongyu Wang, Zhiru Zhang (Cornell), Zhuo Feng, *GraphZoom: A Multi-Level Spectral Approach for Accurate and Scalable Graph Embedding*, ICLR (Oral), 2020
