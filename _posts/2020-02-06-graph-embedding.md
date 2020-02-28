@@ -51,7 +51,7 @@ tags: [dl,graph]
 
 既然也是做嵌入，那能否将既有NLP中成熟的词嵌入方法移植过来呢？于是就有了DeepWalk[^3]。
 
-## DeepWalk
+## DeepWalk[^3]
 很简单的类比，就是将<font color="blue">图上的结点</font>当成是<font color="red">词语</font>，而几个结点构成的连续<font color="blue">路径</font>则当成<font color="red">句子</font>。
 那么问题就变成<u>怎么找到这些合适的路径</u>。
 
@@ -310,7 +310,7 @@ $$P(e)=P_s(e)\cdot P_d(e,v,w)\cdot P_e(v,w)$$
 ### Experiments
 不比前面那些算法论文只跑小图，KnightGraph跑了真实的大规模图，最大的是UK-Union，有134M个顶点，5.51B条边，估计在几十G的大小。
 
-只跟Gemini比，在动态采样上达到了惊人的4个阶的加速比提升，当然这也是可预见的（其实这完全归功于算法）。
+实验没有测端到端，只是测了**路径采样**的部分；并且没有跟深度学习框架(Tensorflow)等比，只跟Gemini比了，在动态采样上达到了惊人的4个阶的加速比提升，当然这也是可预见的（其实这完全归功于算法）。
 
 ### Summary
 本文诠释了一个好的idea就能出一篇paper，其余的工作其实都是工程实现。总结来说就三个贡献点：
