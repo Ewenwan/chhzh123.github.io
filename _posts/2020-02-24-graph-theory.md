@@ -4,9 +4,11 @@ title: 图表示学习(0) - 图的基本理论
 tags: [dl,graph]
 ---
 
-这是**图表示学习(representation learning)的基础部分**，主要介绍图(graph)/网络(network)的基本定义与理论，主要参考Oxford的课程[^1]。
+这是**图表示学习(representation learning)的基础部分**，主要介绍图(graph)/网络(network)的基本定义与理论。
 
 <!--more-->
+
+本文主要参考Oxford的课程讲义[^1]。
 
 # 基本结构性质
 ## 定义
@@ -43,7 +45,7 @@ $$p(k)\propto k^{-\gamma}$$
 1. 邻近中心性(closeness)：从结点$v_i$到其他结点的距离平均的逆
 $$\text{clossness}_i=\frac{N-1}{\sum_{j=1;j\ne i}^n d(v_i,v_j)}$$
 2. 中间中心性(betweenness)：途径结点$v_i$的所有**最短**路径所占比例，其中$\sigma_{jl}$是连接$v_j$和$v_l$的最短路径数目，$\sigma_{jl}^i$是这些路径中途径$v_i$路径的数目
-$$\text{betweenness}_i=1/\binom{n-1}{2}\sum_{j=1;j\ne i}{n}\sum_{l=1;l\ne i}{j-1}\frac{\sigma_{jl}^i}{\sigma_{jl}}$$
+$$\text{betweenness}_i=1/\binom{n-1}{2}\sum_{j=1;j\ne i}^{n}\sum_{l=1;l\ne i}^{j-1}\frac{\sigma_{jl}^i}{\sigma_{jl}}$$
 3. Katz中心性：$v_i$到$v_j$不同距离的路径数目之和
 $$\text{Katz}_i=\sum_{j=1}^n(I+\alpha A+\alpha^2 A^2+\cdots)=\sum_{j=1}^n[(I-\alpha A)^{-1}]_{ij}$$
 
@@ -56,4 +58,4 @@ $$\tilde{L}=D^{-1/2}LD^{-1/2}=I-D^{-1/2}AD^{-1/2}$$
 
 
 ## References
-[^1] R. Lambiotte, Oxford Math C5.4: Networks, <https://courses.maths.ox.ac.uk/node/42624>
+[^1]: R. Lambiotte, Oxford Math C5.4: Networks, <https://courses.maths.ox.ac.uk/node/42624>
