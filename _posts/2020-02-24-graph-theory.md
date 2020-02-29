@@ -4,9 +4,9 @@ title: 图表示学习(0) - 图的基本理论
 tags: [dl,graph]
 ---
 
-本文主要介绍图(graph)/网络(network)的基本定义与理论。
+这是**图表示学习(representation learning)的基础部分**，主要介绍图(graph)/网络(network)的基本定义与理论，主要参考Oxford的课程[^1]。
 
-<!-- more -->
+<!--more-->
 
 # 基本结构性质
 ## 定义
