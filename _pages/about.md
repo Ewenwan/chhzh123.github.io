@@ -16,8 +16,6 @@ Moreover, I organize a [seminar](/seminar) on common tools for computer engineer
 
 My Curriculum Vitae can be found [here](../files/HongzhengChen_CV.pdf).
 
-I will apply for CS/EE PhD program in 2020 fall, and now I am looking for a summer intern.
-
 ## Education
 * **B.Sc. in Computer Science**, Sun Yat-sen University, 2017.9 - 2021.7 (expected)
 
