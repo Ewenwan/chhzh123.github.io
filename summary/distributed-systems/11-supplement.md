@@ -49,3 +49,24 @@ Mu Li, David G. Andersen, Jun Woo Park, Alexander J. Smola, Amr Ahmed, Vanja Jos
 * Services：永久化存储，提供IP地址（注意K8s中IP都被映射到集群内部，即不通过NAT的形式），通过label selector找到pod
 * Volumes：Pod可以直接mount一个文件系统
 * Namespaces：则是将上述内容全部包裹在一起
+
+## 云原生系统DevOps
+> 微服务(microservice)是指通过开发一组微型服务来组成一个单一应用的方法。这每一个小的服务都自成一体，运行在自己的进程中，彼此之间通过**轻量级的机制**，通常是HTTP资源API的方式，来进行通信。这些小服务一般基于既定的业务能力范围来构建，通过完全自动化部署的机制来进行独立部署。——Martin Fowler & James Lewis
+
+传统开发过程都是一群人build->test->release，然后构成单体(monolith)APP，但现在的开发过程则是一个个小组分别build->test->release形成各自的微服务。
+
+{% include image.html fig="DistributedSystems/nowadays_app_development.png" width="70" %}
+
+连续集成(Continuous Integration, CI)：可以通过Github/GitLab和Jenkins/Travis CI结合云平台Docker+Kubernetes实现。
+
+![devops](https://catchzeng.com/img/in-post/post-devops/5.png)
+
+DevOps原则
+* 基础设施即代码(infrastructure as code)
+* 持续交付(continuous delivery)
+* 协同工作(culture of collaboration)
+
+{% include image.html fig="DistributedSystems/devops.png" width="70" %}
+
+## 参考资料
+1. <https://catchzeng.com/2019/04/02/DevOps-是一种怎样的体验/>
