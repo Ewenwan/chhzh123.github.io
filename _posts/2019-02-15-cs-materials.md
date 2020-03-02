@@ -32,7 +32,8 @@ This is a summary article, collecting CS-related books and courses that I have/w
 
 ## Computer System & Architecture
 * Randal E. Bryant, David R. O'Hallaron, **Computer Systems: A Programmer's Perspective (3rd ed.)**<font color="blue">(CSAPP)</font>, Pearson, 2016, [Chinese](https://book.douban.com/subject/5333562/)
-* [x] David A. Patterson, John L. Hennessy, **Computer Organization and Design: The Hardware/Software Interface (5th.ed)**, Elsevier, 2014, [Chinese](https://book.douban.com/subject/25813550/)
+* David A. Patterson, John L. Hennessy, **Computer Organization and Design: The Hardware/Software Interface (5th.ed)**, Elsevier, 2014, [Chinese](https://book.douban.com/subject/25813550/)
+* Robert Sedgewick, Kevin Wayne, **Computer Science: An Interdisciplinary Approach**, [Online](https://introcs.cs.princeton.edu/java/home/)
 * [[Course]](http://csg.csail.mit.edu/6.823/index.html), MIT 6.823: Computer System Architecture, Daniel Sanchez
 * [[Course]](https://6004.mit.edu/web/spring19/), MIT 6.004: Computation Structures, Arvind
 * [[Course]](https://cs217.stanford.edu/), Stanford CS 217, Hardware Accelerators for Machine Learning, Kunle Olukotun
@@ -52,11 +53,13 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](https://www.clear.rice.edu/comp412/Lectures/), Rice COMP 412: Compiler Construction for Undergraduates, Keith Cooper
 * [[Course]](https://www.cs.cornell.edu/courses/cs6120/2019fa/), Cornell CS 6120: Advanced Compiler β, Adrian Sampson
 * [[Course]](http://www.cs.cmu.edu/afs/cs/academic/class/15745-s19/www/), CMU CS 15-745: Optimizing Compilers for Modern Architectures, Phil Gibbons
+* [Overview of compiler optimizations](https://yunmingzhang.wordpress.com/2016/12/01/a-good-overview-of-compiler-optimizations/)
 
 ## Operating Systems
 * Avi Silberschatz, Peter Baer Galvin, Greg Gagne, **Operating System Concepts (10th ed.)**, John Wiley & Sons, Inc., 2018, [Online](http://www.os-book.com/OS10/slide-dir/index.html)
 * [[Course]](http://www.scs.stanford.edu/19wi-cs140/), Stanford CS 140: Operating Systems, David Mazières
 * [[Course]](https://www.cs.cmu.edu/~410/), CMU 15-410: Operating System Design and Implementation
+* [[Course]](), CS262a: Advanced Topics in Computer Systems
 
 ## Computer Networking
 * James F. Kurose, Keith W. Ross, **Computer Networking - A Top-Down Approach (7th ed.)**, Pearson, 2017
@@ -67,6 +70,12 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](https://www.cs.swarthmore.edu/~newhall/cs87/s12/), Swarthmore CS 87: Parallel & Distributed Computing, Tia Newhall
 * [[Course]](http://cs.brown.edu/courses/csci1780/), Brown CS 0178: Programming Parallel and Distributed Systems, Steve Reiss
 * [[Course]](http://www.cs.cmu.edu/afs/cs/academic/class/15418-s11/www/), CMU [CS418](http://www.cs.cmu.edu/~418/): Parallel Computer Architecture and Programming, Todd C. Mowry
+* [[Seminar]](https://ldhulipala.github.io/reading.html), ParallelRG: a reading group on parallel, concurrent and distributed computing, Laxman Dhulipala (CMU)
+
+## Machine Learning & Data Mining
+* Jure Leskovec, Anand Rajaraman, Jeff Ullman, **Mining of Massive Datasets**, Cambridge University Press, [Online](http://www.mmds.org/)
+* [[Course]](http://web.stanford.edu/class/cs246/), Stanford CS246: Mining Massive Data Sets, Jure Leskovec
+* [[Course]](http://www.cs.cornell.edu/courses/cs6787/2019fa/), Cornell CS6787: Advanced Machine Learning Systems, Christopher De Sa
 
 ## Math
 * Convex Optimization
@@ -79,10 +88,13 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](https://pdos.csail.mit.edu/6.824/index.html), MIT 6.824: Distributed Systems
 * [[Course]](http://www.cs.cmu.edu/~srini/15-440-all/2016.Fall/syllabus.html), CMU 15-440: Distributed Systems
 
+## Graph / Networks
+* [[Course]](https://people.csail.mit.edu/jshun/6886-s18/), MIT 6.886: Graph Analytics, Julian Shun
+* [[Course]](https://courses.maths.ox.ac.uk/node/42624), Oxford Math: C5.4 Networks, Renaud Lambiotte
+
 ## Miscellaneous
 * [Stack Overflow Recommendations](https://stackoverflow.com/questions/1711/what-is-the-single-most-influential-book-every-programmer-should-read)
 * [MIT Online Resources](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/)
-* [[Course]](https://people.csail.mit.edu/jshun/6886-s18/), MIT 6.886: Graph Analytics, Julian Shun
 * [[Course]](http://stellar.mit.edu/S/course/6/fa14/6.172/materials.html), MIT 6.172: Performance Engineering of Software Systems
 * Berkeley 61 series
 	- [[Course]](https://cs61c.org/), UCB cs61c: Great Ideas in Computer Architecture (Machine Structures)
