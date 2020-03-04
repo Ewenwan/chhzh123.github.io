@@ -4,14 +4,98 @@ title: 图表示学习（3）-图神经网络框架
 tags: [dl,graph]
 ---
 
-这是**图表示学习(representation learning)的第三部分——图神经网络框架**，主要涉及DGL [ICLR'19]、PyG [ICLR'19]、NeuGraph [ATC'19]和AliGraph [VLDB'19]四篇论文。
+这是**图表示学习(representation learning)的第三部分——图神经网络框架**，主要涉及PyG [ICLR workshop'19]、DGL [ICLR'19]、NeuGraph [ATC'19]和AliGraph [VLDB'19]四篇论文。
 
 <!--more-->
 
-## Deep Graph Library[^1]
+## Pytorch Geometric (PyG)[^1]
+从[前一节]({% post_url 2020-02-10-gnn %})介绍的GNN可以发现，GNN实际上都是一个邻居聚合或消息传递的过程，用下式表达
+
+$$\mathbf{v}_i^{(k+1)}=\gamma\left(\mathbf{v}_i^{(k)},\mathop{Agg}_{j\in\mathcal{N}_i}\phi(\mathbf{v}_i^{(k)},\mathbf{v}_j^{(k)},\mathbf{e}_{j,i}^{(k)})\right)$$
+
+其中$Agg$是一个可微、置换不变的函数（求和、求平均、求最值），$\gamma$和$\phi$则是可微函数（如MLP）。
+
+PyG在PyTorch上实现，最核心的类是`torch_geometric.nn.MessagePassing`，用户只需定义消息传递$\phi$（`message()`）、更新函数$\gamma$（`update()`）和聚合函数$Agg$即可。
+
+GCN的传播规则用向量可表成
+
+$$\mathbf{x}_i^{(k)} = \sum_{j \in \mathcal{N}(i) \cup \{ i \}} \frac{1}{\sqrt{\deg(i)} \cdot \sqrt{deg(j)}} \cdot \left( \mathbf{\Theta} \cdot \mathbf{x}_j^{(k-1)} \right)$$
+
+进而可表示成`gather`和`scatter`的两个过程。
+
+![pyg](https://pic3.zhimg.com/80/v2-601de9c47ed9e55d13f968ed7a74911e_720w.jpg)
+
+因此可以对照着实现[代码](https://pytorch-geometric.readthedocs.io/en/latest/notes/create_gnn.html)
+
+```python
+import torch
+import torch.nn.functional as F
+from torch_geometric.nn import MessagePassing
+from torch_geometric.utils import add_self_loops, degree
+
+class GCNConv(MessagePassing):
+    def __init__(self, in_channels, out_channels):
+        super(GCNConv, self).__init__(aggr='add')  # "Add" aggregation.
+        self.lin = torch.nn.Linear(in_channels, out_channels)
+
+    def forward(self, x, edge_index):
+        # x has shape [N, in_channels]
+        # edge_index has shape [2, E]
+
+        # Step 1: Add self-loops to the adjacency matrix.
+        edge_index, _ = add_self_loops(edge_index, num_nodes=x.size(0))
+
+        # Step 2: Linearly transform node feature matrix.
+        x = self.lin(x)
+
+        # Step 3-5: Start propagating messages.
+        return self.propagate(edge_index, size=(x.size(0), x.size(0)), x=x)
+
+    def message(self, x_j, edge_index, size):
+        # x_j has shape [E, out_channels]
+
+        # Step 3: Normalize node features.
+        row, col = edge_index
+        deg = degree(row, size[0], dtype=x_j.dtype)
+        deg_inv_sqrt = deg.pow(-0.5)
+        norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
+
+        return norm.view(-1, 1) * x_j
+
+    def update(self, aggr_out):
+        # aggr_out has shape [N, out_channels]
+
+        # Step 5: Return new node embeddings.
+        return aggr_out
+
+class Net(torch.nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.conv1 = GCNConv(dataset.num_features, 16)
+        self.conv2 = GCNConv(16, dataset.num_classes)
+
+    def forward(self):
+        x, edge_index, edge_weight = data.x, data.edge_index, data.edge_attr
+        x = F.relu(self.conv1(x, edge_index, edge_weight))
+        x = F.dropout(x, training=self.training)
+        x = self.conv2(x, edge_index, edge_weight)
+        return F.log_softmax(x, dim=1)
+```
+
+但很明显由于抽象的问题，权重矩阵被大量重复计算了（Step 2），如果是先聚合再进行变换则权重矩阵只需计算一次，可以对照着[上一节GCN]({% post_url 2020-02-10-gnn %})的公式看。
+
+目前PyG最新发布版本为v1.4.2 (Feb 18, 2020)，从源码来看似乎全部程序都是用Python写的，所以某种程度上造成了效率不高。但是原作者还在Github上发布了其他几个相关的库，包括[torch-scatter](https://github.com/rusty1s/pytorch_scatter)、[torch-sparse](https://github.com/rusty1s/pytorch_sparse)、[torch-spline-conv](https://github.com/rusty1s/pytorch_spline_conv)、[torch-cluster](https://github.com/rusty1s/pytorch_cluster)等，所以可能优化工作都在这几个库里完成了（确实CUDA和C++代码都在这些附加库里...）。
+
+相关资料可以在下面链接找到：
+* 源代码：<https://github.com/rusty1s/pytorch_geometric>
+* Tutorial：<https://pytorch-geometric.readthedocs.io/en/latest/notes/create_gnn.html>
+* 文档：<https://pytorch-geometric.readthedocs.io/>
+* 论文：<https://arxiv.org/abs/1903.02428>
 
 
-## Pytorch Geometric[^2]
+## Deep Graph Library (DGL)[^2]
+
+
 
 
 ## NeuGraph[^3]
@@ -75,7 +159,7 @@ AliGraph是Alibaba内部的图计算系统，已经是商用在淘宝各种预�
 这篇文章有种虎头蛇尾的感觉，实验部分连实验平台都没有提，也没有提AliGraph是怎么实现的（当时去参加CNCC'19印象中是他们直接在TensorFlow上搭建），更多是像在推销自家提出来的几种GNN有多强。说实话没有太多系统层面的优化，都是直接套用别人的东西，然后融合为几个层就结束了，更没有考虑层与层之间的交互。也许本文当成综述性的文章更为合适，不过它也确实提到了现在这些互联网大厂在关心什么问题，以及他们的解决思路。
 
 ## Reference
-[^1]: Minjie Wang (NYU), Lingfan Yu, Da Zheng, Quan Gan, Yu Gai, Zihao Ye, Mufei Li, Jinjing Zhou, Qi Huang, Chao Ma, Ziyue Huang, Qipeng Guo, Hao Zhang, Haibin Lin, Junbo Zhao, Jinyang Li, Alexander Smola, Zheng Zhang, *Deep Graph Library: Towards Efficient and Scalable Deep Learning on Graphs*, ICLR, 2019
-[^2]: Matthias Fey, Jan E. Lenssen (Dortmund), *Fast Graph Representation Learning with PyTorch Geometric*, ICLR workshop, 2019
+[^1]: Matthias Fey, Jan E. Lenssen (Dortmund), *Fast Graph Representation Learning with PyTorch Geometric*, ICLR workshop on Representation Learning on Graphs and Manifolds, 2019
+[^2]: Minjie Wang (NYU), Lingfan Yu, Da Zheng, Quan Gan, Yu Gai, Zihao Ye, Mufei Li, Jinjing Zhou, Qi Huang, Chao Ma, Ziyue Huang, Qipeng Guo, Hao Zhang, Haibin Lin, Junbo Zhao, Jinyang Li, Alexander Smola, Zheng Zhang, *Deep Graph Library: Towards Efficient and Scalable Deep Learning on Graphs*, ICLR, 2019
 [^3]: Lingxiao Ma, Zhi Yang, Youshan Miao, Jilong Xue, Ming Wu, Lidong Zhou (MSRA), Yafei Dai (PKU), *NeuGraph: Parallel Deep Neural Network Computation on Large Graphs*, ATC, 2019
 [^4]: Rong Zhu, Kun Zhao, Hongxia Yang, Wei Lin, Chang Zhou, Baole Ai, Yong Li, Jingren Zhou (Alibaba), *AliGraph: A Comprehensive Graph Neural Network Platform*, VLDB, 2019
