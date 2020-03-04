@@ -4,7 +4,7 @@ title: 图表示学习（3）-图神经网络框架
 tags: [dl,graph]
 ---
 
-这是**图表示学习(representation learning)的第三部分——图神经网络框架**，主要涉及PyG [ICLR workshop'19]、DGL [ICLR'19]、NeuGraph [ATC'19]和AliGraph [VLDB'19]四篇论文。
+这是**图表示学习(representation learning)的第三部分——图神经网络框架**，主要涉及PyG [ICLR workshop'19]、DGL [ICLR'19]、Euler、NeuGraph [ATC'19]和AliGraph [VLDB'19]五个框架。
 
 <!--more-->
 
@@ -94,11 +94,27 @@ class Net(torch.nn.Module):
 
 
 ## Deep Graph Library (DGL)[^2]
+DGL和PyG都是目前运用得最广泛的图神经网络库，它们的思想都差不多，但各有优劣。比如DGL是无关平台(platform-agnostic)的，只要底层是深度学习库，都可以灵活支持；且支持随机游走和随机采样。
+
+DGL将消息传递的式子拆分成对边应用(edge-wise)和对结点应用(node-wise)
+
+$$\begin{cases}
+\mathbf{m}_i^{(k+1)} = \phi^e\left(\mathbf{v}_i^{(k)},\mathbf{v}_j^{(k)},\mathbf{e}_{j,i}^{(k)}\right)\\\\
+\mathbf{v}_i^{(k+1)} = \phi^v\left(\mathbf{v}_i^{(k)},\mathop{Agg}_{j\in\mathcal{N}_i}\mathbf{m}_i^{(k+1)}\right)
+\end{cases}$$
+
+其中$\phi^e$是消息函数，$\phi^v$是更新函数。
+
+先前的库都需要用户用稀疏矩阵(CSR/COO)来存储图，稠密张量来存储特征，大量的底层设施会暴露给用户。
+
+实验平台是单Tesla V100 GPU和8块CPU (AWS EC2 p3.2xlarge实例)。
 
 
+## Euler[^3]
+Alibaba基于TensorFlow开发的图系统，提供了Python和C++接口，并开源在[Github](https://github.com/alibaba/euler)上，未有相关论文，但是功能比较齐全。
 
 
-## NeuGraph[^3]
+## NeuGraph[^4]
 **深度学习系统最大问题在于没有办法高效表示图数据，而图系统最大的问题在于没法自动微分！**
 
 现有用得最广泛的框架是[DGL (Deep Graph Library)](https://github.com/dmlc/dgl)，但DGL只是提供了一个编程框架（面向图的消息传递模型），并没有深度解决计算的问题（这很大程度也是GCN很难火起来的原因，因为无法做到很高的可扩展性）。在GCN的原作[实现](https://github.com/tkipf/gcn)和GraphSAGE的原作[实现](https://github.com/williamleif/GraphSAGE)中，都使用了TensorFlow进行编程，但是他们所采用的方法都是简单暴力的矩阵乘，这样其实很大程度忽略了图计算框架这些年取得的成果。因此NeuGraph的出现也正是为了弥合这两者，将图计算与深度学习有机地融合起来。（某种意义上，这也是matrix-based和matrix-free两种方法的对碰。）
@@ -128,7 +144,7 @@ NeuGraph在TensorFlow上实现，包含5000行的C++代码和3000行的Python代
 比较对象包括TensorFlow、GraphSAGE、DGL，提速比在2.5倍到8.1倍之间（单GPU），但没有办法跟多GPU的Tensorflow比，因为直接爆内存了。而不加优化的多GPU版TF-SAGA大概比NerGraph慢2.4到4.9倍，这一部分才比较客观地表明提出的优化方法的高效性。
 
 
-## AliGraph[^4]
+## AliGraph[^5]
 AliGraph是Alibaba内部的图计算系统，已经是商用在淘宝各种预测任务上，并且取得了很好的效果。这篇文章则是从算法到底层系统逐一分析的集大成者。
 
 它提出目前GNN面临着四个问题：**大规模、异构、属性、动态**图。
@@ -158,8 +174,10 @@ AliGraph是Alibaba内部的图计算系统，已经是商用在淘宝各种预�
 ### Conclusions
 这篇文章有种虎头蛇尾的感觉，实验部分连实验平台都没有提，也没有提AliGraph是怎么实现的（当时去参加CNCC'19印象中是他们直接在TensorFlow上搭建），更多是像在推销自家提出来的几种GNN有多强。说实话没有太多系统层面的优化，都是直接套用别人的东西，然后融合为几个层就结束了，更没有考虑层与层之间的交互。也许本文当成综述性的文章更为合适，不过它也确实提到了现在这些互联网大厂在关心什么问题，以及他们的解决思路。
 
+
 ## Reference
 [^1]: Matthias Fey, Jan E. Lenssen (Dortmund), *Fast Graph Representation Learning with PyTorch Geometric*, ICLR workshop on Representation Learning on Graphs and Manifolds, 2019
 [^2]: Minjie Wang (NYU), Lingfan Yu, Da Zheng, Quan Gan, Yu Gai, Zihao Ye, Mufei Li, Jinjing Zhou, Qi Huang, Chao Ma, Ziyue Huang, Qipeng Guo, Hao Zhang, Haibin Lin, Junbo Zhao, Jinyang Li, Alexander Smola, Zheng Zhang, *Deep Graph Library: Towards Efficient and Scalable Deep Learning on Graphs*, ICLR, 2019
-[^3]: Lingxiao Ma, Zhi Yang, Youshan Miao, Jilong Xue, Ming Wu, Lidong Zhou (MSRA), Yafei Dai (PKU), *NeuGraph: Parallel Deep Neural Network Computation on Large Graphs*, ATC, 2019
-[^4]: Rong Zhu, Kun Zhao, Hongxia Yang, Wei Lin, Chang Zhou, Baole Ai, Yong Li, Jingren Zhou (Alibaba), *AliGraph: A Comprehensive Graph Neural Network Platform*, VLDB, 2019
+[^3]: Alibaba, Euler, <https://github.com/alibaba/euler>
+[^4]: Lingxiao Ma, Zhi Yang, Youshan Miao, Jilong Xue, Ming Wu, Lidong Zhou (MSRA), Yafei Dai (PKU), *NeuGraph: Parallel Deep Neural Network Computation on Large Graphs*, ATC, 2019
+[^5]: Rong Zhu, Kun Zhao, Hongxia Yang, Wei Lin, Chang Zhou, Baole Ai, Yong Li, Jingren Zhou (Alibaba), *AliGraph: A Comprehensive Graph Neural Network Platform*, VLDB, 2019
