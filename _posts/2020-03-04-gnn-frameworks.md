@@ -4,7 +4,13 @@ title: 图表示学习（3）-图神经网络框架
 tags: [dl,graph]
 ---
 
-这是**图表示学习(representation learning)的第三部分——图神经网络框架**，主要涉及PyG [ICLR workshop'19]、DGL [ICLR'19]、Euler、NeuGraph [ATC'19]和AliGraph [VLDB'19]五个框架。
+这是**图表示学习(representation learning)的第三部分——图神经网络框架**，主要涉及PyG [ICLR workshop'19]、DGL [ICLR'19]、Euler、NeuGraph [ATC'19]和AliGraph [VLDB'19]五个框架。前面三个框架都开源了，而后面两个则只是发表在系统的会议上，没有开源。
+
+| [PyG](https://github.com/rusty1s/pytorch_geometric) | [DGL](https://github.com/dmlc/dgl) | [Euler](https://github.com/alibaba/euler) | NeuGraph | AliGraph |
+| :--: | :--: | :--: | :--: | :--: |
+| Dortmund | NYU | Alibaba | PKU | Alibaba |
+| ICLR workshop'19 | ICLR'19 | N/A | ATC'19 | VLDB'19 |
+| 2018.5 | 2018.12 | 2019.1 | 2019 | 2019 |
 
 <!--more-->
 
@@ -96,6 +102,8 @@ class Net(torch.nn.Module):
 ## Deep Graph Library (DGL)[^2]
 DGL和PyG都是目前运用得最广泛的图神经网络库，它们的思想都差不多，但各有优劣。比如DGL是无关平台(platform-agnostic)的，只要底层是深度学习库，都可以灵活支持；且支持随机游走和随机采样。
 
+![dgl](https://camo.githubusercontent.com/74763fcc02d01442ec3620884b7f7457c455032f/68747470733a2f2f692e696d6775722e636f6d2f447741314e625a2e706e67)
+
 DGL将消息传递的式子拆分成对边应用(edge-wise)和对结点应用(node-wise)
 
 $$\begin{cases}
@@ -105,9 +113,56 @@ $$\begin{cases}
 
 其中$\phi^e$是消息函数，$\phi^v$是更新函数。
 
-先前的库都需要用户用稀疏矩阵(CSR/COO)来存储图，稠密张量来存储特征，大量的底层设施会暴露给用户。
+先前的库都需要用户用稀疏矩阵(CSR/COO)来存储图，稠密张量来存储特征，大量的底层设施会暴露给用户；而DGL选择不这么干，底层设施都交由运行时系统进行管理。
 
-实验平台是单Tesla V100 GPU和8块CPU (AWS EC2 p3.2xlarge实例)。
+还是经典的[GCN例子](https://docs.dgl.ai/tutorials/basics/1_first.html)：
+
+```python
+import dgl
+import torch.nn as nn
+import torch.nn.functional as F
+
+# Define the message and reduce function
+# NOTE: We ignore the GCN's normalization constant c_ij for this tutorial.
+def gcn_message(edges):
+    # The argument is a batch of edges.
+    # This computes a (batch of) message called 'msg' using the source node's feature 'h'.
+    return {'msg' : edges.src['h']}
+
+def gcn_reduce(nodes):
+    # The argument is a batch of nodes.
+    # This computes the new 'h' features by summing received 'msg' in each node's mailbox.
+    return {'h' : torch.sum(nodes.mailbox['msg'], dim=1)}
+
+# Define the GCNLayer module
+class GCNLayer(nn.Module):
+    def __init__(self, in_feats, out_feats):
+        super(GCNLayer, self).__init__()
+        self.linear = nn.Linear(in_feats, out_feats)
+
+    def forward(self, g, inputs):
+        # g is the graph and the inputs is the input node features
+        # first set the node features
+        g.ndata['h'] = inputs
+        # trigger message passing on all edges
+        g.send(g.edges(), gcn_message)
+        # trigger aggregation at all nodes
+        g.recv(g.nodes(), gcn_reduce)
+        # get the result node features
+        h = g.ndata.pop('h')
+        # perform linear transformation
+        return self.linear(h)
+```
+
+实验平台是单Tesla V100 GPU和8块CPU (AWS EC2 p3.2xlarge实例)。最大的图是Reddit，232K个结点、114M条边。
+
+在实验部分稍微提及使用了kernel fusion和NUMA架构(MXNET版)。可能是会议的原因，这两篇投在ICLR上的文章基本上就介绍了一个抽象，做了些实验就结束了，也搞不清楚为什么能得到这么高的加速比；相比之下系统会议的论文真的会详细很多。
+
+相关资料见下：（Apache License，陈天奇参与了开源；因为人手众多，所以感觉比PyG要维护得好一些）
+* 源代码：<https://github.com/dmlc/dgl>
+* 官网：<http://dgl.ai/>
+* 文档：<https://docs.dgl.ai/>
+* Tutorial：<https://docs.dgl.ai/tutorials/basics/1_first.html> （这个教程比PyG的要友好很多，直接用Zachary's Karate Club作为例子）
 
 
 ## Euler[^3]
@@ -117,7 +172,7 @@ Alibaba基于TensorFlow开发的图系统，提供了Python和C++接口，并开
 ## NeuGraph[^4]
 **深度学习系统最大问题在于没有办法高效表示图数据，而图系统最大的问题在于没法自动微分！**
 
-现有用得最广泛的框架是[DGL (Deep Graph Library)](https://github.com/dmlc/dgl)，但DGL只是提供了一个编程框架（面向图的消息传递模型），并没有深度解决计算的问题（这很大程度也是GCN很难火起来的原因，因为无法做到很高的可扩展性）。在GCN的原作[实现](https://github.com/tkipf/gcn)和GraphSAGE的原作[实现](https://github.com/williamleif/GraphSAGE)中，都使用了TensorFlow进行编程，但是他们所采用的方法都是简单暴力的矩阵乘，这样其实很大程度忽略了图计算框架这些年取得的成果。因此NeuGraph的出现也正是为了弥合这两者，将图计算与深度学习有机地融合起来。（某种意义上，这也是matrix-based和matrix-free两种方法的对碰。）
+现有用得最广泛的框架是前面两个框架[DGL](https://github.com/dmlc/dgl)和[PyG](https://github.com/rusty1s/pytorch_geometric)，但（早期版本的）DGL和PyG只是提供了一个编程框架（面向图的消息传递模型），并没有深度解决计算的问题（这很大程度也是GCN很难火起来的原因，因为无法做到很高的可扩展性）。在GCN的原作[实现](https://github.com/tkipf/gcn)和GraphSAGE的原作[实现](https://github.com/williamleif/GraphSAGE)中，都使用了TensorFlow进行编程，但是他们所采用的方法都是简单暴力的矩阵乘，这样其实很大程度忽略了图计算框架这些年取得的成果。因此NeuGraph的出现也正是为了弥合这两者，将图计算与深度学习有机地融合起来。（某种意义上，这也是matrix-based和matrix-free两种方法的对碰。）
 
 （之前以为腾讯的[Plato](https://github.com/Tencent/plato)作为企业级图系统，应该可以支持GNN的计算，然而Plato只是将[Gemini](https://github.com/thu-pacman/GeminiGraph)和[KnightKing]({% post_url 2020-02-06-graph-embedding %})套了个壳，所以目前也只支持这两个框架所支持的算法，即传统的图算法以及随机游走。）
 
