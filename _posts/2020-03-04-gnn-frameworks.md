@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 图表示学习（3）-图神经网络框架
-tags: [dl,graph]
+tags: [dl,graph,system]
 ---
 
 这是**图表示学习(representation learning)的第三部分——图神经网络框架**，主要涉及PyG [ICLR workshop'19]、DGL [ICLR'19]、Euler、NeuGraph [ATC'19]和AliGraph [VLDB'19]五个框架。前面三个框架都开源了，而后面两个则只是发表在系统的会议上，没有开源。
@@ -25,7 +25,7 @@ PyG在PyTorch上实现，最核心的类是`torch_geometric.nn.MessagePassing`�
 
 GCN的传播规则用向量可表成
 
-$$\mathbf{x}_i^{(k)} = \sum_{j \in \mathcal{N}(i) \cup \{ i \}} \frac{1}{\sqrt{\deg(i)} \cdot \sqrt{deg(j)}} \cdot \left( \mathbf{\Theta} \cdot \mathbf{x}_j^{(k-1)} \right)$$
+$$\mathbf{x}_i^{(k)} = \sum_{j \in \mathcal{N}(i) \cup \{ i \}} \frac{1}{\sqrt{\deg(i)} \cdot \sqrt{\deg(j)}} \cdot \left( \mathbf{\Theta} \cdot \mathbf{x}_j^{(k-1)} \right)$$
 
 进而可表示成`gather`和`scatter`的两个过程。
 
