@@ -18,6 +18,33 @@ $$A_{ij}=\begin{cases}1 & (v_i,v_j)\in E\\ 0 & \text{otherwise}\end{cases}$$
 
 如果是有权图，邻接矩阵的值也可以代表边权。
 
+由于图的稀疏性，通常采用压缩形式存储矩阵，常用的有坐标格式(Coordinate, COO)和压缩稀疏行(CSR, Compressed Sparse Row)格式，如下。事实上，CSR就是COO对`row`排序压缩后取指针的结果。
+
+$$
+A=
+\begin{bmatrix}
+1 & 7 & 0 & 0\\
+0 & 2 & 8 & 0\\
+5 & 0 & 3 & 9\\
+0 & 6 & 0 & 4
+\end{bmatrix}
+$$
+
+```cpp
+// COO format
+row  = [0,0,1,1,2,2,2,3,3]
+col  = [0,1,1,2,0,2,3,1,3]
+data = [1,7,2,8,5,3,9,6,4]
+
+// CSR format
+row      = [0,2,4,7,9]
+indices  = [0,1,1,2,0,2,3,1,3]
+data     = [1,7,2,8,5,3,9,6,4]
+```
+
+关于稀疏矩阵向量乘法(SpMV)可见下面的文章
+> Nathan Bell and Michael Garland (NVIDIA), *Efficient Sparse Matrix-Vector Multiplication on CUDA*, 2008, [Online](https://www.nvidia.com/docs/IO/66889/nvr-2008-004.pdf)
+
 ## 度分布
 对于无向图，结点的度(degree)为连边数目，即
 
