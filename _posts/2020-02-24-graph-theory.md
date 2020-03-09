@@ -18,6 +18,10 @@ $$A_{ij}=\begin{cases}1 & (v_i,v_j)\in E\\ 0 & \text{otherwise}\end{cases}$$
 
 如果是有权图，邻接矩阵的值也可以代表边权。
 
+邻接矩阵左/右乘另一个矩阵$W$，相当于$W$作用在第$i$个结点的邻居上，下式前者下标代表行（左乘），后者下标代表列（右乘）
+
+$$(AW)_{i}=\mathbf{a}_iW,\;(WA)_i=W\mathbf{a}_i$$
+
 由于图的稀疏性，通常采用压缩形式存储矩阵，常用的有坐标格式(Coordinate, COO)和压缩稀疏行(CSR, Compressed Sparse Row)格式，如下。事实上，CSR就是COO对`row`排序压缩后取指针的结果。
 
 $$
@@ -51,6 +55,24 @@ data     = [1,7,2,8,5,3,9,6,4]
 $$k_i=\sum_{j=1}^nA_{ij}\left(=\sum_{j=1}^nA_{ji}\right)$$
 
 如果所有顶点的度都相同，则称为**正则图**(regular)。
+
+将每个顶点的度排列在对角线上，可以得到对角度矩阵
+
+$$
+D=\begin{bmatrix}
+k_1 & 0 & \cdots & 0\\
+0 & k_2 & \cdots & 0\\
+\vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & k_n
+\end{bmatrix}
+$$
+
+而又对角矩阵的性质，我们可以轻易得到
+
+$$c_{ik}=\sum_j d_{ij}b_{jk}=d_{ii}b_{ik}$$
+$$c_{ik}=\sum_j a_{ij}d_{jk}=a_{ik}d_{kk}$$
+
+即**左乘**对角阵，相当于**每一行**归一化；**右乘**对角阵，相当于**每一列**归一化。
 
 由握手定理有
 

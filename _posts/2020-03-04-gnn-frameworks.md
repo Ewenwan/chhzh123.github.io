@@ -119,44 +119,66 @@ $$\begin{cases}
 
 ```python
 import dgl
+import dgl.function as fn
 import torch.nn as nn
 import torch.nn.functional as F
 
-# Define the message and reduce function
-# NOTE: We ignore the GCN's normalization constant c_ij for this tutorial.
-def gcn_message(edges):
-    # The argument is a batch of edges.
-    # This computes a (batch of) message called 'msg' using the source node's feature 'h'.
-    return {'msg' : edges.src['h']}
-
-def gcn_reduce(nodes):
-    # The argument is a batch of nodes.
-    # This computes the new 'h' features by summing received 'msg' in each node's mailbox.
-    return {'h' : torch.sum(nodes.mailbox['msg'], dim=1)}
-
-# Define the GCNLayer module
 class GCNLayer(nn.Module):
-    def __init__(self, in_feats, out_feats):
+    def __init__(self, in_feats, out_feats, dropout=False, norm=True):
         super(GCNLayer, self).__init__()
+        # https://pytorch.org/docs/stable/nn.html#torch.nn.Linear
+        # x A^T + b
         self.linear = nn.Linear(in_feats, out_feats)
+        self.dropout = dropout
+        if self.dropout:
+            self.dropout = nn.Dropout(p=0.5) # need more time!
+        self.norm = norm
 
-    def forward(self, g, inputs):
+    def forward(self, g, h):
+        # hat_D hat_A H W hat_D
         # g is the graph and the inputs is the input node features
         # first set the node features
-        g.ndata['h'] = inputs
+        if self.dropout:
+            h = self.dropout(h)
+        h = self.linear(h)
+        if self.norm:
+            g.ndata['h'] = g.ndata['norm'] * h
+        else:
+            g.ndata['h'] = h
         # trigger message passing on all edges
-        g.send(g.edges(), gcn_message)
-        # trigger aggregation at all nodes
-        g.recv(g.nodes(), gcn_reduce)
+        # Edge UDF: EdgeBatch -> dict, notice it acts on a batch of nodes
+        # g.edges() indicates sending along all the edges
+        g.update_all(
+            message_func=fn.copy_src(src='h', out='m'),
+            # {'m': edges.src['h']}
+            reduce_func=fn.sum(msg='m', out='h')
+            # {'h': torch.sum(nodes.mailbox['m'], dim=1)}
+        )
         # get the result node features
         h = g.ndata.pop('h')
+        if self.norm:
+            h = h * g.ndata['norm']
         # perform linear transformation
-        return self.linear(h)
+        return h
+
+class GNN(nn.Module):
+    def __init__(self, in_feats, hidden_size, num_classes):
+        super(GNN, self).__init__()
+        self.gcn1 = GCNLayer(in_feats, hidden_size, False, False)
+        self.gcn2 = GCNLayer(hidden_size, num_classes, False, False)
+
+    def forward(self, g, inputs):
+        h = self.gcn1(g, inputs)
+        h = torch.relu(h)
+        h = self.gcn2(g, h)
+        return h
 ```
 
 实验平台是单Tesla V100 GPU和8块CPU (AWS EC2 p3.2xlarge实例)。最大的图是Reddit，232K个结点、114M条边。
 
 在实验部分稍微提及使用了kernel fusion和NUMA架构(MXNET版)。可能是会议的原因，这两篇投在ICLR上的文章基本上就介绍了一个抽象，做了些实验就结束了，也搞不清楚为什么能得到这么高的加速比；相比之下系统会议的论文真的会详细很多。
+
+（不过复现了GCN的论文，确实是可以近似匹配到官方论文的结果，而且用我电脑跑CPU的速度似乎比GCN原始论文TensorFlow用GPU跑还要快？从侧面似乎说明DGL的速度非常快...）
 
 相关资料见下：（Apache License，陈天奇参与了开源；因为人手众多，所以感觉比PyG要维护得好一些）
 * 源代码：<https://github.com/dmlc/dgl>
