@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 图表示学习(1) - 图嵌入
+title: 图表示学习（1）- 图嵌入
 tags: [dl,graph]
 ---
 

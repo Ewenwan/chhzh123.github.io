@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 图表示学习(0) - 图的基本理论
+title: 图表示学习（0）- 图的基本理论
 tags: [dl,graph]
 ---
 

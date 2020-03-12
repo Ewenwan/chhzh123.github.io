@@ -30,190 +30,318 @@ C/C++中的设施与硬件设施有如下对应。
 
 下面以矩阵乘法为例（摘自[Zynq Book Tutorials](http://www.zynqbook.com/download-tuts.html) Exercise 3），需要写下列4个程序。
 
-<ul>
-<li><details>
-<summary><code>matrix_mult.h</code>：头文件，包括基本宏定义、类型定义及函数原型</summary>
+<!-- https://github.com/gettalong/kramdown/issues/155 -->
+<!-- https://kramdown.gettalong.org/syntax.html#html-blocks -->
 
-```cpp
-#ifndef __MATRIXMUL_H__
-#define __MATRIXMUL_H__
+* <details markdown="1">
+    <summary markdown="span">
+    <code>matrix_mult.h</code>：头文件，包括基本宏定义、类型定义及函数原型
+    </summary>
 
-#include <cmath>
-using namespace std;
+    ```cpp
+    #ifndef __MATRIXMUL_H__
+    #define __MATRIXMUL_H__
 
-// Compare TB vs HW C-model and/or RTL
-#define HW_COSIM
+    #include <cmath>
+    using namespace std;
 
-#define IN_A_ROWS 5
-#define IN_A_COLS 5
-#define IN_B_ROWS 5
-#define IN_B_COLS 5
+    // Compare TB vs HW C-model and/or RTL
+    #define HW_COSIM
 
-typedef char mat_a;
-typedef char mat_b;
-typedef short mat_prod;
+    #define IN_A_ROWS 5
+    #define IN_A_COLS 5
+    #define IN_B_ROWS 5
+    #define IN_B_COLS 5
 
-// Prototype of top level function for C-synthesis
-void matrix_mult(
-      mat_a a[IN_A_ROWS][IN_A_COLS],
-      mat_b b[IN_B_ROWS][IN_B_COLS],
-      mat_prod prod[IN_A_ROWS][IN_B_COLS]);
+    typedef char mat_a;
+    typedef char mat_b;
+    typedef short mat_prod;
 
-#endif // __MATRIXMUL_H__ not defined
-```
+    // Prototype of top level function for C-synthesis
+    void matrix_mult(
+        mat_a a[IN_A_ROWS][IN_A_COLS],
+        mat_b b[IN_B_ROWS][IN_B_COLS],
+        mat_prod prod[IN_A_ROWS][IN_B_COLS]);
 
-</details></li>
+    #endif // __MATRIXMUL_H__ not defined
+    ```
+    </details>
+* <details markdown="1">
+    <summary markdown="span">
+    <code>matrix_mult.cpp</code>：核心函数实现
+    </summary>
 
-<li><details>
-<summary><code>matrix_mult.cpp</code>：核心函数实现</summary>
+    ```cpp
+    #include "matrix_mult.h"
 
-```cpp
-#include "matrix_mult.h"
-
-void matrix_mult(
-    mat_a a[IN_A_ROWS][IN_A_COLS],
-    mat_b b[IN_B_ROWS][IN_B_COLS],
-    mat_prod prod[IN_A_ROWS][IN_B_COLS])
-{
-    // Iterate over the rows of the A matrix
-Row:
-    for (int i = 0; i < IN_A_ROWS; i++)
+    void matrix_mult(
+        mat_a a[IN_A_ROWS][IN_A_COLS],
+        mat_b b[IN_B_ROWS][IN_B_COLS],
+        mat_prod prod[IN_A_ROWS][IN_B_COLS])
     {
-    // Iterate over the columns of the B matrix
-    Col:
-        for (int j = 0; j < IN_B_COLS; j++)
+        // Iterate over the rows of the A matrix
+    Row:
+        for (int i = 0; i < IN_A_ROWS; i++)
         {
-            prod[i][j] = 0;
-        // Do the inner product of a row of A and col of B
-        Product:
-            for (int k = 0; k < IN_B_ROWS; k++)
+        // Iterate over the columns of the B matrix
+        Col:
+            for (int j = 0; j < IN_B_COLS; j++)
             {
-                prod[i][j] += a[i][k] * b[k][j];
-            }
-        }
-    }
-}
-```
-</details></li>
-
-
-<li><details>
-<summary><code>matrix_mult_test.cpp</code>：测试代码，用于软硬件协同模拟</summary>
-
-```cpp
-#include <iostream>
-#include "matrix_mult.h"
-
-using namespace std;
-
-int main(int argc, char **argv)
-{
-    mat_a in_mat_a[5][5] = {
-        {0, 0, 0, 0, 1},
-        {0, 0, 0, 1, 0},
-        {0, 0, 1, 0, 0},
-        {0, 1, 0, 0, 0},
-        {1, 0, 0, 0, 0}};
-    mat_b in_mat_b[5][5] = {
-        {1, 1, 1, 1, 1},
-        {0, 1, 1, 1, 1},
-        {0, 0, 1, 1, 1},
-        {0, 0, 0, 1, 1},
-        {0, 0, 0, 0, 1}};
-    mat_prod hw_result[5][5], sw_result[5][5];
-    int error_count = 0;
-
-    // Generate the expected result
-    // Iterate over the rows of the A matrix
-    for (int i = 0; i < IN_A_ROWS; i++)
-    {
-        for (int j = 0; j < IN_B_COLS; j++)
-        {
-            // Iterate over the columns of the B matrix
-            sw_result[i][j] = 0;
+                prod[i][j] = 0;
             // Do the inner product of a row of A and col of B
-            for (int k = 0; k < IN_B_ROWS; k++)
-            {
-                sw_result[i][j] += in_mat_a[i][k] * in_mat_b[k][j];
+            Product:
+                for (int k = 0; k < IN_B_ROWS; k++)
+                {
+                    prod[i][j] += a[i][k] * b[k][j];
+                }
             }
         }
     }
+    ```
+    </details>
+* <details markdown="1">
+    <summary markdown="span">
+    <code>matrix_mult_test.cpp</code>：测试代码，用于软硬件协同模拟
+    </summary>
 
-#ifdef HW_COSIM
-    // Run the Vivado HLS matrix multiplier
-    matrix_mult(in_mat_a, in_mat_b, hw_result);
-#endif
+    ```cpp
+    #include <iostream>
+    #include "matrix_mult.h"
 
-    // Print product matrix
-    for (int i = 0; i < IN_A_ROWS; i++)
+    using namespace std;
+
+    int main(int argc, char **argv)
     {
-        for (int j = 0; j < IN_B_COLS; j++)
+        mat_a in_mat_a[5][5] = {
+            {0, 0, 0, 0, 1},
+            {0, 0, 0, 1, 0},
+            {0, 0, 1, 0, 0},
+            {0, 1, 0, 0, 0},
+            {1, 0, 0, 0, 0}};
+        mat_b in_mat_b[5][5] = {
+            {1, 1, 1, 1, 1},
+            {0, 1, 1, 1, 1},
+            {0, 0, 1, 1, 1},
+            {0, 0, 0, 1, 1},
+            {0, 0, 0, 0, 1}};
+        mat_prod hw_result[5][5], sw_result[5][5];
+        int error_count = 0;
+
+        // Generate the expected result
+        // Iterate over the rows of the A matrix
+        for (int i = 0; i < IN_A_ROWS; i++)
         {
-#ifdef HW_COSIM
-            // Check result of HLS vs. expected
-            if (hw_result[i][j] != sw_result[i][j])
+            for (int j = 0; j < IN_B_COLS; j++)
             {
-                error_count++;
+                // Iterate over the columns of the B matrix
+                sw_result[i][j] = 0;
+                // Do the inner product of a row of A and col of B
+                for (int k = 0; k < IN_B_ROWS; k++)
+                {
+                    sw_result[i][j] += in_mat_a[i][k] * in_mat_b[k][j];
+                }
             }
-#else
-            cout << sw_result[i][j];
-#endif
         }
+
+    #ifdef HW_COSIM
+        // Run the Vivado HLS matrix multiplier
+        matrix_mult(in_mat_a, in_mat_b, hw_result);
+    #endif
+
+        // Print product matrix
+        for (int i = 0; i < IN_A_ROWS; i++)
+        {
+            for (int j = 0; j < IN_B_COLS; j++)
+            {
+    #ifdef HW_COSIM
+                // Check result of HLS vs. expected
+                if (hw_result[i][j] != sw_result[i][j])
+                {
+                    error_count++;
+                }
+    #else
+                cout << sw_result[i][j];
+    #endif
+            }
+        }
+
+    #ifdef HW_COSIM
+        if (error_count)
+            cout << "TEST FAIL: " << error_count << "Results do not match!" << endl;
+        else
+            cout << "Test passed!" << endl;
+    #endif
+        return error_count;
     }
+    ```
+    </details>
+* <details markdown="1">
+    <summary markdown="span">
+    <code>run_hls.tcl</code>：自动化编译运行代码
+    </summary>
 
-#ifdef HW_COSIM
-    if (error_count)
-        cout << "TEST FAIL: " << error_count << "Results do not match!" << endl;
-    else
-        cout << "Test passed!" << endl;
-#endif
-    return error_count;
-}
+    ```bash
+    # run.tcl
+
+    # open the HLS project mm.prj
+    set src_dir "."
+    open_project -reset matrix_mult_prj
+
+    # set the top-level function of the design
+    set_top mmult_hw
+
+    # add design and testbench files
+    add_files $src_dir/matrix_mult.h
+    add_files $src_dir/matrix_mult.cpp
+    add_files -tb $src_dir/matrix_mult_test.cpp
+
+    open_solution "solution"
+
+    # use Zynq device
+    set_part {xc7z020clg484-1}
+
+    # target clock period is 10 ns
+    create_clock -period 10 -name default
+
+    # do a c simulation
+    csim_design -clean
+
+    # synthesize the design
+    csynth_design
+
+    # do a co-simulation
+    #cosim_design
+
+    # close project and quit
+    close_project
+    exit
+    ```
+    </details>
+
+通过`vivado_hls -f run_hls.tcl`调用。
+
+{% include image.html fig="FPGA/hls-directory-structure.jpg" width="80" %}
+
+命令行运行的结果如下。
+
+<details markdown="1">
+<summary markdown="span">
+Command line execution results
+</summary>
+
 ```
-</details></li>
+****** Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2018.1 (64-bit)
+  **** SW Build 2188600 on Wed Apr  4 18:40:38 MDT 2018
+  **** IP Build 2185939 on Wed Apr  4 20:55:05 MDT 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+#######
+# set up projects
+#######
 
-<li><details>
-<summary><code>run_hls.tcl</code>：自动化编译运行代码</summary>
+# c simulation
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../matrix_mult_test.cpp in debug mode
+   Compiling ../../../../matrix_mult.cpp in debug mode
+   Generating csim.exe
+Test passed!
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
 
-```bash
-# run.tcl
+# synthesis
+INFO: [HLS 200-10] Analyzing design file './matrix_mult.cpp' ...
+INFO: [HLS 200-10] Validating synthesis directives ...
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:01 ; elapsed = 00:00:13 . Memory (MB): peak = 101.551 ; gain = 44.590
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:01 ; elapsed = 00:00:14 . Memory (MB): peak = 101.563 ; gain = 44.602
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:02 ; elapsed = 00:00:15 . Memory (MB): peak = 102.961 ; gain = 46.000
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:02 ; elapsed = 00:00:15 . Memory (MB): peak = 103.191 ; gain = 46.230
+INFO: [HLS 200-111] Finished Pre-synthesis Time (s): cpu = 00:00:02 ; elapsed = 00:00:16 . Memory (MB): peak = 124.961 ; gain = 68.000
+INFO: [HLS 200-111] Finished Architecture Synthesis Time (s): cpu = 00:00:02 ; elapsed = 00:00:17 . Memory (MB): peak = 124.961 ; gain = 68.000
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'matrix_mult' ...
+INFO: [HLS 200-10]
 
-# open the HLS project mm.prj
-set src_dir "."
-open_project -reset matrix_mult_prj
+----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'matrix_mult'
+INFO: [HLS 200-10] ----------------------------------------------------------------
 
-# set the top-level function of the design
-set_top mmult_hw
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 17.173 seconds; current allocated memory: 75.025 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.281 seconds; current allocated memory: 75.202 MB.
+INFO: [HLS 200-10]
 
-# add design and testbench files
-add_files $src_dir/matrix_mult.h
-add_files $src_dir/matrix_mult.cpp
-add_files -tb $src_dir/matrix_mult_test.cpp
+----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'matrix_mult'
+INFO: [HLS 200-10] ----------------------------------------------------------------
 
-open_solution "solution"
-
-# use Zynq device
-set_part {xc7z020clg484-1}
-
-# target clock period is 10 ns
-create_clock -period 10 -name default
-
-# do a c simulation
-csim_design -clean
-
-# synthesize the design
-csynth_design
-
-# do a co-simulation
-#cosim_design
-
-# close project and quit
-close_project
-exit
+INFO: [RTGEN 206-500] Setting interface mode on port 'matrix_mult/a' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'matrix_mult/b' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'matrix_mult/prod' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'matrix_mult' to 'ap_ctrl_hs'.
+INFO: [SYN 201-210] Renamed object name 'matrix_mult_mac_muladd_8s_8s_16ns_16_1_1' to 'matrix_mult_mac_mbkb' due to the length limit 20
+INFO: [RTGEN 206-100] Generating core module 'matrix_mult_mac_mbkb': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'matrix_mult'.
+INFO: [HLS 200-111]  Elapsed time: 0.229 seconds; current allocated memory: 75.575 MB.
+INFO: [HLS 200-111] Finished generating all RTL models Time (s): cpu = 00:00:03 ; elapsed = 00:00:19 . Memory (MB): peak = 124.961 ; gain = 68.000
+INFO: [SYSC 207-301] Generating SystemC RTL for matrix_mult.
+INFO: [VHDL 208-304] Generating VHDL RTL for matrix_mult.
+INFO: [VLOG 209-307] Generating Verilog RTL for matrix_mult.
+INFO: [HLS 200-112] Total elapsed time: 18.761 seconds; peak allocated memory: 75.575 MB.
+INFO: [Common 17-206] Exiting vivado_hls at Thu Mar 12 16:38:28 2020...
 ```
-</details></li>
-</ul>
+</details>
 
+可以得到下面的结果（见生成的`matrix_mult_prj\solution\syn\report\matrix_mult_csynth.rpt`文件）
+
+<details markdown="1">
+<summary markdown="span">
+Performance estimates
+</summary>
+
+```
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns):
+    * Summary:
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  10.00|      8.70|        1.25|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles):
+    * Summary:
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |  311|  311|  311|  311|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail:
+        * Instance:
+        N/A
+
+        * Loop:
+        +--------------+-----+-----+----------+-----------+-----------+------+----------+
+        |              |  Latency  | Iteration|  Initiation Interval  | Trip |          |
+        |   Loop Name  | min | max |  Latency |  achieved |   target  | Count| Pipelined|
+        +--------------+-----+-----+----------+-----------+-----------+------+----------+
+        |- Row         |  310|  310|        62|          -|          -|     5|    no    |
+        | + Col        |   60|   60|        12|          -|          -|     5|    no    |
+        |  ++ Product  |   10|   10|         2|          -|          -|     5|    no    |
+        +--------------+-----+-----+----------+-----------+-----------+------+----------+
+```
+</details>
 
 通过流水线方式，降低初始间隔(initial interval, II)，提升并行度，提升吞吐率。
 
@@ -245,11 +373,79 @@ Row:
 
 ```
 
+
+重新编译运行可以得到
+
+<details markdown="1">
+<summary markdown="span">
+Command line execution results (add pipelining)
+</summary>
+
+```
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'matrix_mult'
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'Row_Col'.
+WARNING: [SCHED 204-69] Unable to schedule 'load' operation ('a_load_1', ./matrix_mult.cpp:22) on array 'a' due to limited memory ports. Please consider using a memory core with more ports or partitioning the array 'a'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 3, Depth = 5.
+WARNING: [SCHED 204-21] Estimated clock period (10.779ns) exceeds the target (target clock period: 10ns, clock uncertainty: 1.25ns, effective delay budget: 8.75ns).
+WARNING: [SCHED 204-21] The critical path consists of the following:
+        'mul' operation ('tmp_7_2', ./matrix_mult.cpp:22) (3.36 ns)
+        'add' operation ('tmp2', ./matrix_mult.cpp:22) (3.02 ns)
+        'add' operation ('tmp_8_4', ./matrix_mult.cpp:22) (2.08 ns)
+        'store' operation (./matrix_mult.cpp:22) of variable 'tmp_8_4', ./matrix_mult.cpp:22 on array 'prod' (2.32 ns)
+INFO: [SCHED 204-11] Finished scheduling.
+```
+</details>
+
+从下面的性能分析报告中可以看到`Row`和`Col`被合并了，latency大大减少，提升了**近4倍**！（事实上在更大的数据集下，单一的流水线即可提升10+倍）
+
+<details markdown="1">
+<summary markdown="span">
+Performance estimates (add pipelining)
+</summary>
+
+```
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns):
+    * Summary:
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  10.00|     10.78|        1.25|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles):
+    * Summary:
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |   78|   78|   78|   78|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail:
+        * Instance:
+        N/A
+
+        * Loop:
+        +-----------+-----+-----+----------+-----------+-----------+------+----------+
+        |           |  Latency  | Iteration|  Initiation Interval  | Trip |          |
+        | Loop Name | min | max |  Latency |  achieved |   target  | Count| Pipelined|
+        +-----------+-----+-----+----------+-----------+-----------+------+----------+
+        |- Row_Col  |   76|   76|         5|          3|          1|    25|    yes   |
+        +-----------+-----+-----+----------+-----------+-----------+------+----------+
+```
+</details>
+
 需要完成循环所需总的时钟周期数为
 
 $$N_{loop}=(J\times N_{body})+N_{control}$$
 
-最后一步则是将数组进行划分，以提升IO效率。
+注意到在上面scheduling的报告中，提到虽然我们的目标II是1，但是最好只能做到3，因为内存端口限制了。因此要提升性能，需要将数组进行划分，以提升IO效率。
 
 ```cpp
 void matrix_mult(
@@ -257,8 +453,8 @@ void matrix_mult(
     mat_b b[IN_B_ROWS][IN_B_COLS],
     mat_prod prod[IN_A_ROWS][IN_B_COLS])
 {
-    #pragma HLS ARRAY RESHAPE variable=a complete dim=2
-    #pragma HLS ARRAY RESHAPE variable=b complete dim=2
+    #pragma HLS ARRAY_RESHAPE variable=a complete dim=2
+    #pragma HLS ARRAY_RESHAPE variable=b complete dim=1
     // Iterate over the rows of the A matrix
 Row:
     for (int i = 0; i < IN_A_ROWS; i++)
@@ -279,10 +475,63 @@ Row:
 }
 ```
 
-## 编译运行
-通过`vivado_hls -f run_hls.tcl`调用。
+最后可得到结果报告如下，latency降到了29，也即比原始最naive的矩阵乘法已经提升了**10倍**！而我们只需要在原始C++代码中插入3行即可。
 
-{% include image.html fig="FPGA/hls-directory-structure.jpg" width="80" %}
+<details markdown="1">
+<summary markdown="span">
+Execution results & performance estimates (add pipelining & array partition)
+</summary>
+
+```
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'matrix_mult'
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'Row_Col'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 4.
+WARNING: [SCHED 204-21] Estimated clock period (11.477ns) exceeds the target (target clock period: 10ns, clock uncertainty: 1.25ns, effective delay budget: 8.75ns).
+WARNING: [SCHED 204-21] The critical path consists of the following:
+	'mul' operation ('tmp_7_4', ./matrix_mult.cpp:25) (3.36 ns)
+	'add' operation ('tmp3', ./matrix_mult.cpp:25) (3.02 ns)
+	'add' operation ('tmp2', ./matrix_mult.cpp:25) (3.02 ns)
+	'add' operation ('tmp_8_4', ./matrix_mult.cpp:25) (2.08 ns)
+INFO: [SCHED 204-11] Finished scheduling.
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns):
+    * Summary:
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  10.00|     11.48|        1.25|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles):
+    * Summary:
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |   29|   29|   29|   29|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail:
+        * Instance:
+        N/A
+
+        * Loop:
+        +-----------+-----+-----+----------+-----------+-----------+------+----------+
+        |           |  Latency  | Iteration|  Initiation Interval  | Trip |          |
+        | Loop Name | min | max |  Latency |  achieved |   target  | Count| Pipelined|
+        +-----------+-----+-----+----------+-----------+-----------+------+----------+
+        |- Row_Col  |   27|   27|         4|          1|          1|    25|    yes   |
+        +-----------+-----+-----+----------+-----------+-----------+------+----------+
+```
+</details>
+
+当然在报告中还有更加详细的内存、资源占用信息，这里就没有再贴出来。
 
 ## C HLS pragma
 * `#pragma HLS pipeline II=<int>`

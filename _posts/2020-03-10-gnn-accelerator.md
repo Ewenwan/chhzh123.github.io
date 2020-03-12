@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 图表示学习（4）-图神经网络加速器
+title: 图表示学习（4）- 图神经网络加速器
 tags: [dl,graph,arch]
 ---
 
@@ -9,6 +9,8 @@ tags: [dl,graph,arch]
 目前（截止至2020年3月10日），图神经网络加速器的文章共3篇，除了上述两篇还有DAC'20一篇尚未放出全文。
 
 <!--more-->
+
+之所以大部分加速器都做成推理引擎，是因为推理端好做，只有前传的操作，不需要涉及到反向传播。
 
 ## HyGCN[^1]
 GraphDynS[MICRO'19][^2]的原班人马，对GCN的抽象还是类似的
@@ -35,6 +37,7 @@ $$
 
 ## Resources
 * Fengbin Tu, Neural Networks on Silicon, <https://github.com/fengbintu/Neural-Networks-on-Silicon>
+* Tutorial on hardware architectures for DNNs, <http://eyeriss.mit.edu/tutorial.html>
 
 ## References
 [^1]: Mingyu Yan (ICT), Lei Deng, Xing Hu, Ling Liang, Yujing Feng, Xiaochun Ye, Zhimin Zhang, Dongrui Fan, and Yuan Xie (UCSB), *HyGCN: A GCN Accelerator with Hybrid Architecture*, HPCA, 2020

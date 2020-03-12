@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 图表示学习（3）-图神经网络框架
+title: 图表示学习（3）- 图神经网络框架
 tags: [dl,graph,system]
 ---
 
