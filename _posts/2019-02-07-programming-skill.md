@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 何谓编程能力？
-tag: [pl,architecture,system]
+tag: [pl,arch,system]
 ---
 
 因为现在开始做系统，所以对下面这篇文章深有感触，可装裱成文，每日一读！

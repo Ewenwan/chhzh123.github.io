@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 黄金时代！
-tag: architecture
+tag: arch
 ---
 
 本文内容节选自2017年图灵奖得主John Hennesy (Stanford)和David Patterson (UCB)在体系结构顶会ISCA'18的[lecture](https://www.youtube.com/watch?v=3LVeEjsn8Ts)
