@@ -89,7 +89,7 @@ int compare(const char* const& p1, const char* const &p2)
 
 ## 其他
 * Type erasure
-	* https://www.modernescpp.com/index.php/c-core-guidelines-type-erasure
-	* with template, https://www.modernescpp.com/index.php/c-core-guidelines-type-erasure-with-templates
+	* <https://www.modernescpp.com/index.php/c-core-guidelines-type-erasure>
+	* with template, <https://www.modernescpp.com/index.php/c-core-guidelines-type-erasure-with-templates>
 * Virtual function performance
-	* https://stackoverflow.com/questions/449827/virtual-functions-and-performance-c
+	* <https://stackoverflow.com/questions/449827/virtual-functions-and-performance-c>

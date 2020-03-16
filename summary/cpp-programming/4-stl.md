@@ -232,26 +232,26 @@ uniform_real_distribution<double> u(0,1);
 * `noskipws`可读取空格，`skipws`恢复
 * 多字节操作`is.get(sink,size,delim)`、`is.getline(sink,size,delim)`、`is.ignore(size,delim)`
 * 随机访问`seek`定位、`tell`告诉当前位置
-* http://www.cnblogs.com/leewiki/archive/2011/12/13/2286168.html
+* <http://www.cnblogs.com/leewiki/archive/2011/12/13/2286168.html>
 
 ## 网页链接
 * 标准库
-	* 简介 http://blog.csdn.net/sxhelijian/article/details/7552499
-	* document http://classfoo.com/ccby/article/WlfKr
+	* 简介< http://blog.csdn.net/sxhelijian/article/details/7552499>
+	* document <http://classfoo.com/ccby/article/WlfKr>
 * 常用容器
-	* https://www.cnblogs.com/pengjun-shanghai/p/5283657.html
-* string类
-	* http://blog.csdn.net/yzl_rex/article/details/7839379
-	* doucument http://www.cplusplus.com/reference/string/string/
-* stack
-	* http://blog.csdn.net/chao_xun/article/details/8037420
-* queue
-	* https://www.cnblogs.com/hdk1993/p/5809180.html
-* bitset
-	* http://blog.csdn.net/qll125596718/article/details/6901935
-* algorithm
-	* http://blog.csdn.net/tianshuai1111/article/details/7674327
-	* https://www.cnblogs.com/lgxZJ/p/6377437.html
-	* document http://www.cplusplus.com/reference/algorithm/
-* priority_queue
-	* https://www.cnblogs.com/Deribs4/p/5657746.html
+	* <https://www.cnblogs.com/pengjun-shanghai/p/5283657.html>
+* `string`类
+	* <http://blog.csdn.net/yzl_rex/article/details/7839379>
+	* doucument< http://www.cplusplus.com/reference/string/string/>
+* `stack`
+	* <http://blog.csdn.net/chao_xun/article/details/8037420>
+* `queue`
+	* <https://www.cnblogs.com/hdk1993/p/5809180.html>
+* `bitset`
+	* <http://blog.csdn.net/qll125596718/article/details/6901935>
+* `algorithm`
+	* <http://blog.csdn.net/tianshuai1111/article/details/7674327>
+	* <https://www.cnblogs.com/lgxZJ/p/6377437.html>
+	* document <http://www.cplusplus.com/reference/algorithm/>
+* `priority_queue`
+	* <https://www.cnblogs.com/Deribs4/p/5657746.html>

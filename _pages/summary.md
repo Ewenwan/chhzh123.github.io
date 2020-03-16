@@ -1,6 +1,6 @@
 ---
-layout: archive
 title: Summary
+permalink: /summary/
 ---
 
 ## 总结
