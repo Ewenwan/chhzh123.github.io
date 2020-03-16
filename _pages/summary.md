@@ -11,3 +11,4 @@ title: Summary
 
 ## 语言使用速查手册
 1. [Python]({{ site.baseurl }}/summary/python)
+2. [Python高级使用指南]({{ site.baseurl }}/summary/python-advanced)
