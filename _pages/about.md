@@ -14,7 +14,7 @@ My research interests cover **computer systems and architecture**, especially do
 
 Moreover, I organize a [seminar](/seminar) on common tools for computer engineering, and you can find more details [here](/seminar).
 
-My Curriculum Vitae can be found [here](../files/HongzhengChen_CV.pdf).
+Here is my Curriculum Vitae ([English](../files/HongzhengChen_CV.pdf) / [Chinese](../files/HongzhengChen_CV_zh.pdf)).
 
 ## Education
 * **B.Sc. in Computer Science**, Sun Yat-sen University, 2017.9 - 2021.7 (expected)
