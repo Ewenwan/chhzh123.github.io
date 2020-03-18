@@ -4,6 +4,150 @@ title: C++ - 标准库
 date: 2019-02-22
 tag: [summary]
 ---
+
+## `<string>`
+* 用等号初始化执行的是**拷贝初始化**，否则执行**直接初始化**
+* 触发getline函数返回的换行符被丢弃掉了，得到的string里并不包含该换行符
+* `string::size_type`类型 无符号整数 `auto len = line.size()`推断 最好不要用int 避免混用int和unsigned带来的问题
+* `+`运算符两侧至少有一为string类型 不能直接将字面值相加`"hello"+","`错误写法（字符串字面值与string是不同的类型）
+* `<cctype>`
+    * 字母数字为真`isalnum(c)` 字母`isalpha(c)` 数字`isdigit(c)` 控制字符`iscntrl(c)`
+    * 小写`islower(c)` 小写转大写`toupper(c)`
+
+```cpp
+#include <string>
+#include <cctype>
+using std::string;
+
+// Construction
+string s1;
+string s2 = "hello";
+string s3(s2);
+
+// IO
+string s;
+cin >> s; // read a whitespace-separated string into s
+getline(cin, s); // read a whole line
+cout << s << endl;
+
+while (cin >> word) // read until EOF, can be replaced with getline
+    cout << word << endl;
+
+string s = to_string(123);
+int a = stoi("123");
+
+// Basic ops
+s.empty() // py: same
+s.size() // string::size_type, py: len(s)
+s[i] // indexing
+s1 + s2 // concatenation
+s1 == s2
+
+// Iteration
+string s("Hello World!!!");
+decltype(s.size()) punct_cnt = 0; // ensure the type is right
+for (auto c : s)
+    if (ispunct(c))
+	    ++punct_cnt;
+
+for (auto &c : s) // c is a reference!
+    c = toupper(c); // <cctype>
+cout << s << endl;
+
+// Substring
+s.substr(10,15);
+s.find('i', 0); // start from index 0
+// if fail, return string::nops
+s.rfind('s',string::nops); // start from the right
+s.replace(0,3,"qqqq"); // delete [0,3), and insert at 0
+s.insert(3,"abc");
+```
+
+* C风格字符串/数组
+    * `\0`结尾
+    * 尽管C++支持，但最好不要使用，因为不仅麻烦，而且极易引发程序漏洞（目标字符串大小由调用者指定）
+    * `const char *str = s.c_str();`实现string到C风格的转换，返回指针，但最好拷贝一份，否则s修改str也会改
+    * `vector<int> ivec(begin(int_arr),end(int_arr))`
+    * 现代C++应避免使用内置数组和指针，尽量使用string
+
+## `<vector>`
+* 迭代器(iterator)
+    * `v.begin() v.end()`
+    * 注意`end`为尾元素的下一位置(one past the end)
+    * 若容器为空begin和end返回同一个迭代器
+    * `*iter`返回迭代器所指元素的引用
+    * 养成用`!=`的习惯 而不是`<`（可能未定义）
+    * `vector<int>::iterator it`
+
+```cpp
+#include <vector>
+using std::vector;
+
+// Construction
+vector<int> ivec;
+vector<string> v1 {"a", "ab", "abc"}; // list initialization
+vector<int> v2(10,-1); // py: [-1] * 10
+
+// Basic ops
+v.push_back(1);
+v.empty();
+v.size();
+v[i];
+v1 == v2;
+
+// Iterator
+for (auto it = s.begin(); it != s.end() && !it->empty(); ++it)
+    cout << *it << endl; // iterator is a pointer
+// cbegin, cend: constant iterator
+```
+
+* 数组
+    * 数组是复合类型
+    * 编译时维度必须已知，维度必须是一个常量表达式`constexpr`
+    * 定义数组时必须指定类型，不可用`auto`
+    * 不能把一个数组直接赋值给另一个
+    * 一些编译器支持数组的赋值，即编译器扩展(compiler extension)，但最好不要用非标准特性
+    * **想要理解数组声明的含义，最好就是从数组的名字开始由内往外读**
+    * 在使用数组下标时，通常定义为`size_t`类型，其是一种机器相关的无符号类型，被设计得足够大以便表示内存中任意对象的大小，在`<cstddef>`中定义
+    * 对于数组`int a[]`，`auto a2(a)`类型为整型指针，而`decltype(a) a3 = {1,2}`则类型为数组
+    * vector迭代器支持的运算，数组指针全部支持（如递增）
+    * C++11引入`int *beg = begin(a)`和`int *last = end(a)`以实现类似vector迭代器的效果
+    * 两个指针相减的结果是`ptrdiff_t`的标准库类型，有符号
+    * 内置的下表运算符不是无符号类型，故可以`a[-2]`，前提是指针指向数组中间
+
+```cpp
+unsigned cnt = 42; // 不是常量表达式
+constexpr unsigned sz = 42 ;
+string bad[cnt]; // 非法
+string str_s[get_size()]; // 当get_size是constexpr时正确 否则错误
+```
+
+多维数组
+* 严格来说，C++没有多维数组，而是数组的数组
+* `int ia[3][4]`大小为3的数组，每个元素是含有4个整数的数组
+```cpp
+int ia[3][4] = {0,1,2,3,4,5,6,7,8,9,10,11}; // 与加了内层花括号等价
+int ia[3][4] = { {0},{4},{8} }; // 初始化每行首元素
+int ix[3][4] = {0,3,6,9}; // 初始化第一行
+
+size_t cnt = 0;
+for (auto &row : ia)
+    for (auto &col : row){
+        col = cnt;
+        ++cnt;
+    }
+
+for (const auto &row : ia) // 外层循环要用引用，同时避免转为指针类型
+    for(auto col : row)
+        cout << col << endl;
+
+int ia[3][4];
+int (*p)[4] = ia; // 括号不能少，p指向含有4个整数的数组，而不是整型指针的数组
+for (auto p = begin(ia); p != end(ia); ++p)
+    for (auto q = begin(*p); q != end(*p); ++q)
+        cout << *q << ' ';
+```
+
 ## IO库
 * IO库类型
 	* `<iostream>`：流中读写数据`istream,ostream,iostream`
@@ -236,13 +380,13 @@ uniform_real_distribution<double> u(0,1);
 
 ## 网页链接
 * 标准库
-	* 简介< http://blog.csdn.net/sxhelijian/article/details/7552499>
+	* 简介 <http://blog.csdn.net/sxhelijian/article/details/7552499>
 	* document <http://classfoo.com/ccby/article/WlfKr>
 * 常用容器
 	* <https://www.cnblogs.com/pengjun-shanghai/p/5283657.html>
 * `string`类
 	* <http://blog.csdn.net/yzl_rex/article/details/7839379>
-	* doucument< http://www.cplusplus.com/reference/string/string/>
+	* doucument <http://www.cplusplus.com/reference/string/string/>
 * `stack`
 	* <http://blog.csdn.net/chao_xun/article/details/8037420>
 * `queue`
