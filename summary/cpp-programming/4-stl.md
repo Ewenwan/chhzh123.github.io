@@ -63,21 +63,21 @@ s.replace(0,3,"qqqq"); // delete [0,3), and insert at 0
 s.insert(3,"abc");
 ```
 
-* C风格字符串/数组
-    * `\0`结尾
-    * 尽管C++支持，但最好不要使用，因为不仅麻烦，而且极易引发程序漏洞（目标字符串大小由调用者指定）
-    * `const char *str = s.c_str();`实现string到C风格的转换，返回指针，但最好拷贝一份，否则s修改str也会改
-    * `vector<int> ivec(begin(int_arr),end(int_arr))`
-    * 现代C++应避免使用内置数组和指针，尽量使用string
+### C风格字符串/数组
+* 记得以`\0`结尾！
+* 尽管C++支持，但最好不要使用，因为不仅麻烦，而且极易引发程序漏洞（目标字符串大小由调用者指定）
+* `const char *str = s.c_str();`实现string到C风格的转换，返回指针，但最好拷贝一份，否则s修改str也会改
+* `vector<int> ivec(begin(int_arr),end(int_arr))`
+* 现代C++应避免使用内置数组和指针，尽量使用string
 
 ## `<vector>`
-* 迭代器(iterator)
-    * `v.begin() v.end()`
-    * 注意`end`为尾元素的下一位置(one past the end)
-    * 若容器为空begin和end返回同一个迭代器
-    * `*iter`返回迭代器所指元素的引用
-    * 养成用`!=`的习惯 而不是`<`（可能未定义）
-    * `vector<int>::iterator it`
+### 迭代器(iterator)
+* `v.begin() v.end()`
+* 注意`end`为尾元素的下一位置(one past the end)
+* 若容器为空begin和end返回同一个迭代器
+* `*iter`返回迭代器所指元素的引用
+* 养成用`!=`的习惯 而不是`<`（可能未定义）
+* `vector<int>::iterator it`
 
 ```cpp
 #include <vector>
@@ -101,19 +101,19 @@ for (auto it = s.begin(); it != s.end() && !it->empty(); ++it)
 // cbegin, cend: constant iterator
 ```
 
-* 数组
-    * 数组是复合类型
-    * 编译时维度必须已知，维度必须是一个常量表达式`constexpr`
-    * 定义数组时必须指定类型，不可用`auto`
-    * 不能把一个数组直接赋值给另一个
-    * 一些编译器支持数组的赋值，即编译器扩展(compiler extension)，但最好不要用非标准特性
-    * **想要理解数组声明的含义，最好就是从数组的名字开始由内往外读**
-    * 在使用数组下标时，通常定义为`size_t`类型，其是一种机器相关的无符号类型，被设计得足够大以便表示内存中任意对象的大小，在`<cstddef>`中定义
-    * 对于数组`int a[]`，`auto a2(a)`类型为整型指针，而`decltype(a) a3 = {1,2}`则类型为数组
-    * vector迭代器支持的运算，数组指针全部支持（如递增）
-    * C++11引入`int *beg = begin(a)`和`int *last = end(a)`以实现类似vector迭代器的效果
-    * 两个指针相减的结果是`ptrdiff_t`的标准库类型，有符号
-    * 内置的下表运算符不是无符号类型，故可以`a[-2]`，前提是指针指向数组中间
+### 数组
+* 数组是复合类型
+* 编译时维度必须已知，维度必须是一个常量表达式`constexpr`
+* 定义数组时必须指定类型，不可用`auto`
+* 不能把一个数组直接赋值给另一个
+* 一些编译器支持数组的赋值，即编译器扩展(compiler extension)，但最好不要用非标准特性
+* **想要理解数组声明的含义，最好就是从数组的名字开始由内往外读**
+* 在使用数组下标时，通常定义为`size_t`类型，其是一种机器相关的无符号类型，被设计得足够大以便表示内存中任意对象的大小，在`<cstddef>`中定义
+* 对于数组`int a[]`，`auto a2(a)`类型为整型指针，而`decltype(a) a3 = {1,2}`则类型为数组
+* vector迭代器支持的运算，数组指针全部支持（如递增）
+* C++11引入`int *beg = begin(a)`和`int *last = end(a)`以实现类似vector迭代器的效果
+* 两个指针相减的结果是`ptrdiff_t`的标准库类型，有符号
+* 内置的下表运算符不是无符号类型，故可以`a[-2]`，前提是指针指向数组中间
 
 ```cpp
 unsigned cnt = 42; // 不是常量表达式
@@ -122,7 +122,7 @@ string bad[cnt]; // 非法
 string str_s[get_size()]; // 当get_size是constexpr时正确 否则错误
 ```
 
-多维数组
+### 多维数组
 * 严格来说，C++没有多维数组，而是数组的数组
 * `int ia[3][4]`大小为3的数组，每个元素是含有4个整数的数组
 ```cpp
@@ -242,34 +242,6 @@ lst.erase_after(b,e)
 	* `c.shrink_to_fit()`C++11退回不需要的内存空间，不一定成功
 	* `c.capacity()`不重新分配内存，当前最大可保存元素数目
 	* `c.reserve(n)`分配至少能容纳n个元素的空间
-* `string`
-```cpp
-s.substr(pos,n)
-s.insert(s.size(),5,'!')
-s.erase(s.size() - 5,5)
-s.assign(cp,7)
-s.insert(0,s2,0,s2.size()) // 在s[0]之前插入s2中从s2[0]开始的s2.size()个字符
-s.append("fd") // 结尾加
-s.replace(1,3,s2) // 从位置1开始删除3个字符并插入s2
-s.find(args) s.rfind(args)
-s.find_first_of(args) s.find_last_of(args)
-s.find_first_not_of(args) s.find_last_not_of(args)
-// args 可以为
-// c,pos
-// s2,pos
-// cp,pos
-// cp,pos,n 从s的pos位置搜指针cp指向的数组的前n个字符
-s.compare(args)
-// s2
-// pos1,n1,s2
-// pos1,n1,s2,pos2,n2
-// cp
-// pos1,n1,cp
-// pos1,n1,cp,n2
-to_string(val)
-stoi(s,p,b) stol(s,p,b) stoul(s,p,b) stoll(s,p,b) stoull(s,p,b)
-stof(s,p,b) stod(s,p,b) stold(s,p,b)
-```
 
 ## 容器适配器(adaptor)
 * `stack`
@@ -308,11 +280,13 @@ c.bucket_count()
 c.max_bucket_count()
 c.bucket_size(n)
 c.bucket(k) // 关键字k在哪个桶
+
 // 桶迭代
 local_iterator
 const_local_iterator
 c.begin(n), c.end(n) // 桶n的迭代器
 c.cbegin(n), c.cend(n)
+
 // 哈希策略
 c.load_factor // 每个桶的平均元素数量，返回float
 c.max_load_factor() // 试图维护平均桶大小
@@ -326,6 +300,7 @@ tuple<string, vector<double>, int, list<int>>
 auto item = make_tuple("fdsa", 3, 20.00); // 标准库定义
 auto price = get<2>(item)/cnt;
 ```
+
 ## bitset类型
 ```cpp
 bitset<20> bitvec2(0xbeef);
@@ -378,7 +353,7 @@ uniform_real_distribution<double> u(0,1);
 * 随机访问`seek`定位、`tell`告诉当前位置
 * <http://www.cnblogs.com/leewiki/archive/2011/12/13/2286168.html>
 
-## 网页链接
+## 参考资料
 * 标准库
 	* 简介 <http://blog.csdn.net/sxhelijian/article/details/7552499>
 	* document <http://classfoo.com/ccby/article/WlfKr>

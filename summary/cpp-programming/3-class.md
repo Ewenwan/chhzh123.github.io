@@ -4,16 +4,18 @@ title: C++ - 类
 date: 2018-06-13
 tag: [summary]
 ---
+
 ## 基本思想
-* 抽象(abstraction) 封装(encapsulation)
-	* 抽象：依赖于接口(interface)和实现(implementation)分离的编程技术
-	* 封装实现类的接口和实现的分离，隐藏了实现对象
-		* 只能用接口，而不能访问实现部分
-		* 确保用户代码不会改变封装对象的状态
-		* 私有成员改变不需修改用户级别代码
+抽象(abstraction)与封装(encapsulation)
+* 抽象：依赖于接口(interface)和实现(implementation)分离的编程技术
+* 封装实现类的接口和实现的分离，隐藏了实现对象
+	* 只能用接口，而不能访问实现部分
+	* 确保用户代码不会改变封装对象的状态
+	* 私有成员改变不需修改用户级别代码
+
 ## 基础
 * 定义在类内部的函数是隐式的inline函数
-* this常量指针 隐式定义
+* `this`常量指针 隐式定义
 * 一般来说，如果非成员函数是类接口的组成部分，则这些函数的声明应该与类在同一个头文件内
 * `=default`C++11要求编译器生成构造函数，要有类内初始值
 * 访问说明符(access specifiers)`public` `private`
@@ -103,6 +105,7 @@ HasPtr& HasPtr::operator=(HasPtr rhs)
 // 下标运算
 std::string& operator[] (std::size_t n)
 const std::string& operator[] (std::size_t n) const
+
 // 前置后置递增/递减
 StrBlobPtr& StrBlobPtr::operator++() // 前置
 StrBlobPtr StrBlobPtr::operator++(int) // 后置
@@ -112,6 +115,7 @@ StrBlobPtr StrBlobPtr::operator++(int) // 后置
     ++*this;
     return ret;
 }
+
 //显式地调用后置运算符
 p.operator++(0);
 p.operator++(); // 依然前置
@@ -129,8 +133,10 @@ private:
     ostream &os;
     char sep;
 };
+
 PrintString errors (cerr, '\n');
 errors(s);
+
 // 函数对象常常作为泛型算法的实参
 for_each(vs.begin(), vs.end(), PrintString(cerr, '\n'));
 ```

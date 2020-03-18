@@ -19,6 +19,16 @@ tag: [summary]
 8. [模板]({{ site.baseurl }}/summary/cpp-programming/8-template)
 9. [其他]({{ site.baseurl }}/summary/cpp-programming/9-miscellaneous)
 
+## 补充
+* [C语言文件字符串操作]({% post_url 2019-03-14-c-infrastructure %})
+* [C内联汇编]({% post_url 2019-03-16-c-and-assembly %})
+* [C套接字]({% post_url 2019-03-20-socket-programming %})
+* [C计时]({% post_url 2019-03-31-c-timing %})
+* [多线程]({% post_url 2019-03-14-cpp-multithreading %})
+* [泛型编程]({% post_url 2019-03-31-cpp-generic-programming %})
+* [OOP]({% post_url 2019-03-31-cpp-oop %})
+* [模板元编程]({% post_url 2019-04-01-template-metaprogramming %})
+
 ## Reference
 * C++ Reference, <http://www.cplusplus.com/reference/>
 * C++ Google Style, <https://google.github.io/styleguide/cppguide.html>

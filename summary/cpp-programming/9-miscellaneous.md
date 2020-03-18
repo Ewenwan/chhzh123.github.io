@@ -4,6 +4,7 @@ title: C++ - 大型项目工具
 date: 2018-06-14
 tag: [summary]
 ---
+
 ## 异常处理(exception handling)
 * 通过抛出一条表达式来引发一个异常
 * 栈展开(stack unwinding)：当抛出一个异常后，程序暂停当前函数的执行并立即寻找与异常匹配的`catch`子句

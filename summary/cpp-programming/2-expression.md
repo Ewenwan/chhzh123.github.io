@@ -46,10 +46,17 @@ tag: [summary]
 	* `,`
 
 ## 语句
+### goto
 * `goto label;` `label: do something`
-* 异常处理
-	* `throw runtime_error("Wrong");` 类型`runtime_error`是标准库异常类型的一种，定义在`stdexcept`头文件中
-	* `try{ } catch( ){ } catch( ){ }`
+
+### 基于范围的`for`语句C++11
+* `for ( declaration : expression )` expression是一个对象，用于表示一个**序列**；declaration负责定义一个变量，用于访问序列中的基础元素
+* 范围for语句体内不应改变其所遍历序列的大小
+* 使用引用就能修改字符的值`for (auto &c : s)`
+
+### 异常处理
+* `throw runtime_error("Wrong");` 类型`runtime_error`是标准库异常类型的一种，定义在`stdexcept`头文件中
+* `try{ } catch( ){ } catch( ){ }`
 
 ```cpp
 while (cin >> item1 >> item2){
@@ -67,32 +74,35 @@ while (cin >> item1 >> item2){
 ```
 
 ## 函数
-* 基础
-	* 实参是形参的初始值
-	* `static`局部静态对象实现生命周期贯穿函数调用及之后的时间
-	* 函数原型：返回类型、函数名、形参类型
-	* 分离式编译产生Windows`.obj` Unix`.o`对象代码
-* 参数传递
-	* 引用传递(passed by reference)
-		* 绑定在对象上，引用形参是它对应的实参的别名
-		* 传引用可以避免拷贝
-		* 可通过传参方法返回多个值
-		* 尽量使用常量引用，如`string::size_type find_char(string &s)`后输入`find_char("hello")`会报错
-	* 值传递(passed by value)
-		* 形参与实参是两个独立的对象
-		* 指针形参：当执行指针拷贝操作时，拷贝的是指针的值，拷贝之后两个指针是不同的指针，因为指针可以间接地访问它所指的对象，故通过指针可以修改它所指对象的值
-	* 数组参数传递
-		* 最好传首元素和尾后指针`void print(const int *beg, const int *end)`
-		* 二维数组`int (*matrix)[10]`指向10个整数的数组的指针
-	* `main`处理命令行选项
-		* `int main (int argc, char *argv[]) { }`
-		* `prog -d -o ofile data0`
-	* 含有可变形参的函数C++11
-		* `initializer_list`形参
-			* 其对象元素永远是常量值，不可改变其中的值
-			* `void error_msg(initializer_list<string> il)`
-		* `varargs`省略符形参
-			* `void foo(parm_list, ...);`
+### 基础
+* 实参是形参的初始值
+* `static`局部静态对象实现生命周期贯穿函数调用及之后的时间
+* 函数原型：返回类型、函数名、形参类型
+* 分离式编译产生Windows`.obj` Unix`.o`对象代码
+
+### 参数传递
+* 引用传递(passed by reference)
+	* 绑定在对象上，引用形参是它对应的实参的别名
+	* 传引用可以避免拷贝
+	* 可通过传参方法返回多个值
+	* 尽量使用常量引用，如`string::size_type find_char(string &s)`后输入`find_char("hello")`会报错
+* 值传递(passed by value)
+	* 形参与实参是两个独立的对象
+	* 指针形参：当执行指针拷贝操作时，拷贝的是指针的值，拷贝之后两个指针是不同的指针，因为指针可以间接地访问它所指的对象，故通过指针可以修改它所指对象的值
+* 数组参数传递
+	* 最好传首元素和尾后指针`void print(const int *beg, const int *end)`
+	* 二维数组`int (*matrix)[10]`指向10个整数的数组的指针
+* `main`处理命令行选项
+	* `int main (int argc, char *argv[]) { }`
+	* `prog -d -o ofile data0`
+* 含有可变形参的函数C++11
+	* `initializer_list`形参
+		* 其对象元素永远是常量值，不可改变其中的值
+		* `void error_msg(initializer_list<string> il)`
+	* `varargs`省略符形参
+		* `void foo(parm_list, ...);`
+
+### 返回值
 * 无返回值函数
 	* 不要求非得有`return`，因最后一句会隐式执行`return`
 * 返回值
@@ -102,6 +112,8 @@ while (cin >> item1 >> item2){
 	* 引用返回左值 特别是**赋值**要返回引用
 		* `get_val(s,0) = 'A'` 左边函数返回了`char&`
 	* 列表初始化返回值 `return{"functionX",expected,actual};`
+
+### 函数重载
 * main函数不能调用自己 不能重载
 * 函数重载
 	* 可以省略形参名字 `Record lookup(const Account&)`
@@ -131,18 +143,19 @@ string &shorterString(string &s1, string &s2)
 }
 ```
 
-* 特殊用途语言特性
-	* 默认实参
-		* `string screen(sz ht = 24, sz wid = 80, char bg = ' ')`
-		* 可以为一个或多个形参定义默认值，但一旦某个形参被赋予了默认值，后面均得有
-		* `screen( , , '?')` 错误，只能省略尾部实参
-		* `string screen(sz ht = 24, sz wid = 80, char bg); string screen(sz ht, sz wid, char bg = ' ')` 正确，不是重复声明，但只能给没赋值的实参赋值，不能重新赋
-	* 内联函数(inline)
-		* 内联说明只是向编译器发出的一个请求，编译器可以选择忽略
-		* 内联机制用于优化规模较小、流程直接、频繁调用的函数
-		* 内联函数和`constexpr`通常放在头文件中
-* 函数指针
-	* `using PF = int (*)(int*, int); PF f1(int);` 返回指向函数的指针
+### 特殊用途语言特性
+* 默认实参
+	* `string screen(sz ht = 24, sz wid = 80, char bg = ' ')`
+	* 可以为一个或多个形参定义默认值，但一旦某个形参被赋予了默认值，后面均得有
+	* `screen( , , '?')` 错误，只能省略尾部实参
+	* `string screen(sz ht = 24, sz wid = 80, char bg); string screen(sz ht, sz wid, char bg = ' ')` 正确，不是重复声明，但只能给没赋值的实参赋值，不能重新赋
+* 内联函数(inline)
+	* 内联说明只是向编译器发出的一个请求，编译器可以选择忽略
+	* 内联机制用于优化规模较小、流程直接、频繁调用的函数
+	* 内联函数和`constexpr`通常放在头文件中
+
+### 函数指针
+* `using PF = int (*)(int*, int); PF f1(int);` 返回指向函数的指针
 
 ```cpp
 bool lengthCompare(const string & , const string &);
