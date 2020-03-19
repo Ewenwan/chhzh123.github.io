@@ -4,7 +4,7 @@ title: TVM - Schedule
 tags: [dl, tvm]
 ---
 
-本文记录TVM常用的调度(schedule)及生成对应的lower后的代码。
+本文以向量加法为例，记录TVM常用的调度(schedule)及生成对应的lower后的代码。
 
 <!--more-->
 
@@ -63,10 +63,10 @@ produce C {
 
 当然这一个schedule变换并没有带来任何好处，只是为了说明Tensor Expression应该怎么用。
 
-之后就可以调用`build`生成目标代码了。
+之后就可以调用[`build`](https://docs.tvm.ai/api/python/driver.html#tvm.build)生成目标代码了，可以设置`target`和`target_host`。
 
 ```python
-tgt = "c" # "llvm"
+tgt = "c" # "llvm", "cuda"
 fadd = tvm.build(s,[A,B,C],target=tgt,name="myadd")
 ```
 
@@ -235,5 +235,7 @@ TVM_DLL int32_t myadd( void* args,  void* arg_type_ids, int32_t num_args) {
 ```
 </details>
 
+最后通过`fadd.save("myadd.c")`保存文件。
+
 ## References
-初识TVM - 立交桥跳水冠军的文章 - 知乎，<https://zhuanlan.zhihu.com/p/88188955>
+* 初识TVM - 立交桥跳水冠军的文章 - 知乎，<https://zhuanlan.zhihu.com/p/88188955>
