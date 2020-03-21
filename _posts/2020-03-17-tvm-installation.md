@@ -32,6 +32,7 @@ make -j4
 
 # 4. Python package installation
 # Recommended for developers, no need to call setup!
+# It would be better if adding them to ~/.bashrc
 export TVM_HOME=/path/to/tvm
 export PYTHONPATH=$TVM_HOME/python:$TVM_HOME/topi/python:${PYTHONPATH}
 
