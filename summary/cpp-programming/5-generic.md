@@ -12,6 +12,7 @@ tag: [summary]
 ## 一些泛型算法
 都定义在`<algorithm>`头文件内
 * `find(vec.cbegin(),vec.cend(),val)`
+    * 找到返回目标元素下标，找不到则返回末尾迭代器`vec.end()`
 * `accumulate(v.cbegin(),v.end(),string(""))`只要定义了加法，就能以第三个参数为初值加
 * `fill(b,e,0)`
 * 插入迭代器`back_inserter`，如`fill_n(back_inserter(vec),10,0)`

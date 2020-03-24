@@ -148,6 +148,35 @@ for (auto p = begin(ia); p != end(ia); ++p)
         cout << *q << ' ';
 ```
 
+## `<utility>`
+这个头文件比较特殊，定义了`pair`模板类。
+
+```cpp
+pair<T1, T2> p1;
+pair<T1, T2> p1(v1,v2);
+p1.first;
+p1.second;
+```
+
+## `<map>`
+
+```cpp
+map<string,int> namemap;
+namemap["Alice"] = 18;
+
+if (namemap.find("Alice") != namemap.end())
+    ...
+```
+
+## `<unordered_set>`
+`<unordered_set>`本质用哈希散列存储数据。
+
+```cpp
+using PII = pair<int, int>;
+auto hash_function = [](const PII& o) {return hash<int>()(o.first) ^ hash<int>()(o.second);};
+unordered_set<PII, decltype(hash_function)> seen(0, hash_function);
+```
+
 ## IO库
 * IO库类型
 	* `<iostream>`：流中读写数据`istream,ostream,iostream`
@@ -187,6 +216,17 @@ ostringstream badNums;
 badNums << " " << nums;
 os << badNums.str() << endl;
 ```
+
+* `boolalpha`输出`true`或`false`，恢复用`noboolalpha`
+* `oct`、`hex`、`dec`指定整型进制，`showbase`显示进制，`noshowbase`恢复，`hexfloat`C++11
+* `uppercase`
+* `<iomainp>`操纵`setprecision`，`showpoint`显示小数点
+* `left`、`right`左右对齐，`setw`指定数字或字符串值的最小空间，`setfill(' ')`用符号补全空白
+* `fixed`定点十进制，`scientific`科学计数法
+* `noskipws`可读取空格，`skipws`恢复
+* 多字节操作`is.get(sink,size,delim)`、`is.getline(sink,size,delim)`、`is.ignore(size,delim)`
+* 随机访问`seek`定位、`tell`告诉当前位置
+* <http://www.cnblogs.com/leewiki/archive/2011/12/13/2286168.html>
 
 ## 顺序容器
 * 不同类型
@@ -247,6 +287,12 @@ lst.erase_after(b,e)
 * `stack`
 * `queue`
 * `priority_queue`
+
+```cpp
+priority_queue< int, vector<int>, greater<int> > q; // increase
+q.push(3);
+q.pop();
+```
 
 ## 关联容器
 * `map`
@@ -340,18 +386,6 @@ e.seed(32767);
 // 生成随机实数
 uniform_real_distribution<double> u(0,1);
 ```
-
-## IO库
-* `boolalpha`输出`true`或`false`，恢复用`noboolalpha`
-* `oct`、`hex`、`dec`指定整型进制，`showbase`显示进制，`noshowbase`恢复，`hexfloat`C++11
-* `uppercase`
-* `<iomainp>`操纵`setprecision`，`showpoint`显示小数点
-* `left`、`right`左右对齐，`setw`指定数字或字符串值的最小空间，`setfill(' ')`用符号补全空白
-* `fixed`定点十进制，`scientific`科学计数法
-* `noskipws`可读取空格，`skipws`恢复
-* 多字节操作`is.get(sink,size,delim)`、`is.getline(sink,size,delim)`、`is.ignore(size,delim)`
-* 随机访问`seek`定位、`tell`告诉当前位置
-* <http://www.cnblogs.com/leewiki/archive/2011/12/13/2286168.html>
 
 ## 参考资料
 * 标准库
