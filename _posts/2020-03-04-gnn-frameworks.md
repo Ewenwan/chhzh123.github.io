@@ -186,6 +186,9 @@ class GNN(nn.Module):
 * 文档：<https://docs.dgl.ai/>
 * Tutorial：<https://docs.dgl.ai/tutorials/basics/1_first.html> （这个教程比PyG的要友好很多，直接用Zachary's Karate Club作为例子）
 
+DGL运行时系统采用的技术：
+* 核融合：<https://www.dgl.ai/blog/2019/05/04/kernel.html>
+* 虚拟机：<https://discuss.dgl.ai/t/runtime-documentation/552>
 
 ## Euler[^3]
 Alibaba基于TensorFlow开发的图系统，提供了Python和C++接口，并开源在[Github](https://github.com/alibaba/euler)上，未有相关论文，但是功能比较齐全。
