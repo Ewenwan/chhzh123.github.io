@@ -130,7 +130,7 @@ def GraphConv(layer_name,
     if norm is not None:
         output_t = relay.multiply(output_t, norm)
     if bias is True:
-        _bias = relay.var(layer_name + ".bias", shape=(output_dim, 1))
+        _bias = relay.var(layer_name + ".bias", shape=(output_dim,))
         output_t = relay.nn.bias_add(output_t, _bias, axis=-1)
     if activation is not None:
         output_t = activation(output_t)
@@ -202,6 +202,8 @@ output = layers[-1]
 target = 'llvm' # Currently only support `llvm` as target
 
 func = relay.Function(relay.analysis.free_vars(output), output)
+mod = relay.Module.from_expr(func) # tvm-0.7 tvm.IRModule.from_expr
+print(mod)
 
 # Build with Relay
 with relay.build_config(opt_level=0): # Currently only support opt_level=0
