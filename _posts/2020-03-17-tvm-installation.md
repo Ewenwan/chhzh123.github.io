@@ -4,10 +4,11 @@ title: TVM - 安装
 tags: [dl, tvm]
 ---
 
-本文记录TVM的安装方式，主要验证[官方教程](https://docs.tvm.ai/install/from_source.html)中从源码安装是否对WSL可行。
+本文记录TVM的安装方式，主要验证[官方教程](https://docs.tvm.ai/install/from_source.html)中从源码安装是否对WSL可行，同时在VS Code上配置相应的开发环境。
 
 <!--more-->
 
+## TVM安装
 下面代码都在WSL环境中运行，同时用virtualenv创建了Python 3.6的虚拟环境。
 
 ```bash
@@ -43,3 +44,17 @@ pip install numpy decorator attrs
 事实证明官方教程讲得很清晰，之后就可以顺利在Python里`import tvm`啦！
 
 可以通过测试[GEMM在CPU上的例子](https://docs.tvm.ai/tutorials/optimize/opt_gemm.html#sphx-glr-tutorials-optimize-opt-gemm-py)看是否能正常编译。
+
+## VS Code开发环境配置
+需要在VS Code内安装远程服务器/WSL插件，然后通过类似SSH的某种形式连接上服务器，接着就可以正常编辑了。
+
+由于我安装TVM和深度学习库都在virtualenv的虚拟环境`pydev`内，所以还VS Code的项目中还需增添一个`.vscode/settings.json`文件，内容指明python位置。保存重新加载VS Code，可见左下角的Python解释器已改为对应的虚拟环境内的版本。
+
+```json
+{
+    "python.venvPath": "/mnt/d/pydev",
+    "python.pythonPath": "/mnt/d/pydev/bin/python",
+}
+```
+
+更多配置详情可见VS Code[官网文档](https://code.visualstudio.com/docs/python/environments#_where-the-extension-looks-for-environments)。
