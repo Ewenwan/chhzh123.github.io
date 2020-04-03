@@ -26,7 +26,11 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * DSL Design
 	- [[Course]](http://web.stanford.edu/class/cs442/), Stanford CS 442: High Productivity and Performance with Domain Specific Languages in Scala, Kunle Olukotun
 * Programming Languages
+	- Benjamin C. Pierce, **Software Foundations**, [Online](https://softwarefoundations.cis.upenn.edu/)
+	- Benjamin C. Pierce, **Types and Programming Languages**, [Online](https://www.cis.upenn.edu/~bcpierce/tapl/)
 	- [[Course]](https://sites.google.com/cs.washington.edu/cse341-19wi), Washington CSE 341: Programming Languages, Zachary Tatlock
+	- [[Course]](https://www.cs.cornell.edu/courses/cs6110/2019sp/), Cornell CS 6110: Advanced Programming Languages (graduate), Adrain Sampson
+	- [[Course]](https://www.cs.cornell.edu/courses/cs4110/2018fa/), Cornell CS 4110: Programming Languages and Logics (undergrad), Adrain Sampson
 * Principles of PL
 	- [[Course]](https://sites.google.com/cs.washington.edu/cse-p505-19sp), Washington CSE 505, Zachary Tatlock
 
