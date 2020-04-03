@@ -33,7 +33,7 @@ tags: [dl, tvm]
 * $\mu$TVM：在边缘端无需OS的运行时系统，自动与AutoTVM进行交互
     {% include image.html fig="TVM/mu-tvm.jpg" width="100" %}
 * VTA：第二代已经用Chisel进行实现
-    {% include image.html fig="TVM/vta.jpg" width="100" %}
+    {% include image.html fig="TVM/vta-stack.jpg" width="100" %}
 * TSIM：自研硬件模拟器
     {% include image.html fig="TVM/tsim.jpg" width="100" %}
 * 大一统运行时：不同设备的runtime都可以用Python直接call，所以所有工作都可以在直接TVM内完成（似乎现在已经实现了大半）
