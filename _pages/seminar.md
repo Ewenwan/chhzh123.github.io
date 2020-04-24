@@ -18,6 +18,6 @@ Tools Seminar (CS) is held at SYSU from 2019 Fall to 2020 Spring. The outline of
 | Week 7 | Mar 29 | Machine Learning | pandas, sklearn |
 | Week 8 | Apr 5 | Deep Learning | PyTorch |
 | Week 9 | Apr 12 | Visualization | Matplotlib, draw.io, TikZ |
-| Week 10 | Apr 19 | Parallel Computing | OpenMP, Cilk, AVX, MPI |
+| Week 10 | Apr 25 | Parallel Computing | OpenMP, Cilk, AVX, MPI |
 
 Please refer to the Github [repository](https://github.com/chhzh123/ToolsSeminar-CS) for the details.
