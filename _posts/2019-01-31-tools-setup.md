@@ -26,6 +26,10 @@ tag: [research, tools]
 	- Intel Xeon CPU Gold 5118 (24核) + Titan V (2块) + 64G内存 + 11T硬盘
 	- Ubuntu 18.04 LTS
 
+### 日常工作
+* Microsoft To Do
+* Google Calendar
+
 ### 文本编辑器
 这一项放在第二点叙述可以说明其重要性
 * [Sublime Text 3](http://www.sublimetext.com/)<br/>
