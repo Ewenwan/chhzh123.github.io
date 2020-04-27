@@ -574,7 +574,7 @@ INFO: [SCHED 204-11] Finished scheduling.
 * [^3]讲述了高层次综合的整体流程及原理，第2课简要介绍了Vivado HLS的使用，同时以FIR (Finite Impulse Response)为例讲解HLS的优化指令，也是十分简明扼要；第3课关于FPGA的硬件结构也非常有必要了解。
 * [^2]是U Washington研究生体系结构课程中的一个实验项目，算是一个非常非常非常详细的Vivado HLS的入门教程了，基本上能够调到他预期的加速比就算达成任务了。本文中矩阵乘的例子就来源于此。
 * [^4]可作为速查手册，提供了所有C HLS #pragma
-* [^5]和[^6]是官方说明手册，前者是完整的HLS说明书，后者则是Vivado HLS的一些实验范例（但比较侧重于图形化界面）
+* [^5]和[^6]是官方说明手册，前者是完整的HLS说明书，后者则是Vivado HLS的一些实验范例（但比较侧重于图形化界面），但可以下载[对应源码](https://www.xilinx.com/cgi-bin/docs/ctdoc?cid=4eafd485-f496-45ca-9d97-6be22cfedc4b;d=ug871-design-files.zip)进行学习（需要Xilinx账户）
 * [^7]给出了大量应用加速的例子，算是HLS的高阶应用教程
 * [^8]收录了大量FPGA的学习资料，上述很多链接也从该项目中获取
 
