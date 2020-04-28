@@ -7,11 +7,13 @@ tag: [research, tools]
 **工具是重要的！**这点其实很多老师都不会讲述。
 然而好用的用得顺手的工具可以使工作效率大大提升，不好用的工具虽然也可以用，但是会增加很多不必要的时间。
 
-最简单的例子是很多非计院的同学学了一整个学期代码（C++/Java），都还在**非常古老的**IDE上写程序（我说的是Dev(((）。
+最简单的例子是很多非计院的同学学了一整个学期代码（C++/Java），都还在**非常古老的**IDE上写程序（我说的是Dev(）。
 这当然可以写，但是常言道“优秀的程序员都是不用IDE的！”
 如果有更强大的工具可以让你事半功倍，何乐而不为呢？
 
-这篇文章列举我目前所使用的一些工具作为参考，都是使用了很长时间，亲测比较好用。
+这篇文章列举/总结我目前所使用的一些工具作为参考，都是使用了很长时间，亲测比较好用。
+
+（基于这点motivation，所以我在2019-2020年度开了门ToolsSeminar的研讨会，详细内容可见[这里](/seminar)。）
 
 <!--more-->
 
@@ -27,12 +29,22 @@ tag: [research, tools]
 	- Ubuntu 18.04 LTS
 
 ### 日常工作
-* Microsoft To Do
-* Google Calendar
+* [Microsoft To Do](https://todo.microsoft.com/tasks/)
+	* 极其好用的代办事项工具
+	* 可以分类创建列表
+	* 支持加备注加提醒
+	* 多终端多平台
+* [Google Calendar](https://calendar.google.com/calendar/r)
+	* 极其好用的日历工具，我所有课程表都创在上面了
+	* 可定期（如每周一或重复几次）提醒，这点太重要了！
+	* 多种颜色tag选择
+	* 可加备注加提醒
+	* 多终端多平台
 
 ### 文本编辑器
-这一项放在第二点叙述可以说明其重要性
-* [Sublime Text 3](http://www.sublimetext.com/)<br/>
+目前使用主要使用两个文本编辑器，Sublime Text用来做一些轻量级的工作（因为打开速度实在是快），VS Code用来做一些大一点的项目。
+
+#### [Sublime Text 3](http://www.sublimetext.com/)
 Sublime的重度用户，每天跟它打交道的时间估计超过10个小时。
 打代码、做笔记、记事情、写报告、写论文全部都用它。
 
@@ -46,13 +58,19 @@ Sublime的重度用户，每天跟它打交道的时间估计超过10个小时�
 * 可以安装各种package，进一步提升sublime的能力（比如做两个文本的区别高亮、字数统计等）
 * 内置控制行，可以直接打Python代码
 
-* [VS Code](https://code.visualstudio.com/)<br/>
-微软爸爸的文本编辑器近两年特别火，目前还在摸索中...
+#### [VS Code](https://code.visualstudio.com/)
+不得不说，经过大半年的发展，微软爸爸的文本编辑器已经相当成熟了。
 
 优点：
 * sublime有的基本都有
-* 自动链接至定义位置
+* Intellisense
+* 大量插件支持
+	* Python / Jupyter notebook原生支持
+	* Markdown预览
+	* LaTeX编译显示
+* 自动跳转至定义位置（大项目必备）
 * 跨文件/全局搜索
+* SSH远端支持
 
 ### 笔记
 笔记怎么做也是我这一年多来摸索的东西，现在基本上用下面两个工具啦。
@@ -62,8 +80,8 @@ Sublime的重度用户，每天跟它打交道的时间估计超过10个小时�
 因为使用太频繁，到年初才自己制作了份[模板](https://github.com/chhzh123/mylatextmpl)，又瞬间让自己生产力爆炸。
 
 目前想到的一些不那么大众的点有
-1. tikzcd画流程图很爽
-2. biblatex要学会，生成参考文献神器
+1. TikZ-cd画流程图很爽
+2. BibTeX要学会，生成参考文献神器
 3. 表格可以不用自己打，Excel有宏可以支持
 
 * [TiddlyWiki](https://tiddlywiki.com/)<br/>
@@ -87,10 +105,16 @@ Sublime的重度用户，每天跟它打交道的时间估计超过10个小时�
 写论文或者建模就知道画图的苦，以前一直都羡慕人家的文章中能够画出那么漂亮的图片，因为以往都只知道函数图怎么画，但不知道有什么比较好用的流程图工具
 * [draw.io](https://draw.io)<br/>
 在线画图，有网格，图形多，使用方便，画什么都容易，不足是对插图的处理不强，原生LaTeX在导出时常常出现问题
+* [Microsoft Visio](https://products.office.com/en-us/visio/flowchart-software)<br/>
+需要学校账户下载安装，而且还是Office 365版本
 * [ipe](http://ipe.otfried.org/)<br/>
 下载解压即用，有网格，但自动吸附格点，使用极其麻烦（要记一堆快捷键，有种CAD的感觉），但对LaTeX的支持非常好
-* [tikzcd](http://ctan.math.washington.edu/tex-archive/graphics/pgf/contrib/tikz-cd/tikz-cd-doc.pdf)<br/>
+* [TikZ-cd](http://ctan.math.washington.edu/tex-archive/graphics/pgf/contrib/tikz-cd/tikz-cd-doc.pdf)<br/>
 刚才提到的LaTeX包，用`&`即可实现对齐，绘制简单的流程图非常方便
+
+#### 有限状态机
+* TikZ里有automata的package
+* http://madebyevan.com/fsm/
 
 ### 数据可视化
 这个也是写论文必备
@@ -136,11 +160,12 @@ Python包，功能强大，不过我主要用来画折线图、柱形图；语�
 #### 其他玩意儿
 * Markdown<br/>
 不用关心排版，层次化分明
+	* [Gitlab Markdown Guide](https://about.gitlab.com/handbook/engineering/ux/technical-writing/markdown-guide/)
+	* [Markdown Guide for Jupyter Notebook](https://medium.com/analytics-vidhya/the-ultimate-markdown-guide-for-jupyter-notebook-d5e5abf728fd)
 * 正则表达式<br/>
 其实掌握常用匹配指令就好了，一开始觉得很复杂，后来觉得也还好，人家还不是图灵完备的(
 
 ### 人工智能
-我就偏不说Tensorflow(((
 当时入深度学习坑时选择TF，折腾了很久连它语法都没搞清楚，对初学者非常不友善，于是就此放弃
 * [Pytorch](https://pytorch.org/)<br/>
 原生Python语法，动态图，部署网络非常方便
@@ -154,6 +179,12 @@ Pytorch对应的可视化工具，界面还可以接受，但目前还不够完�
 * [IBM CPLEX](https://ibm.onthehub.com/WebStore/OfferingDetails.aspx?o=733c3d21-0ce1-e711-80fa-000d3af41938&pmv=00000000-0000-0000-0000-000000000000)：学生可以申请免费
 * [CBC](https://projects.coin-or.org/Cbc)：免费，有Python支持
 * [PuLP](https://pythonhosted.org/PuLP/)：Python包集成了几个求解器，CBC是其中之一
+
+### 性能剖析
+* Linux perf
+	* [Memory loads](https://stackoverflow.com/questions/44466697/perf-stat-does-not-count-memory-loads-but-counts-memory-stores)
+	* [Cache reference](https://stackoverflow.com/questions/55035313/how-does-linux-perf-calculate-the-cache-references-and-cache-misses-events)
+* Intel PCM
 
 ### 其他东西
 * [Github Page](https://pages.github.com)+[Jekyll](https://github.com/jekyll/jekyll)：就是这个博客啦
@@ -171,3 +202,7 @@ Pytorch对应的可视化工具，界面还可以接受，但目前还不够完�
 	- `gpg --import [key].pub`导入公/私钥
 	- `gpg --encrypt --armor -r [Email] [file]`生成ASCII码加密文件
 	- `gpg -d [file].asc`解密文件
+* 查看Github仓库大小，用[API](https://stackoverflow.com/questions/8646517/how-can-i-see-the-size-of-a-github-repository-before-cloning-it)
+
+## 网页样式
+* [Bootstrap Alerts](https://getbootstrap.com/docs/4.0/components/alerts/)

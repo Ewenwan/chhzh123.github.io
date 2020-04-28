@@ -148,6 +148,22 @@ for (auto p = begin(ia); p != end(ia); ++p)
         cout << *q << ' ';
 ```
 
+## 容器适配器(adaptor)
+* `stack`
+* `queue`
+* `priority_queue`
+
+```cpp
+stack<int> stk;
+stk.push(2);
+stk.pop();
+int top = stk.top();
+
+priority_queue< int, vector<int>, greater<int> > q; // increase
+q.push(3);
+q.pop();
+```
+
 ## `<utility>`
 这个头文件比较特殊，定义了`pair`模板类。
 
@@ -283,27 +299,22 @@ lst.erase_after(b,e)
 	* `c.capacity()`不重新分配内存，当前最大可保存元素数目
 	* `c.reserve(n)`分配至少能容纳n个元素的空间
 
-## 容器适配器(adaptor)
-* `stack`
-* `queue`
-* `priority_queue`
-
-```cpp
-priority_queue< int, vector<int>, greater<int> > q; // increase
-q.push(3);
-q.pop();
-```
-
 ## 关联容器
 * `map`
 * `set`
 
 ```cpp
-c.find(k)
-c.count(k)
-c.lower_bound(k) // 返回迭代器，第一个关键字不小于k的元素
-c.upper_bound(k)
-c.equal_range(k)
+set<int> s;
+s.insert(k)
+s.find(k) != s.end()
+s.count(k)
+s.lower_bound(k) // 返回迭代器，第一个关键字不小于k的元素
+s.upper_bound(k)
+s.equal_range(k)
+
+#include <algorithm>
+vector<int> c;
+set_intersection(a.begin(),a.end(),b.begin(),b.end(),back_inserter(c));
 ```
 
 * `pair`

@@ -45,8 +45,12 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](https://www.csl.cornell.edu/courses/ece2400/handouts.html), Cornell ECE 2400: Computer Systems Programming, Christopher Batten
 * [[Course]](http://web.mit.edu/6.033/www/), MIT 6.033: Computer System Engineering, Tim Kraska
 
+### AI System
+* [[Course]](https://ucbrise.github.io/cs294-ai-sys-fa20/), UCB CS294: Machine Learning Systems, Joseph E. Gonzalez
+
 ## Compiler
 * Alfred V. Aho, Monica S. Lam, Ravi Sethi, Jeffrey Ullman, **Compilers: Principles, Techniques, and Tools (2nd ed.)**<font color="blue">(Dragon)</font>, Pearson, 2006, [Chinese](https://book.douban.com/subject/3296317/)
+	* [Answers](https://github.com/fool2fish/dragon-book-exercise-answers)
 * Andrew W. Appel, Maia Ginsburg, **Modern Compiler Implementation in C**<font color="blue">(Tiger)</font>, Cambridge University Press, 2004, [Chinese](https://book.douban.com/subject/30191414/)
 * Steven Muchnick, **Advanced Compiler Design and Implementation**<font color="blue">(Whale)</font>, Morgan Kaufmann, 1997, [Chinese](https://book.douban.com/subject/1400374/)
 * Keith D. Cooper, Linda Torczon, **Engineering a Compiler (2nd ed.)**<font color="blue">(Oak)</font>, Elsevier, 2012, [Chinese](https://book.douban.com/subject/20436488/)
@@ -57,6 +61,9 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](https://www.clear.rice.edu/comp412/Lectures/), Rice COMP 412: Compiler Construction for Undergraduates, Keith Cooper
 * [[Course]](https://www.cs.cornell.edu/courses/cs6120/2019fa/), Cornell CS 6120: Advanced Compiler β, Adrian Sampson
 * [[Course]](http://www.cs.cmu.edu/afs/cs/academic/class/15745-s19/www/), CMU CS 15-745: Optimizing Compilers for Modern Architectures, Phil Gibbons
+* [[Course]](https://course.ccs.neu.edu/cs4410/), NEU CS4410: Compiler Design, Benjamin Lerner
+	* OCaml
+	* A-norm form
 * [Overview of compiler optimizations](https://yunmingzhang.wordpress.com/2016/12/01/a-good-overview-of-compiler-optimizations/)
 
 ## Operating Systems
@@ -75,6 +82,7 @@ This is a summary article, collecting CS-related books and courses that I have/w
 * [[Course]](http://cs.brown.edu/courses/csci1780/), Brown CS 0178: Programming Parallel and Distributed Systems, Steve Reiss
 * [[Course]](http://www.cs.cmu.edu/afs/cs/academic/class/15418-s11/www/), CMU [CS418](http://www.cs.cmu.edu/~418/): Parallel Computer Architecture and Programming, Todd C. Mowry
 * [[Seminar]](https://ldhulipala.github.io/reading.html), ParallelRG: a reading group on parallel, concurrent and distributed computing, Laxman Dhulipala (CMU)
+* [[Course]](https://lukeluocn.github.io/multicoresysu2020/), SYSU: Multicore Programming, Jun Tao
 
 ## Machine Learning & Data Mining
 * Jure Leskovec, Anand Rajaraman, Jeff Ullman, **Mining of Massive Datasets**, Cambridge University Press, [Online](http://www.mmds.org/)

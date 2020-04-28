@@ -29,6 +29,13 @@ tag: [summary]
 * [OOP]({% post_url 2019-03-31-cpp-oop %})
 * [模板元编程]({% post_url 2019-04-01-template-metaprogramming %})
 
+## 速查
+```cpp
+string str;
+getline(cin,str); // 读入一整行，包括空格
+cin.ignore(); // 忽略行尾\n
+```
+
 ## Reference
 * C++ Reference, <http://www.cplusplus.com/reference/>
 * C++ Google Style, <https://google.github.io/styleguide/cppguide.html>
