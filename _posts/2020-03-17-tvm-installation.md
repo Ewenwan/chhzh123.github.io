@@ -46,15 +46,4 @@ pip install numpy decorator attrs
 可以通过测试[GEMM在CPU上的例子](https://docs.tvm.ai/tutorials/optimize/opt_gemm.html#sphx-glr-tutorials-optimize-opt-gemm-py)看是否能正常编译。
 
 ## VS Code开发环境配置
-需要在VS Code内安装远程服务器/WSL插件，然后通过类似SSH的某种形式连接上服务器，接着就可以正常编辑了。
-
-由于我安装TVM和深度学习库都在virtualenv的虚拟环境`pydev`内，所以还VS Code的项目中还需增添一个`.vscode/settings.json`文件，内容指明python位置。保存重新加载VS Code，可见左下角的Python解释器已改为对应的虚拟环境内的版本。
-
-```json
-{
-    "python.venvPath": "/mnt/d/pydev",
-    "python.pythonPath": "/mnt/d/pydev/bin/python",
-}
-```
-
-更多配置详情可见VS Code[官网文档](https://code.visualstudio.com/docs/python/environments#_where-the-extension-looks-for-environments)。
+见[VS Code远端环境配置]({% post_url 2020-03-31-vscode-ssh-server %})。

@@ -1,13 +1,30 @@
 ---
 layout: post
-title: VS Code远端服务器配置
+title: VS Code远端服务器(WSL/SSH)配置
 tag: [tools]
 ---
 
-本文记录VS Code远端服务器的配置方法。
+本文记录VS Code远端服务器(WSL/SSH)的配置方法。
 
 <!--more-->
 
+## WSL
+需要在VS Code内安装远程服务器WSL插件，然后通过类似SSH的某种形式连接上服务器，接着就可以正常编辑了。
+
+由于我安装TVM和深度学习库都在virtualenv的虚拟环境`pydev`内，所以还VS Code的项目中还需增添一个`.vscode/settings.json`文件，内容指明python位置。保存重新加载VS Code，可见左下角的Python解释器已改为对应的虚拟环境内的版本。同时为维持Python环境内的跳转功能，需要将一些插件禁用，之后VS Code会自动下载Microsoft的Language server，进而实现文件间跳转。
+
+```json
+{
+    "python.venvPath": "/mnt/d/pydev",
+    "python.pythonPath": "/mnt/d/pydev/bin/python",
+    "python.linting.enabled": false,
+    "python.jediEnabled": false
+}
+```
+
+更多配置详情可见VS Code[官网文档](https://code.visualstudio.com/docs/python/environments#_where-the-extension-looks-for-environments)。
+
+## SSH
 下面所指的客户端都是自己的电脑，服务器端则是远端环境。
 
 在客户端生成SSH key
