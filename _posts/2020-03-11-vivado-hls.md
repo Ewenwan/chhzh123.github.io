@@ -540,12 +540,13 @@ INFO: [SCHED 204-11] Finished scheduling.
 * `#pragma HLS unroll factor=<N>`
 
 ## 数据类型
-任意精度整数(Arbitrary Precision, AP)
+任意精度整数(Arbitrary Precision, AP)，具体实现可参见[HLS Arbitrary Precision Types](https://github.com/Xilinx/HLS_arbitrary_Precision_Types)，其实都是C++的模板类。
+### 整数
 * `#include "ap_int.h"`
 * `ap_int`有符号，`ap_uint`无符号
 * 用模板类声明，如`ap_uint<24>`代表24位无符号整数
 
-定点数
+### 定点数
 * `#include "ap_fixed.h"`
 * `ap_fixed`和`ap_ufixed`
 * `ap_fixed<W,I,Q,O>`
@@ -561,6 +562,42 @@ INFO: [SCHED 204-11] Finished scheduling.
 
 {% include image.html fig="FPGA/ap_fixed_overflow.jpg" width="80" %}
 
+### 类成员操作
+相关类成员操作如下：（在UG C++ Arbitrary Precision Types一节）
+* 基本的运算符均已被重载
+* `length`
+* `to_int`, `to_double`, `to_string`
+* Concat
+    * `ap_concat_ref ap_(u)int::concat (ap_(u)int low)`
+    * `ap_concat_ref ap_(u)int::operator , (ap_(u)int high, ap_(u)int low)`
+    ```cpp
+    ap_uint<10> Rslt;
+    ap_int<3> Val1 = -3;
+    ap_int<7> Val2 = 54;
+    Rslt = (Val2, Val1); // Yields: 0x1B5
+    Rslt = Val1.concat(Val2); // Yields: 0x2B6
+    (Val1, Val2) = 0xAB; // Yields: Val1 == 1, Val2 == 43
+    ```
+* Bit selection
+    * `ap_bit_ref ap_(u)int::operator [] (int bit)`
+    * 注意返回是一个引用，意味着可以直接赋值修改
+* Range selection
+    * `ap_range_ref ap_(u)int::range (unsigned Hi, unsigned Lo)`
+    * `ap_range_ref ap_(u)int::operator () (unsigned Hi, unsigned Lo)`
+    ```cpp
+    ap_uint<4> Rslt;
+    ap_uint<8> Val1 = 0x5f;
+    ap_uint<8> Val2 = 0xaa;
+    Rslt = Val1.range(3, 0); // Yields: 0xF
+    Val1(3,0) = Val2(3, 0); // Yields: 0x5A
+    Val1(4,1) = Val2(4, 1); // Yields: 0x55
+    Rslt = Val1.range(7, 4); // Yields: 0xA; bit-reversed!
+    ```
+* Reduce
+    * `bool ap_(u)int::and_reduce ()`
+    * and, or, xor, nand, nor, xnor
+* `set`, `clear`, `invert`
+
 ## 需要注意的点
 * HLS不支持递归、系统调用（文件读取）、动态内存分配
 * 默认情况下，循环都不展开(rolled)
@@ -573,8 +610,8 @@ INFO: [SCHED 204-11] Finished scheduling.
 * [^1]是非常好的关于Xilinx Zynq和SoC/异构系统入门的书籍，其中第14章介绍了高层次综合(HLS)的基本概念，第15章则非常清晰明了地介绍了Vivado HLS的常用指令及相关规范，该书特别适合初学者入门——简练而突出重点，同时也有免费的中文版可以下载。
 * [^3]讲述了高层次综合的整体流程及原理，第2课简要介绍了Vivado HLS的使用，同时以FIR (Finite Impulse Response)为例讲解HLS的优化指令，也是十分简明扼要；第3课关于FPGA的硬件结构也非常有必要了解。
 * [^2]是U Washington研究生体系结构课程中的一个实验项目，算是一个非常非常非常详细的Vivado HLS的入门教程了，基本上能够调到他预期的加速比就算达成任务了。本文中矩阵乘的例子就来源于此。
-* [^4]可作为速查手册，提供了所有C HLS #pragma
-* [^5]和[^6]是官方说明手册，前者是完整的HLS说明书，后者则是Vivado HLS的一些实验范例（但比较侧重于图形化界面），但可以下载[对应源码](https://www.xilinx.com/cgi-bin/docs/ctdoc?cid=4eafd485-f496-45ca-9d97-6be22cfedc4b;d=ug871-design-files.zip)进行学习（需要Xilinx账户）
+* [^4]可作为速查手册，提供了所有C HLS #pragma，[^9]是非常简洁的HLS优化API及完整流程的查询帮助网页
+* [^5]和[^6]是官方说明手册，前者是完整的HLS说明书，后者则是Vivado HLS的一些实验范例（但比较侧重于图形化界面），但可以下载[对应源码](https://www.xilinx.com/cgi-bin/docs/ctdoc?cid=4eafd485-f496-45ca-9d97-6be22cfedc4b;d=ug871-design-files.zip)进行学习（需要Xilinx账户）。比较不好的是，这两者都以pdf的形式呈现，而没有简易版的网页帮助，因此要查找相关API其实还挺麻烦的。
 * [^7]给出了大量应用加速的例子，算是HLS的高阶应用教程
 * [^8]收录了大量FPGA的学习资料，上述很多链接也从该项目中获取
 
@@ -583,6 +620,7 @@ INFO: [SCHED 204-11] Finished scheduling.
 [^2]: Thierry Moreau, [UW CSE548](https://courses.cs.washington.edu/courses/cse548/17sp/) [Lab 3: Custom Acceleration with FPGAs](https://github.com/uwsampa/cse548-labs), Spring 2017
 [^3]: Zhiru Zhang, [Cornell ECE 5775](http://www.csl.cornell.edu/courses/ece5775/schedule.html): High-Level Digital Design Automation, Fall 2018
 [^4]: [SDAccel HLS Pragmas](https://www.xilinx.com/html_docs/xilinx2018_3/sdaccel_doc/hls-pragmas-okr1504034364623.html#okr1504034364623)
+[^9]: [Xilinx SDAccel Development Environment Help for 2018.2 XDF](https://www.xilinx.com/html_docs/xilinx2018_2_xdf/sdaccel_doc/index.html)
 [^5]: [Xilinx Vivado HLS User Guide](https://www.xilinx.com/support/documentation/sw_manuals/xilinx2017_1/ug902-vivado-high-level-synthesis.pdf)
 [^6]: [Xilinx Vivado HLS Tutorial](https://www.xilinx.com/support/documentation/sw_manuals/xilinx2017_1/ug871-vivado-high-level-synthesis-tutorial.pdf)
 [^7]: Ryan Kastner, Janarbek Matai, and Stephen Neuendorffer (UCSB), *[Parallel Programming for FPGAs](https://arxiv.org/abs/1805.03648)*, 2018
