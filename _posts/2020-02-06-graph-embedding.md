@@ -42,9 +42,9 @@ tags: [dl,graph]
 ## Graph Embedding
 放到图(graph)上来说也是类似的，考虑图中的边表相似关系，<u>如果两个结点之间的路径越短，则意味着这两个结点之间的相似度越高</u>。如果仅仅用邻接矩阵表示图的相邻关系的话，是很难看出结点之间的相似关系的（至多看到一度关系）。
 
-考虑图$G(V,E)$，在其基础上添加顶点的类别，则形成标注图(labeled graph)$G_L=(V,E,X_E,Y)$，其中$X_E\in\mathbb{r}^{|V|\times d}$为顶点嵌入，$Y\in\mathbb{r}^{|V|\times |Y|}$，$d$为一个小的隐含维数，$Y$为标签集。
-注意这种写法指$X$和$Y$均为**矩阵**，$X$一共有$|V|$行，每行对应一个顶点的特征向量，有$S$维；并且每个结点可能属于**多个类别**（指multi-label classification，而不是multi-class每个样本只归属一类别）。
-目标则是学习得到嵌入表示$X_E$，或者说映射$\Phi:E\mapsto X_E$，使得在低维的嵌入空间中，图结点有很好的**分布式连续表达**，能够很好保持图的邻接结构，即<u>结点向量间的距离能够衡量原图中的邻接关系强弱</u>。
+考虑图$G(V,E)$，在其基础上添加顶点的类别，则形成标注图(labeled graph)$G_L=(V,E,X_{em},Y)$，其中$X_{em}\in\mathbb{R}^{|V|\times d}$为顶点嵌入，$Y\in\mathbb{R}^{|V|\times |\mathcal{C}|}$，$d$为特征维数，$Y$为标签集。
+注意这种写法指$X$和$Y$均为**矩阵**，$X$一共有$|V|$行，每行对应一个顶点的特征向量，有$d$维；并且每个结点可能属于**多个类别**$\subset \mathcal{C}$。（指multi-label classification，而不是multi-class每个样本只归属一类别）。
+目标则是学习得到嵌入表示$X_{em}$，或者说映射$\Phi:V\mapsto X_{em}$，使得在低维的嵌入空间中，图结点有很好的**分布式连续表达**，能够很好保持图的邻接结构，即<u>结点向量间的距离能够衡量原图中的邻接关系强弱</u>。
 
 下图展现了一个2维图嵌入表示，可以看到如果图嵌入做得好，是能够很好保持原图结构的（该网络来源于著名的空手道俱乐部网络Karate network[^4]，并用力导向方法进行呈现，结点颜色则是依据modularity进行的社群检测）。
 ![karate](https://1.bp.blogspot.com/-hx5DlfIn7xk/XRJlD47Mv6I/AAAAAAAAEO4/o9ztIaCTz7Ie2eVEczhyGuciQPxV7JKFACLcBGAs/s640/Screenshot%2B2019-06-25%2Bat%2B11.11.05%2BAM.png)
