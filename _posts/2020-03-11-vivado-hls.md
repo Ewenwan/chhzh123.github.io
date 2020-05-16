@@ -8,8 +8,6 @@ tags: [hls]
 
 <!--more-->
 
-<font color="red">注意本文并未完结！！！</font>
-
 C-HLS可以简单理解为C/C++语言的扩展，即提供了一些硬件编译指示，从而使得高层的规范(specification)可以被映射到RTL层级的电路描述。
 
 ## 快速入门
@@ -535,12 +533,92 @@ INFO: [SCHED 204-11] Finished scheduling.
 
 ## C HLS pragma
 * `#pragma HLS pipeline II=<int>`
-* `#pragma HLS array_reshape variable=<name> <type> factor=<int> dim=<int>`
+* `#pragma HLS array_partition variable=<variable> <block, cyclic, complete> factor=<int> dim=<int>`
+* `#pragma HLS array_reshape variable=<variable> <block, cyclic, complete> factor=<int> dim=<int>`
+    * 区别参见[此文](https://www.xilinx.com/support/documentation/sw_manuals/xilinx2015_2/sdsoc_doc/topics/calling-coding-guidelines/concept_increasing_local_memory_bandwidth.html)
 * `#pragma HLS dataflow`
 * `#pragma HLS unroll factor=<N>`
 
+### HLS Video Library
+需要包含头文件`<hls_video.h>`，其中最有用的是LineBuffer和WindowBuffer。
+
+#### LineBuffer
+```cpp
+// hls::LineBuffer<rows, columns, type> variable;
+hls::LineBuffer<3,5,char> Buff_A;
+Buff_A.shift_pixels_down(2);
+Buff_A.insert_top_row(100,2);
+Value = Buff_A.getval(1,3); // 9
+```
+
+| Row   | Column 0 | Column 1 | Column 2 | Column 3 | Column 4 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| Row 0 | 1 | 2 | 3 | 4 | 5 |
+| Row 1 | 6 | 7 | 8 | 9 | 10 |
+| Row 2 | 11 | 12 | 13 | 14 | 15 |
+
+经过上述操作变成
+
+| Row   | Column 0 | Column 1 | Column 2 | Column 3 | Column 4 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| Row 0 | 1 | 2 | 100 | 4 | 5 |
+| Row 1 | 6 | 7 | 3 | 9 | 10 |
+| Row 2 | 11 | 12 | 8 | 14 | 15 |
+
+其他API包括
+* `shift_pixels_up()`
+* `shift_pixels_down()`
+* `insert_bottom_row()`
+* `insert_top_row()`
+* `getval(row,column)`
+
+#### WindowBuffer
+```cpp
+// hls::Window<row, column, type> variable;
+hls::Window<3,3,char> Buff_B;
+```
+* `shift_pixels_up()`
+* `shift_pixels_down()`
+* `shift_pixels_left()`
+* `shift_pixels_right()`
+* `insert_pixel(value,row,colum)`：直接覆盖
+* `insert_row()`
+* `insert_bottom_row()`
+* `insert_top_row()`
+* `insert_col()`
+* `insert_left_col()`
+* `insert_right_col()`
+* `getval(row, column)`
+
+| Column 0 | Column 1 | Column 2 | Row |
+| :--: | :--: | :--: | :--: |
+| 1 | 2 | 3 | Row 0 |
+| 6 | 7 | 8 | Row 1 |
+| 11 | 12 | 13 | Row 2 |
+
+经过`Buff_B.shift_pixels_up()`可得到
+
+| Column 0 | Column 1 | Column 2 | Row |
+| :--: | :--: | :--: | :--: |
+| 6 | 7 | 8 | Row 0 |
+| 11 | 12 | 13 | Row 1 |
+| New | New | New | Row 2 |
+
+可以看到这种模式对**卷积**的实现是非常高效的。
+
+经过`char C[3] = {50, 50, 50}; Buff_B.insert_row(C,1);`会得到
+
+| Column 0 | Column 1 | Column 2 | Row |
+| :--: | :--: | :--: | :--: |
+| 1 | 2 | 3 | Row 0 |
+| 50 | 50 | 50 | Row 1 |
+| 11 | 12 | 13 | Row 2 |
+
+可以看到WindowBuffer通常都是对一整块内存进行操作，而LineBuffer更多针对单一元素。
+
 ## 数据类型
 任意精度整数(Arbitrary Precision, AP)，具体实现可参见[HLS Arbitrary Precision Types](https://github.com/Xilinx/HLS_arbitrary_Precision_Types)，其实都是C++的模板类。
+
 ### 整数
 * `#include "ap_int.h"`
 * `ap_int`有符号，`ap_uint`无符号
