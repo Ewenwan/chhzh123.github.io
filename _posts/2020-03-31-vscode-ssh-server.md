@@ -36,7 +36,13 @@ ssh-keygen -t rsa -b 2048
 
 在客户端的VS Code安装[Remote - SSH](vscode:extension/ms-vscode-remote.remote-ssh)的插件。
 
-在客户端的VS Code按F1，选择`Remote-SSH: Connect to Host`，输入`user@hostname`，其中`user`是你连接远端服务器所用的用户名，`hostname`是服务器的IP地址。
+在客户端的VS Code按F1，选择`Remote-SSH: Connect to Host`，输入`user@hostname`，其中`user`是你连接远端服务器所用的用户名，`hostname`是服务器的IP地址。最好人工修改一下`.ssh/config`文件
+```
+Host # 主机名，任意
+  HostName # IP地址
+  User # 用户名
+  Port # 端口号
+```
 
 连接上后，VS Code会自动配置服务器端环境，默认会在服务器端下载并安装。如果你需要在本机下载好后再传送过去，则需要设置`remote.SSH.allowLocalServerDownload`（在文件->首选项->设置中），详情可参见[该文](https://code.visualstudio.com/docs/remote/faq#_what-are-the-connectivity-requirements-for-vs-code-server)。
 
