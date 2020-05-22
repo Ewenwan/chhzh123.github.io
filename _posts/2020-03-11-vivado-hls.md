@@ -682,6 +682,24 @@ hls::Window<3,3,char> Buff_B;
 * 当外层循环用了`pipeline`或者`unroll`时，内层循环默认展开
 * HLS默认优化面积，即用最小的资源实现目标（串行架构），因此时延可能非常慢，吞吐率低
 
+## 编译综合模式
+* csim：C语言层面进行模拟
+* csyn：C综合生成RTL代码
+* cosim：在RTL层进行模拟，与C结果输出进行比对
+* impl：将RTL打包成IP核
+
+对应的Tcl如下
+```bash
+# Simulate the C++ design
+csim_design
+# Synthesize the design
+csynth_design
+# Co-simulate the design
+cosim_design
+# Implement the design
+export_design -flow impl
+```
+
 ## 参考资料说明
 本文主要参照以下资料进行整理，特别向这些课程/书籍/资料的作者和老师致以感谢。
 
