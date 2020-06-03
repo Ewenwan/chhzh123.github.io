@@ -216,6 +216,7 @@ Python包，功能强大，不过我主要用来画折线图、柱形图；语�
 当时入深度学习坑时选择TF，折腾了很久连它语法都没搞清楚，对初学者非常不友善，于是就此放弃
 * [Pytorch](https://pytorch.org/)<br/>
 原生Python语法，动态图，部署网络非常方便
+	* CUDA 10.2[下载](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=1804&target_type=deblocal)及[安装](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html)，注意要先[卸载旧版本](https://askubuntu.com/questions/530043/removing-nvidia-cuda-toolkit-and-installing-new-one)
 * [Visdom](https://github.com/facebookresearch/visdom)<br/>
 Pytorch对应的可视化工具，界面还可以接受，但目前还不够完善
 * [Sklearn](https://scikit-learn.org/)：机器学习
