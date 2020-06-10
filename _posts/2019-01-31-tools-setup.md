@@ -85,7 +85,7 @@ vim /etc/proxychains.conf
 # change socks4 127.0.0.1 9095 to
 socks5 127.0.0.1 1080
 
-proxychain git clone ...
+proxychains git clone ...
 ```
 
 ## 文本编辑器
