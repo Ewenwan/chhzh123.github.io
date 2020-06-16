@@ -13,7 +13,7 @@ tag: [summary, parallel]
 ![fork-join](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Fork_join.svg/400px-Fork_join.svg.png)
 注意这里fork的东西是任务(task)或纤程(fiber/lightweight thread)，而不是线程
 
-## API
+## 基本环境变量
 OpenMP提供了三种API
 * 编译指示(directive)：`#pragma omp <directive-name> [clause,...]`
 * 运行时库例程(routine)
@@ -23,10 +23,14 @@ OpenMP提供了三种API
 * `omp_get_thread_num()`：线程id
 * `omp_get/set_num_procs`：使用的物理核数目
 * `omp_get/set_num_threads`：使用的线程数目
+    * 没有指明时默认使用`OMP_NUM_THREADS`作为环境变量
+
+## 并行区域
 * `#pragma omp parallel for`：循环内不能含跳转、跳出指令，且循环次数应确定
     - 如果仅仅是`parallel`（SPMD编程模型），则循环只是被简单拷贝，循环体执行多次
     - 如果是`parallel for`，则会触发调度器，内层循环不会被拷贝
     - 对于每一个实例都会产生一个fork/join，希望能够最大化一次的执行量（尽可能对较外层循环做并行）
+    - OpenMP默认关闭嵌套，需要用`omp_set_nested(1)`打开
 * `#pragma omp ... private (<variable list>)`：将变量声明为私有变量
     - 每个线程都有这个私有变量的拷贝
     - 不可使用先前全局定义的值，也不能再给全局该值赋值
@@ -54,6 +58,13 @@ if (tid == 0) {
 #pragma omp single nowait
 ```
 
+语法限制
+* 不能使用`!=`作为循环终止判断条件
+    * 不可`for(int i = 0; i != 8; ++i)`
+* 循环必须单入口单出口
+    * 不能使用break、goto等跳转语句
+
+## 临界区
 * `sections`和`section`：
     - `sections`作用域内所有的`section`都可以并行执行
     - 不同`section`可以被不同线程执行，一个线程可以执行多个`section`
@@ -61,6 +72,7 @@ if (tid == 0) {
     - 每一个list中变量依据op被创建且初始化
     - 所有的拷贝都被线程**局部**更新
     - 最后所有局部拷贝的值经过op操作归并为一个**共享**的值
+    - `+,-,*,&,|,&&,||`
 
 ```cpp
 // Example 1
@@ -107,6 +119,10 @@ float sum(const float *a, size_t n)
 ```
 
 ## 竞态与同步
+数据依赖性
+* 循环迭代相关(loop-carried dependence)：`a[i] = b[i+1]`
+* 非循环迭代相关(loop-independent dependence)：`a[i] = b[i]`
+
 竞态(RC)问题出现的原因：多个线程访问同一共享变量的不确定性
 
 避免RC问题的方法：
@@ -139,10 +155,10 @@ flag = 1;
 // atomic保护：加法和赋值
 ```
 
-OpenMP中的同步机制
-* Barrier
-* Mutual Exclusion
-* Memory fence：`flush`
+## 循环调度
+* `schedule(static[,chunk])`：相当于按照chunk大小循环展开，round-robin，低开销，但会导致负载不均
+* `schedule(dynamic[,chunk])`：也是按chunk大小循环展开，高开销，但能负载均衡（work-stealing的感觉）
+* `schedule(guided[,chunk])`：指导性的启发式自调度方法。开始时每个线程会分配到较大的迭代块，之后分配到的迭代块会逐渐递减。迭代块的大小会按指数级下降到指定的chunk大小，如果没有指定chunk参数，那么迭代块大小最小会降到1。
 
 ## 优化方法
 ### 衡量指标
@@ -159,11 +175,6 @@ OpenMP中的同步机制
 
 一个多核程序具有好的局部性是指一个核的内存写不会与其他核的进行交互。
 比如说123123123就不是好的分配方式，而111222333就是较好的局部性。
-
-### 循环调度
-* `schedule(static[,chunk])`：相当于按照chunk大小循环展开，round-robin，低开销，但会导致负载不均
-* `schedule(dynamic[,chunk])`：也是按chunk大小循环展开，高开销，但能负载均衡（work-stealing的感觉）
-* `schedule(guided[,chunk])`：指导性的启发式自调度方法。开始时每个线程会分配到较大的迭代块，之后分配到的迭代块会逐渐递减。迭代块的大小会按指数级下降到指定的chunk大小，如果没有指定chunk参数，那么迭代块大小最小会降到1。
 
 ### 循环变换
 * 裂变(fission)：单一循环有跨循环依赖，将循环划分为多个，新的循环能够并行执行
