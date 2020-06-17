@@ -53,10 +53,11 @@ tag: [research, tools]
 	* 多终端多平台
 
 ## WSL配置
-安装在Microsoft Store搜索Ubuntu即可，注意安装后打开前需要先在控制面板-程序和功能-启用或关闭Windows功能中将"适用于Linux的Windows子系统"打开并重启。
+安装在Microsoft Store搜索Ubuntu即可，注意安装后打开前需要先在控制面板-程序和功能-启用或关闭Windows功能中将"适用于Linux的Windows子系统"打开并重启。详细安装教程可见Microsoft[官网](https://docs.microsoft.com/en-us/windows/wsl/install-win10)。其中也有说明如何升级至WSL2，需要先升级Windows版本至2004(Build 19041)，然后才有办法启用。WSL1和WSL2的比较见[此文](https://docs.microsoft.com/en-us/windows/wsl/compare-versions)。
 
-参照[清华镜像站](https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/)换源。
 ```bash
+# 参照清华镜像站换源
+# https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/
 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
 sudo vim /etc/apt/sources.list
 
@@ -76,17 +77,54 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted 
 
 sudo apt-get update
 sudo apt-get upgrade
-```
 
-加速git
-```bash
+## install gcc compiler
+sudo apt install build-essential
+gcc --version
+
+## install pip
+sudo apt install python3-pip
+
+## python virtualenv
+which python3
+sudo apt install python3-virtualenv
+virtualenv -p /home/.../python3 pydev
+source pydev/bin/activate
+python -V
+deactivate
+
+# pip change source
+# ~/.pip/pip.conf
+[global]
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+
+# graphics apps (open Xming in Windows first)
+sudo apt-get install x11-apps
+export DISPLAY=:0 # WSL1
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0 # WSL2, need to set `-ac` for X server
+# https://github.com/microsoft/WSL/issues/4106
+xeyes
+# desktop
+sudo apt-get install xfce4-terminal
+sudo apt-get install xfce4
+startxfce4
+
+## accelerate git
 sudo apt-get install proxychains
 vim /etc/proxychains.conf
 # change socks4 127.0.0.1 9095 to
 socks5 127.0.0.1 1080
 
 proxychains git clone ...
+
+# mount external storage
+sudo mount -t drvfs G: /mnt/g
+sudo unmount /mnt/g
 ```
+
+可能出现的问题
+* `dpkg: error processing package libc6:amd64 (--configure)`，参见[此文](https://stackoverflow.com/questions/60944370/stuck-with-apt-fix-broken-install-libc6amd64-package-post-installation)
+* `[WSL1] [glibc] sleep: cannot read realtime clock: Invalid argument`，这是WSL1的bug，需[重新编译sleep](https://github.com/microsoft/WSL/issues/4898)
 
 ## 文本编辑器
 目前使用主要使用两个文本编辑器，Sublime Text用来做一些轻量级的工作（因为打开速度实在是快），VS Code用来做一些大一点的项目。
