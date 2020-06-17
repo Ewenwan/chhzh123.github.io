@@ -700,6 +700,66 @@ cosim_design
 export_design -flow impl
 ```
 
+## 工具安装
+* Xilinx的[下载页面](https://www.xilinx.com/support/download.html)下载最新版本的Vivado Design Suite - HLx Edition（最新版v2020的安装包已经达到了35.5G，而且必须全部下载并安装，Xilinx并不提供单独安装HLS的方式）
+
+如果要在WSL内使用`vivado_hls`，其实还是相当麻烦的。之前通过大量的尝试，才得到了一个比较好的解决方案。由于Vivado在Linux下的安装一定要图形界面，因此尝试在WSL内安装了图形桌面后，调用`xsetup`安装，但似乎安装界面Java虚拟机的大量解释开销，一直都没法进入正常的安装界面，故此方法最后还是放弃。
+
+最后试出来的方法是在Windows环境下安装好Vivado套件后，在WSL内通过两层封装进行调用。
+
+首先需要拷贝一份`Xilinx\Vivado\2020.1\bin\vivado_hls.bat`（不妨命名拷贝为`my_vivado_hls.bat`），然后修改文件内容。将弹出新窗口的`%COMSPEC%`指令移除，直接换成`vivado_hls`的调用。完整的bat文件如下，这里可以通过`%1 %2`进行命令行指令的传递。
+```bat
+@echo off
+
+set PATH=%~dp0;%PATH%;%~dp0..\tps\win64\msys64\usr\bin;%~dp0..\tps\win64\msys64\mingw64\bin
+
+set AUTOESL_HOME=%~dp0..
+set VIVADO_HLS_HOME=%~dp0..
+
+echo ===============================
+echo == Vivado HLS Command Prompt 
+echo == Available commands:
+echo == vivado_hls,apcc,gcc,g++,make
+echo ===============================
+
+
+set RDI_OS_ARCH=32
+if [%PROCESSOR_ARCHITECTURE%] == [x86] (
+  if defined PROCESSOR_ARCHITEW6432 (
+    set RDI_OS_ARCH=64
+  )
+) else (
+  if defined PROCESSOR_ARCHITECTURE (
+    set RDI_OS_ARCH=64
+  )
+)
+ 
+if not "%RDI_OS_ARCH%" == "64" goto _NotX64
+set COMSPEC=%WINDIR%\SysWOW64\cmd.exe
+rem %COMSPEC% 
+vivado_hls %1 %2
+goto EOF
+
+:_NotX64
+set COMSPEC=%WINDIR%\System32\cmd.exe
+rem %COMSPEC% /c %0 %1 %2 %3 %4 %5 %6 %7 %8 %9 
+vivado_hls %1 %2
+ 
+:EOF
+```
+
+这是Windows端的封装，这样弄完后就可以直接在PowerShell里通过`.\my_vivado_hls -f run.tcl`执行综合过程，而不会弹出新的窗口。
+
+至于WSL端的封装则是创建一个bash文件，里面通过`cmd.exe`执行上述指令，脚本如下。
+```bash
+#!/bin/bash
+cmd.exe /c <path_to_xilinx>/Xilinx/Vivado/2020.1/bin/my_vivado_hls $1 $2
+```
+
+这里同样通过`$1 $2`传递参数，同时将此脚本保存为`vivado_hls`，假装它就是一个可执行文件，同时放在可被Linux的PATH搜索到的地方。这样执行`which vivado_hls`也能正常执行（这是`alias`所做不到的）。
+
+最终就可以愉快地在WSL里调用`vivado_hls -f run.tcl`进行综合啦！
+
 ## 参考资料说明
 本文主要参照以下资料进行整理，特别向这些课程/书籍/资料的作者和老师致以感谢。
 
