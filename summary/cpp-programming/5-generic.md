@@ -39,6 +39,41 @@ bool isShorter(const string &s1, const string &s2)
 stable_sort(words.begin(),words.end(),isShorter);
 ```
 
+生成全排列
+```cpp
+/*
+default (1)	
+template <class BidirectionalIterator>
+  bool next_permutation (BidirectionalIterator first,
+                         BidirectionalIterator last);
+custom (2)	
+template <class BidirectionalIterator, class Compare>
+  bool next_permutation (BidirectionalIterator first,
+                         BidirectionalIterator last, Compare comp);
+Binary function that accepts two arguments of the type pointed by BidirectionalIterator, and returns a value convertible to bool. The value returned indicates whether the first argument is considered to go before the second in the specific strict weak ordering it defines.
+The function shall not modify any of its arguments.
+This can either be a function pointer or a function object.
+*/
+// next_permutation example
+#include <iostream>     // std::cout
+#include <algorithm>    // std::next_permutation, std::sort
+
+int main () {
+  int myints[] = {1,2,3};
+
+  std::sort (myints,myints+3);
+
+  std::cout << "The 3! possible permutations with 3 elements:\n";
+  do {
+    std::cout << myints[0] << ' ' << myints[1] << ' ' << myints[2] << '\n';
+  } while ( std::next_permutation(myints,myints+3) );
+
+  std::cout << "After loop: " << myints[0] << ' ' << myints[1] << ' ' << myints[2] << '\n';
+
+  return 0;
+}
+```
+
 ## lambda表达式
 * `[capture list](parameter list) -> return type { function body }`
 * `find_if(words.begin(),words.end(),[sz](const string &a) { return a.size() >= sz; });`返回一个迭代器，指向第一个长度不小于给定参数sz的元素

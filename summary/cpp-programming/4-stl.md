@@ -55,7 +55,7 @@ for (auto &c : s) // c is a reference!
 cout << s << endl;
 
 // Substring
-s.substr(10,15);
+s.substr(10,15); // start from 10, find next 15 characters
 s.find('i', 0); // start from index 0
 // if fail, return string::nops
 s.rfind('s',string::nops); // start from the right
@@ -305,6 +305,7 @@ lst.erase_after(b,e)
 
 ```cpp
 set<int> s;
+set<int> s(v.begin(),v.end());
 s.insert(k)
 s.find(k) != s.end()
 s.count(k)

@@ -539,6 +539,30 @@ INFO: [SCHED 204-11] Finished scheduling.
 * `#pragma HLS dataflow`
 * `#pragma HLS unroll factor=<N>`
 
+### pipeline
+详情见[UG P331](https://www.xilinx.com/support/documentation/sw_manuals/xilinx2014_1/ug902-vivado-high-level-synthesis.pdf)
+```cpp
+dout_t loop_pipeline(din_t A[N]) {
+  int i, j;
+  static dout_t acc;
+  LOOP_I: for(i = 0; i < 20; i++){
+    LOOP_J: for(j = 0; j < 20; j++){
+      acc += A[i] * j;
+    }
+  }
+  return acc;
+}
+```
+
+* 如果不加`pipeline`，那么全部代码串行执行
+    * 延迟为$20\times 20\times T_{mac}$
+* 如果对内层循环添加`pipeline`，则`LOOP_J`在硬件上只有1份拷贝（单一的乘法器）
+    * 延迟为$(20\times 20-1)\times II + T_{mac}$，若II(initial interval)为1，则总时延大约是400 cycles（相当于乘法的延迟被掩盖了），只需小于100 LUTs和寄存器
+* 如果对外层循环添加`pipeline`，则`LOOP_J`会被`unroll`产生20份拷贝，会有20个乘法器和20个数组访问需要被调度
+    * 延迟只有$(20-1)\times II + T_{mac}$ cycles（如果乘法器能够同时完成操作）
+* 如果对整个函数进行`pipeline`，则一共产生数千个LUT和寄存器
+    * 延迟只有10（20个双端口访问），但需要大量硬件资源
+
 ### HLS Video Library
 需要包含头文件`<hls_video.h>`，其中最有用的是LineBuffer和WindowBuffer。
 
