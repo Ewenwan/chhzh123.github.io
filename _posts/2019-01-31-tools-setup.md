@@ -196,6 +196,20 @@ Sublime的重度用户，每天跟它打交道的时间估计超过10个小时�
 下载解压即用，有网格，但自动吸附格点，使用极其麻烦（要记一堆快捷键，有种CAD的感觉），但对LaTeX的支持非常好
 * [TikZ-cd](http://ctan.math.washington.edu/tex-archive/graphics/pgf/contrib/tikz-cd/tikz-cd-doc.pdf)<br/>
 刚才提到的LaTeX包，用`&`即可实现对齐，绘制简单的流程图非常方便
+* [Doxygen](https://www.doxygen.nl/index.html)
+	* `doxygen -g`生成初始的配置文件，然后可以修改下列常用项
+	```python
+	PROJECT_NAME        = "Test"
+	OUTPUT_DIRECTORY    = doc/
+	RECURSIVE           = YES
+	UML_LOOK            = YES
+	HAVE_DOT            = YES
+	CALL_GRAPH          = YES
+	CALLER_GRAPH        = YES
+	SOURCE_BROWSER      = YES
+	GENERATE_TREEVIEW   = ALL
+	```
+	* `doxygen Doxyfile`即可生成HTML和TeX文档。
 
 ### 有限状态机
 * TikZ里有automata的package
