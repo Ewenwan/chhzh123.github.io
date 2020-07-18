@@ -563,6 +563,54 @@ dout_t loop_pipeline(din_t A[N]) {
 * 如果对整个函数进行`pipeline`，则一共产生数千个LUT和寄存器
     * 延迟只有10（20个双端口访问），但需要大量硬件资源
 
+### HLS Stream Library
+Vivado HLS提供了`hls::stream<>`的模板类（引入头文件`<hls_stream.h>`），表现为无限长度的FIFO（无需定义大小，在硬件实现上是深度为1），数据只能从队列中读出来一次，顶层接口用`ap_fifo`实现。
+
+做C++函数传递时，只能通过传引用方式传递，如`&my_stream`。
+
+如果`hls::stream`用于任务之间的数据传递，那么需要考虑将这些任务实现在一个`DATAFLOW`区域内。
+如果在非数据流区域，则任务会被**一个一个串行**完成，也就是说FIFO应该足够大去保存其中间结果，否则会报错。
+```
+ERROR: [XFORM 203-733] An internal stream xxxx.xxxx.V.user.V' with default size is
+used in a non-dataflow region, which may result in deadlock. Please consider to
+resize the stream using the directive 'set_directive_stream' or the 'HLS stream'
+pragma.
+```
+
+默认`hls::stream`的读写都是阻塞的(blocked)，也就是当FIFO空时想读，FIFO满时想写会阻塞；如果是非阻塞读写则会返回真值示意是否成功。
+```cpp
+// Usage of void write(const T & wdata)
+hls::stream<int> my_stream;
+int src_var = 42;
+my_stream.write(src_var);
+// my_stream << src_var;
+
+// Usage of void read(T &rdata)
+hls::stream<int> my_stream;
+int dst_var;
+my_stream.read(dst_var);
+// int dst_var = my_stream.read();
+// my_stream >> dst_var;
+
+// non-blocking read/write
+my_stream.read_nb
+my_stream.write_nb
+
+// full/empty
+my_stream.full()
+my_stream.empty()
+```
+
+下列编译指示可以用于定制化流数据的类型
+```cpp
+#pragma HLS stream variable=<variable> depth=<int> dim=<int>
+```
+
+#### Reference
+* [hls::stream Class](https://systemviewinc.com/docs/2018.2/usage/hls_stream_class.html)
+* [SDAccel pragma HLS stream](https://www.xilinx.com/html_docs/xilinx2017_4/sdaccel_doc/ylh1504034366220.html)
+* [HLS Study Notes](https://github.com/Inference-and-Optimization/High-Level-Synthesis-Study-Notes/blob/master/Xilinx/UG902/Chapter-2-High-Level-Synthesis-C-Libraries/CH2.2-HLS-Stream-Library.md)
+
 ### HLS Video Library
 需要包含头文件`<hls_video.h>`，其中最有用的是LineBuffer和WindowBuffer。
 
