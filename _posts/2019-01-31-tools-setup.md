@@ -93,6 +93,11 @@ source pydev/bin/activate
 python -V
 deactivate
 
+## conda
+conda create -n pydev python=python3.6
+activate pydev
+deactivate
+
 # pip change source
 # ~/.pip/pip.conf
 [global]
@@ -120,6 +125,16 @@ proxychains git clone ...
 # mount external storage
 sudo mount -t drvfs G: /mnt/g
 sudo unmount /mnt/g
+
+# change gcc version
+sudo update-alternatives --config gcc
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.6 50
+
+# extract zip
+tar -xzvf xxx.tar.gz
+tar -xvf xxx.tar
+xz -d xxx.tar.xz
+unzip xxx.zip
 ```
 
 可能出现的问题
