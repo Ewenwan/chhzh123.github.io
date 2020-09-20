@@ -534,6 +534,8 @@ INFO: [SCHED 204-11] Finished scheduling.
 ## C HLS pragma
 * `#pragma HLS pipeline II=<int>`
 * `#pragma HLS array_partition variable=<variable> <block, cyclic, complete> factor=<int> dim=<int>`
+    * Partition的效果可见[米兰理工大学的视频](https://www.coursera.org/lecture/fpga-sdaccel-theory/kernel-optimization-array-partitioning-2-2-kgxOM)
+    * 可以对同个数组的不同维度采用多个partition
 * `#pragma HLS array_reshape variable=<variable> <block, cyclic, complete> factor=<int> dim=<int>`
     * 区别参见[此文](https://www.xilinx.com/support/documentation/sw_manuals/xilinx2015_2/sdsoc_doc/topics/calling-coding-guidelines/concept_increasing_local_memory_bandwidth.html)
 * `#pragma HLS dataflow`
@@ -610,6 +612,11 @@ my_stream.empty()
 * [hls::stream Class](https://systemviewinc.com/docs/2018.2/usage/hls_stream_class.html)
 * [SDAccel pragma HLS stream](https://www.xilinx.com/html_docs/xilinx2017_4/sdaccel_doc/ylh1504034366220.html)
 * [HLS Study Notes](https://github.com/Inference-and-Optimization/High-Level-Synthesis-Study-Notes/blob/master/Xilinx/UG902/Chapter-2-High-Level-Synthesis-C-Libraries/CH2.2-HLS-Stream-Library.md)
+
+#### Issues
+* Achieving II=1 for streaming an array, <https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Achieving-II-1-for-streaming-an-array/m-p/1072414#M19669>
+* The entries are not accessed in sequential order, <https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Cycle-synthesis-error-in-Vivado-HLS-2018-2-amp-3/m-p/951573>
+* Estimating stream depth, <https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Estimating-HLS-Stream-Depth/td-p/658115>
 
 ### HLS Video Library
 需要包含头文件`<hls_video.h>`，其中最有用的是LineBuffer和WindowBuffer。
@@ -775,6 +782,45 @@ export_design -flow impl
 ## 工具安装
 * Xilinx的[下载页面](https://www.xilinx.com/support/download.html)下载最新版本的Vivado Design Suite - HLx Edition（最新版v2020的安装包已经达到了35.5G，而且必须全部下载并安装，Xilinx并不提供单独安装HLS的方式）
 
+### Vitis
+Vitis是Xilinx新推出的一个更高层次的编程框架，内嵌Vivado HLS以及后端的Runtime，在命令行下的编译执行操作要比原来的Vivado方便很多。
+
+下载好上述完整安装包后，双击`xsetup`可以运行安装程序，注意这里需要有图形化界面及Java支持。之后的安装选项即可选择Vitis，默认安装在`/tools/Xilinx/Vitis/2020.1`文件夹下。安装好后执行`settings64.sh`可以自动配置好环境变量。
+
+如果需要下载Runtime (XRT)，可在[这个页面](https://www.xilinx.com/products/design-tools/vitis/xrt.html#gettingstarted)下载。
+
+Alveo加速卡的相关信息可见[官网](https://www.xilinx.com/products/boards-and-kits/alveo/u250.html#gettingStarted)，以及[Nimbix](https://www.nimbix.net/alveo)的FPGA云服务。
+
+参考代码库：
+1. [HLx_Examples](https://github.com/Xilinx/HLx_Examples)：有完整的测试样例和tcl执行代码
+2. [FlexCNN](https://github.com/UCLA-VAST/FlexCNN)：可以找到CNN各个layer的HLS实现
+
+### 执行问题
+#### csyn
+Vivado HLS[不提供并行编译选项](https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Multi-core-HLS-compiler-option/td-p/398659)，因此综合大型代码耗费的时间会比较长。但如果硬件设计做得好（如流水线添加合理，数组划分正确），即便是大型代码也可以在10分钟内综合完成。也就是说，如果某个design综合的时间过长，那一定是优化没做好。
+
+一些综合中出现的问题可能可在[这个博客](https://fling.seas.upenn.edu/~giesen/dynamic/wordpress/vivado-hls-learnings/)中找到。
+
+#### cosim
+在vivado_hls cosim时可能会出现以下[问题](https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Vivado-HLS-2018-2-Cosim-Failure-MPFR-Messages/td-p/944943)。
+```
+/home/jfrye/sw/Xilinx/Vivado/2018.2/include/mpfr.h:244:2: error: ‘__gmp_const’ does not name a type
+__MPFR_DECLSPEC __gmp_const char * mpfr_get_version _MPFR_PROTO ((void));
+^~~~~~~~~~~
+/home/jfrye/sw/Xilinx/Vivado/2018.2/include/mpfr.h:245:2: error: ‘__gmp_const’ does not name a type
+__MPFR_DECLSPEC __gmp_const char * mpfr_get_patches _MPFR_PROTO ((void));
+```
+这是Xilinx内部使用的头文件与系统头文件冲突导致，可以通过修改`include`内的文件来修复。
+
+修改`/tools/Xilinx/Vivado/2020.1/include/mpfr.h`，将系统导入头文件`<gmp.h>`，改成当前文件夹导入`"gmp.h"`。
+```cpp
+/* Check if GMP is included, and try to include it (Works with local GMP) */
+#ifndef __GMP_H__
+# include "gmp.h"
+#endif
+```
+
+### Windows端调用
 如果要在WSL内使用`vivado_hls`，其实还是相当麻烦的。之前通过大量的尝试，才得到了一个比较好的解决方案。由于Vivado在Linux下的安装一定要图形界面，因此尝试在WSL内安装了图形桌面后，调用`xsetup`安装，但似乎安装界面Java虚拟机的大量解释开销，一直都没法进入正常的安装界面，故此方法最后还是放弃。
 
 最后试出来的方法是在Windows环境下安装好Vivado套件后，在WSL内通过两层封装进行调用。
