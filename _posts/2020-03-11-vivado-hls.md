@@ -802,6 +802,8 @@ Vivado HLS[不提供并行编译选项](https://forums.xilinx.com/t5/High-Level-
 一些综合中出现的问题可能可在[这个博客](https://fling.seas.upenn.edu/~giesen/dynamic/wordpress/vivado-hls-learnings/)中找到。
 
 #### cosim
+在编译综合大型电路设计之前，一定要先跑csim和cosim验证结果正确性，之后才生成bitstream上板。
+
 在vivado_hls cosim时可能会出现以下[问题](https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Vivado-HLS-2018-2-Cosim-Failure-MPFR-Messages/td-p/944943)。
 ```
 /home/jfrye/sw/Xilinx/Vivado/2018.2/include/mpfr.h:244:2: error: ‘__gmp_const’ does not name a type
@@ -819,6 +821,15 @@ __MPFR_DECLSPEC __gmp_const char * mpfr_get_patches _MPFR_PROTO ((void));
 # include "gmp.h"
 #endif
 ```
+
+如果还是不行，则需要在每个源文件头顶添加下面语句，参见[此问题](https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Vivado-2015-3-HLS-Bug-gmp-h/td-p/661141)解决方案。
+```cpp
+#include <gmp.h>
+#define __gmp_const const
+```
+同时需要在`.tcl`文件中添加合理的编译flag，参见[此回答](https://forums.xilinx.com/t5/Vivado/HLS2019-1%E8%B0%83%E7%94%A8xfopencv/td-p/1028480)。
+
+通常，如果cosim的结果很久没有出来，或者**百分比超过100%**，那这个设计就是有问题的，可以提前手动终止，参见[此回答](https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/How-to-interpret-the-C-RTL-sim-progress-message/m-p/814466)。
 
 ### Windows端调用
 如果要在WSL内使用`vivado_hls`，其实还是相当麻烦的。之前通过大量的尝试，才得到了一个比较好的解决方案。由于Vivado在Linux下的安装一定要图形界面，因此尝试在WSL内安装了图形桌面后，调用`xsetup`安装，但似乎安装界面Java虚拟机的大量解释开销，一直都没法进入正常的安装界面，故此方法最后还是放弃。
