@@ -529,7 +529,7 @@ INFO: [SCHED 204-11] Finished scheduling.
 ```
 </details>
 
-当然在报告中还有更加详细的内存、资源占用信息，这里就没有再贴出来。
+当然在报告中还有更加详细的内存、资源（LUT、FF、BRAM、DSP）占用信息，这里就没有再贴出来。但需要注意HLS**对于资源的估计相当不精确**，与后端综合后的结果相比可能有非常大的差异。
 
 ## C HLS pragma
 * `#pragma HLS pipeline II=<int>`
@@ -571,7 +571,7 @@ Vivado HLS提供了`hls::stream<>`的模板类（引入头文件`<hls_stream.h>`
 做C++函数传递时，只能通过传引用方式传递，如`&my_stream`。
 
 如果`hls::stream`用于任务之间的数据传递，那么需要考虑将这些任务实现在一个`DATAFLOW`区域内。
-如果在非数据流区域，则任务会被**一个一个串行**完成，也就是说FIFO应该足够大去保存其中间结果，否则会报错。
+如果在非数据流区域，则任务会被**一个一个串行**完成，也就是说FIFO应该足够大去保存其中间结果，否则会报错（注意如果没有采用显式function，那经过loop unrolling，Vivado HLS依然会辨别不出是否为数据流区域，因此最好还是用函数声明）。
 ```
 ERROR: [XFORM 203-733] An internal stream xxxx.xxxx.V.user.V' with default size is
 used in a non-dataflow region, which may result in deadlock. Please consider to
@@ -608,6 +608,8 @@ my_stream.empty()
 #pragma HLS stream variable=<variable> depth=<int> dim=<int>
 ```
 
+注意需要保证FIFO的读写次数一致，使用`hls::stream`可以在csim时就发现问题所在，而采用传统的数组则没有办法发现读写次数不一致的问题，这将导致后端cosim死循环，硬件执行deadlock等。
+
 #### Reference
 * [hls::stream Class](https://systemviewinc.com/docs/2018.2/usage/hls_stream_class.html)
 * [SDAccel pragma HLS stream](https://www.xilinx.com/html_docs/xilinx2017_4/sdaccel_doc/ylh1504034366220.html)
@@ -617,6 +619,16 @@ my_stream.empty()
 * Achieving II=1 for streaming an array, <https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Achieving-II-1-for-streaming-an-array/m-p/1072414#M19669>
 * The entries are not accessed in sequential order, <https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Cycle-synthesis-error-in-Vivado-HLS-2018-2-amp-3/m-p/951573>
 * Estimating stream depth, <https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Estimating-HLS-Stream-Depth/td-p/658115>
+* 如果用了`INTERFACE`，则需要保证位宽是8的倍数
+    ```cpp
+    void test(ap_uint<1> A[10][10])
+    #pragma HLS INTERFACE m_axi port=A offset=slave bundle=gmem0
+    #pragma HLS INTERFACE s_axilite port=A bundle=control
+    ```
+    ```
+    ERROR: [v++ 203-801] Interface parameter bitwidth 'A.V' (/home/hc2238/heterocl-demo/s1-project/kernel.cpp:15:1)
+    must be a multiple of 8 for AXI4 master port.
+    ```
 
 ### HLS Video Library
 需要包含头文件`<hls_video.h>`，其中最有用的是LineBuffer和WindowBuffer。
@@ -760,6 +772,7 @@ hls::Window<3,3,char> Buff_B;
 * 默认情况下，循环都不展开(rolled)
 * 当外层循环用了`pipeline`或者`unroll`时，内层循环默认展开
 * HLS默认优化面积，即用最小的资源实现目标（串行架构），因此时延可能非常慢，吞吐率低
+* 常量数组（分配在ROM上，默认相当于completely `array_partition`）需要声明为全局变量，否则作为局部变量会非常慢
 
 ## 编译综合模式
 * csim：C语言层面进行模拟
@@ -787,7 +800,9 @@ Vitis是Xilinx新推出的一个更高层次的编程框架，内嵌Vivado HLS�
 
 下载好上述完整安装包后，双击`xsetup`可以运行安装程序，注意这里需要有图形化界面及Java支持。之后的安装选项即可选择Vitis，默认安装在`/tools/Xilinx/Vitis/2020.1`文件夹下。安装好后执行`settings64.sh`可以自动配置好环境变量。
 
-如果需要下载Runtime (XRT)，可在[这个页面](https://www.xilinx.com/products/design-tools/vitis/xrt.html#gettingstarted)下载。
+如果需要下载Runtime (XRT)，可在[这个页面](https://www.xilinx.com/products/design-tools/vitis/xrt.html#gettingstarted)下载。其中即包含了后端编译的运行脚本，可以直接编译生成比特流，然后通过OpenCL的编程界面上板。
+
+具体编程与之前的Vivado HLS不同在于其涉及到host-device的数据传输，因此需要添加`#pragma hls interface`，否则无法通过综合。
 
 Alveo加速卡的相关信息可见[官网](https://www.xilinx.com/products/boards-and-kits/alveo/u250.html#gettingStarted)，以及[Nimbix](https://www.nimbix.net/alveo)的FPGA云服务。
 
@@ -797,7 +812,7 @@ Alveo加速卡的相关信息可见[官网](https://www.xilinx.com/products/boar
 
 ### 执行问题
 #### csyn
-Vivado HLS[不提供并行编译选项](https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Multi-core-HLS-compiler-option/td-p/398659)，因此综合大型代码耗费的时间会比较长。但如果硬件设计做得好（如流水线添加合理，数组划分正确），即便是大型代码也可以在10分钟内综合完成。也就是说，如果某个design综合的时间过长，那一定是优化没做好。
+Vivado HLS[不提供并行编译选项](https://forums.xilinx.com/t5/High-Level-Synthesis-HLS/Multi-core-HLS-compiler-option/td-p/398659)，因此综合大型代码耗费的时间会比较长。但如果硬件设计做得好（如**流水线添加合理，数组划分正确**），即便是大型代码也可以在10分钟内综合完成。也就是说，如果某个design综合的时间过长，那一定是优化没做好。
 
 一些综合中出现的问题可能可在[这个博客](https://fling.seas.upenn.edu/~giesen/dynamic/wordpress/vivado-hls-learnings/)中找到。
 
