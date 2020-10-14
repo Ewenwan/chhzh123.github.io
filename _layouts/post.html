@@ -36,7 +36,7 @@ layout: default-old
               <a href="{{ site.baseurl }}{{ post.url }}">
                 {{ post.title }}
               </a>
-              <small>{{ post.date | date_to_string }}</small>
+              <small><font color="gray">{{ post.date | date_to_string }}</font></small>
             </h3>
           </div>
           {% assign maxRelatedCounter = maxRelatedCounter | plus: 1 %}
