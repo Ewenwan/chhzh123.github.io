@@ -109,8 +109,6 @@ sass:
 # Gems
 plugins:
   - jekyll-paginate
-  - jekyll-sitemap
-  # - jekyll-feed
 
 # feed
 # atom_feed:
