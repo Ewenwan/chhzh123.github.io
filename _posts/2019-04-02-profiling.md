@@ -13,7 +13,7 @@ tag: [tools]
 而实时监视器也可以算是一种性能分析器，都是用来进行性能分析(profiling)，只是返回的内容不同。
 
 Linux环境下GNU内置了一个性能分析器，称为gprof。
-有一个非常强的动态分析工具称为valgrind，在我校的vmatrix系统上也被用到，详情见[静态程序分析 补充（1）--Valgrind]({% post_url 2019-02-27-spa-extra-1 %})。
+有一个非常强的动态分析工具称为valgrind，在我校的vmatrix系统上也被用到，详情见[静态程序分析 补充（1）--Valgrind]({% post_url 2019-02-15-spa-ufmg %})。
 
 ## gprof
 gprof的使用和[gdb]({% post_url 2019-03-16-gdb %})一样简明易懂。
