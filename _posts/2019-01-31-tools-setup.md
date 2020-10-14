@@ -4,40 +4,68 @@ title: Tools Setup!
 tag: [research, tools]
 ---
 
-**工具是重要的！**这点其实很多老师都不会讲述。
+**工具是重要的！**这点其实很多老师都不会讲述，在我院开设的大量本科基础课上，老师也不会专门讲述**现代化工具**的使用。
 然而好用的用得顺手的工具可以使工作效率大大提升，不好用的工具虽然也可以用，但是会增加很多不必要的时间。
 
-最简单的例子是很多非计院的同学学了一整个学期代码（C++/Java），都还在**非常古老的**IDE上写程序（我说的是Dev(）。
-这当然可以写，但是常言道“优秀的程序员都是不用IDE的！”
-如果有更强大的工具可以让你事半功倍，何乐而不为呢？
+最简单的例子是很多非计院的同学学了一整个学期代码（C++/Java），都还在**非常古老的**IDE上写程序（e.g. Dev）。
+这当然可以写，但如果有更强大的工具可以让你事半功倍，何乐而不为呢？
 
-这篇文章列举/总结我目前所使用的一些工具作为参考，都是使用了很长时间，亲测比较好用。
+这篇文章列举/总结我目前所使用的一些工具作为参考，这些工具基本都使用了非常长的时间，亲测比较好用。
 
-（基于这点motivation，所以我在2019-2020年度开了门ToolsSeminar的研讨会，详细内容可见[这里](/seminar)。）
+（基于这点motivation，所以我在2019-2020年度开了门ToolsSeminar的研讨课，详细内容可见[这里](/seminar)。）
 
 <!--more-->
 
 ## 电脑与服务器
-* 手提电脑配置
-	- Intel i7 CPU (8核）+ GTX 1050 + 8G内存 + 256G SSD + 1T移动硬盘
-	- Windows 10 + Ubuntu 18.04 LTS (subsystem)
-* 腾讯云服务器：自己租的用来搞事情
+### 基本配置
+* 手提电脑
+	* Intel XPS15
+		- Intel Core i7 CPU (8核）+ GTX 1050 (4G) + 8G内存 + 256G SSD + 1T移动硬盘
+		- Windows 10 + Ubuntu 18.04 LTS (WSL1)
+		- 这台电脑在2020年5月把CPU烧了，花了1900RMB换了个CPU，不过可以明显感觉到速度下降（摩尔定律惹的祸！）以及电池不耐用
+		- 不过这台电脑还是承担了最初学习深度学习的使命，毕竟GTX 1050算是当时可以跑DL的起步显卡了
+	* 联想小新2020
+		- Intel Core i7 CPU (10代，8核) + MX 350 (2G) + 16G内存 + 512G SSD
+		- Windows 10 + WSL2
+		- 作为主电脑拿去维修期间的替代品，虽然硬件配置与上台电脑相当，但价格却便宜了一大半（多亏了摩尔定律！）
+		- 强行升级了Windows系统，并且配置了WSL2系统，但似乎没有感受到太大区别（不确定CUDA在WSL2是否能用）
+	* Apple MacBook Pro 16' (2019)
+		- Intel Core i7 CPU (6核) + AMD Radeon Pro 5300 M (4GB) + 16G内存 + 512G SSD
+		- MacOS Catalina
+		- 公司配的电脑，第一次使用MacOS，最开始觉得挺难用的，不过用了一段时间之后就真香了，特别是Apple的键盘和触摸屏，用惯了再换回原来的电脑完全不适应
+* 腾讯云服务器：自己租的用来搞事情，[学生优惠](https://cloud.tencent.com/act/campus)非常便宜
 	- Intel Xeon CPU E5-26xx (单核) + 2G内存 + 50G云硬盘
 	- CentOS 7.2
+	- 续费了三次，第一次续费续太短了，后面两次都续了一年时间，主要用来搭个人网盘存一些临时文件，还是非常方便的
+	- 当年第一次接触云服务器，也为熟悉使用Linux操作系统奠定基础
 * 实验室服务器：
-	- Intel Xeon CPU Gold 5118 (24核) + Titan V (2块) + 64G内存 + 11T硬盘
+	- Intel Xeon CPU Gold 5118 (24核) + Titan V (2块) + 768G内存 + 11T硬盘
 	- Ubuntu 18.04 LTS
 
-## 装机基础配置
+### 装机基础软件配置
 之后考虑将这些东西打包成Docker上传上云，这样就不用每次换电脑都重新安装了。
 * Microsoft Office（一般都会预装，新机要登陆激活）
-* Google Chrome
-* VS Code + Sublime Text
-* Windows Subsystem for Linux (WSL)
+* [Google Chrome](https://www.google.com/intl/en_sg/chrome/)
+* [VS Code](https://code.visualstudio.com/) + [Sublime Text](https://www.sublimetext.com/)
+* [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 * TeXLive 2020
 	* 可直接在[清华镜像](https://link.zhihu.com/?target=https%3A//mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/)下载
 	* Windows安装双击`install-tl-windows.bat`文件，可能需要几个小时安装时间
 * WeChat + Tim
+
+### 服务器
+可能很多人会问自己租服务器用来干嘛。
+其实是可以干非常多事情的，比如：
+* [jupyter notebook](https://jupyter.org/)<br/>
+这个无论什么服务器平台都会装，因为实在太好用，内置命令行和python环境，非常方便
+* ftp<br/>
+偶尔与服务器传输大型文件，同时可以搭建班级内部的提交作业平台<br/>
+本地用来与服务器建立ssh连接与传输文件可用[xmanager](https://www.netsarang.com/en/xmanager/)(xftp+xshell)
+* [seafile](https://www.seafile.com/)<br/>
+自建轻量级网盘，效果奇佳，从电脑往手机传数据再也不用数据线了！
+* ~~梯（划掉）子~~
+* git<br/>
+代码版本管理，学校小组项目会用到
 
 ## 日常工作
 * [Microsoft To Do](https://todo.microsoft.com/tasks/)
@@ -50,7 +78,27 @@ tag: [research, tools]
 	* 可定期（如每周一或重复几次）提醒，这点太重要了！
 	* 多种颜色tag选择
 	* 可加备注加提醒
+	* 支持不同时区
 	* 多终端多平台
+* [Lark](https://www.larksuite.com/) / 飞书
+	* 不得不说，尽管飞书2019年才发布，但是它是我用过**最好用**的协作软件，没有之一
+	* 消息、文件永久存储
+	* 新加入成员可查看过往消息（这两点就比腾讯系的产品好太多）
+	* 音视频会议（集成在同一软件中这很厉害）
+	* 日历（这也是公司协作很重要的功能，而且可以互相查看日历空闲时间）
+	* 云存储（既有私人存储空间，也有公共存储空间）
+	* 云文档
+		* 完全具备了Google Doc的所有特性，可多人协作，设置权限
+		* Markdown文档，这一点也是比腾讯系产品强得多，不仅支持Markdown语法，还有自动检测不同代码自动高亮，自动链接显示文档，添加协作者@人的功能
+	* 邮箱（可关联公司邮箱查看邮件）
+
+## 疫情期间会议/协作软件（2020更新）
+* Zoom
+* 腾讯会议
+* Slack
+	* 使用网页版就非常方便
+	* 实验室小组可以分多个channel，更方便工作期间讨论
+	* 有基本的Markdown语法显示
 
 ## WSL配置
 安装在Microsoft Store搜索Ubuntu即可，注意安装后打开前需要先在控制面板-程序和功能-启用或关闭Windows功能中将"适用于Linux的Windows子系统"打开并重启。详细安装教程可见Microsoft[官网](https://docs.microsoft.com/en-us/windows/wsl/install-win10)。其中也有说明如何升级至WSL2，需要先升级Windows版本至2004(Build 19041)，然后才有办法启用。WSL1和WSL2的比较见[此文](https://docs.microsoft.com/en-us/windows/wsl/compare-versions)。
@@ -159,18 +207,36 @@ Sublime的重度用户，每天跟它打交道的时间估计超过10个小时�
 * 内置控制行，可以直接打Python代码
 
 ### [VS Code](https://code.visualstudio.com/)
-不得不说，经过大半年的发展，微软爸爸的文本编辑器已经相当成熟了。
+不得不说，经过大半年的发展，微软爸爸的文本编辑器已经相当成熟了。进入到2020年，我也基本从Sublime Text转到VS Code的重度用户，因为用久会发现它比ST还更加人性化和好用。
 
 优点：
 * sublime有的基本都有
 * Intellisense
+	* 跨文件定义搜索
+	* 自动类名方法名补全
 * 大量插件支持
 	* Python / Jupyter notebook原生支持
-	* Markdown预览
+	* Markdown加强预览（用MathJax渲染LaTeX）
 	* LaTeX编译显示
 * 自动跳转至定义位置（大项目必备）
 * 跨文件/全局搜索
 * SSH远端支持
+	* 这点对于远程服务器开发工作来说实在是太香了
+	* 以前在远端服务器跑代码总是要现在本地测试完，再通过ftp等方式传上服务器运行；但现在完全可以全流程操作，在VS Code里显示远端文件夹，打开代码文件更改，内置Terminal运行
+* 跨平台支持（似乎网页版也要开放了）
+* Git/Github集成
+	* 这对于常常要commit的开发者来说也是相当友好
+	* 基本上所有功能都被集成进来了
+* 开源持续优化
+	* 现在基本是每月一更新，有什么硬伤都会被及时修复
+
+### 实用小语言
+* Markdown<br/>
+不用关心排版，层次化分明
+	* [Gitlab Markdown Guide](https://about.gitlab.com/handbook/engineering/ux/technical-writing/markdown-guide/)
+	* [Markdown Guide for Jupyter Notebook](https://medium.com/analytics-vidhya/the-ultimate-markdown-guide-for-jupyter-notebook-d5e5abf728fd)
+* 正则表达式<br/>
+其实掌握常用匹配指令就好了，一开始觉得很复杂，后来常常用编辑器的搜索功能就习惯了
 
 ## 笔记
 笔记怎么做也是我这一年多来摸索的东西，现在基本上用下面两个工具啦。
@@ -189,6 +255,8 @@ Sublime的重度用户，每天跟它打交道的时间估计超过10个小时�
 就是一个html页面，里面存自己的笔记，但是页面布局都已经帮你设置好了，直接可以写，还可以上传到服务器上让所有人都可以访问（但是几M大小基本加载不出来...）。
 平时文科类的笔记会存在里面，还有部分有用的代码，其他的话...就当成网页收藏夹了...
 
+*注：有了博客之后，后面一个也基本不再使用了。*
+
 ## 文献管理
 * [Zotero](https://www.zotero.org/)：学长推荐，必属精品(
 
@@ -201,7 +269,18 @@ Sublime的重度用户，每天跟它打交道的时间估计超过10个小时�
 * 支持不同格式的文件读入
 * 好像还有云同步，但并没有用过
 
-## 流程图/模型图绘制
+## 数据可视化
+### 柱形图
+这个也是写论文必备
+* [Matplotlib](https://matplotlib.org/)<br/>
+Python包，功能强大，不过我主要用来画折线图、柱形图；语法还算简单，添加标签标注等等也不会太麻烦，标签可以直接输入LaTeX代码
+* [Mathematica(MMA)](https://www.wolfram.com/mathematica/)<br/>
+上大学之前就只知道MMA画函数/3D/等高线图，其实用matplotlib画2D函数图会简单很多；而直到这一次建模也才直到MMA这么强大，还可以直接制作有数值的地图，完全是开外挂...
+	<!-- > TODO MMA 剑魔 -->
+* [Plotly](https://plot.ly/)<br/>
+在线网站，可以用Python调用API，功能很强大，但还未自己试过
+
+### 流程图/模型图绘制
 写论文或者建模就知道画图的苦，以前一直都羡慕人家的文章中能够画出那么漂亮的图片，因为以往都只知道函数图怎么画，但不知道有什么比较好用的流程图工具
 * [draw.io](https://draw.io)<br/>
 在线画图，有网格，图形多，使用方便，画什么都容易，不足是对插图的处理不强，原生LaTeX在导出时常常出现问题
@@ -230,55 +309,6 @@ Sublime的重度用户，每天跟它打交道的时间估计超过10个小时�
 * TikZ里有automata的package
 * http://madebyevan.com/fsm/
 
-## 数据可视化
-这个也是写论文必备
-* [Matplotlib](https://matplotlib.org/)<br/>
-Python包，功能强大，不过我主要用来画折线图、柱形图；语法还算简单，添加标签标注等等也不会太麻烦，标签可以直接输入LaTeX代码
-* [Mathematica(MMA)](https://www.wolfram.com/mathematica/)<br/>
-上大学之前就只知道MMA画函数/3D/等高线图，其实用matplotlib画2D函数图会简单很多；而直到这一次建模也才直到MMA这么强大，还可以直接制作有数值的地图，完全是开外挂...
-	<!-- > TODO MMA 剑魔 -->
-* [Plotly](https://plot.ly/)<br/>
-在线网站，可以用Python调用API，功能很强大，但还未自己试过
-
-## 服务器
-可能很多人会问自己租服务器用来干嘛。
-其实是可以干非常多事情的。
-现在[腾讯云学生特价](https://cloud.tencent.com/act/campus?fromSource=gwzcw.594708.594708.594708)，一个月10元就有一台还不错的服务器（0.8折！），于是爽快入坑连续包了3年(((
-
-下面是目前我用服务器干的一些事情：
-* [jupyter notebook](https://jupyter.org/)<br/>
-这个无论什么服务器平台都会装，因为实在太好用，内置命令行和python环境，非常方便
-* ftp<br/>
-偶尔与服务器传输大型文件，同时可以搭建班级内部的提交作业平台<br/>
-本地用来与服务器建立ssh连接与传输文件可用[xmanager](https://www.netsarang.com/en/xmanager/)(xftp+xshell)
-* [seafile](https://www.seafile.com/)<br/>
-自建轻量级网盘，效果奇佳，从电脑往手机传数据再也不用数据线了！
-* 国内科学上网<br/>
-这个不言而喻
-* git<br/>
-代码版本管理，学校小组项目会用到
-
-## 编程语言
-对的，这里我把各种编程语言也当成工具看待，以后（有时间的话）应该会把这些语言都写一篇Blog的吧。
-
-### 正统语言
-* C：学完计组再回看会发现很多底层的细节被忽略了
-* C++：各种算法及框架最常用，高效易写
-* Python：Python大法好！
-	<!-- - pip, Anaconda, numpy, pandas -->
-* Haskell：函数式赞歌！
-* Wolfram：MMA的编程语言，算半个吧(
-* Verilog：传统的硬件描述语言
-* [Chisel](https://chisel.eecs.berkeley.edu/)（在学）：UCB造的硬件锤子！
-
-### 其他玩意儿
-* Markdown<br/>
-不用关心排版，层次化分明
-	* [Gitlab Markdown Guide](https://about.gitlab.com/handbook/engineering/ux/technical-writing/markdown-guide/)
-	* [Markdown Guide for Jupyter Notebook](https://medium.com/analytics-vidhya/the-ultimate-markdown-guide-for-jupyter-notebook-d5e5abf728fd)
-* 正则表达式<br/>
-其实掌握常用匹配指令就好了，一开始觉得很复杂，后来觉得也还好，人家还不是图灵完备的(
-
 ## 人工智能
 当时入深度学习坑时选择TF，折腾了很久连它语法都没搞清楚，对初学者非常不友善，于是就此放弃
 * [Pytorch](https://pytorch.org/)<br/>
@@ -301,10 +331,12 @@ Pytorch对应的可视化工具，界面还可以接受，但目前还不够完�
 	* [Cache reference](https://stackoverflow.com/questions/55035313/how-does-linux-perf-calculate-the-cache-references-and-cache-misses-events)
 * Intel PCM
 
+## 网页样式
+* [Bootstrap Alerts](https://getbootstrap.com/docs/4.0/components/alerts/)
+
 ## 其他东西
 * [Github Desktop](https://desktop.github.com/)
 * [Github Page](https://pages.github.com)+[Jekyll](https://github.com/jekyll/jekyll)：就是这个博客啦
-* [Google Calendar](https://www.google.com/calendar)：有Google账号可以同步，界面非常清爽
 * [Gnu Privacy Guard(GPG)](https://www.gnupg.org)：Linux平台下文件加密系统，配合[Mailvelope](https://www.mailvelope.com/en/help)食用更加
 	- 原理是用对方的公钥加密，邮件发送给对方后，对方用自己的密钥解密
 	- `gpg --version`查看是否有安装
@@ -319,6 +351,3 @@ Pytorch对应的可视化工具，界面还可以接受，但目前还不够完�
 	- `gpg --encrypt --armor -r [Email] [file]`生成ASCII码加密文件
 	- `gpg -d [file].asc`解密文件
 * 查看Github仓库大小，用[API](https://stackoverflow.com/questions/8646517/how-can-i-see-the-size-of-a-github-repository-before-cloning-it)
-
-## 网页样式
-* [Bootstrap Alerts](https://getbootstrap.com/docs/4.0/components/alerts/)
