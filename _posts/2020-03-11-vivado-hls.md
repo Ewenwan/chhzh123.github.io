@@ -4,7 +4,7 @@ title: Vivado HLS in a Nutshell
 tags: [hls]
 ---
 
-本文将简要介绍Vivado HLS的一些基本用法。
+本文将详细介绍Vivado HLS的配置、入门及优化方法，包括各类pragma及库函数，同时给出大量参考资料供查阅。
 
 <!--more-->
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: VS Code远端服务器(WSL/SSH)配置
-tag: [configuration]
+tag: [tools]
 ---
 
 本文记录VS Code远端服务器(WSL/SSH)的配置方法。

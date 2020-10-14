@@ -1,7 +1,7 @@
 ---
 layout: post
 title: LaTeX常用格式调整指南
-tag: [tools]
+tag: [configuration]
 ---
 
 本文记录LaTeX常用的preamble指令。
