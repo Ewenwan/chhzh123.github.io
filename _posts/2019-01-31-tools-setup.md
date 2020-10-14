@@ -143,6 +143,7 @@ deactivate
 
 ## conda
 conda create -n pydev python=python3.6
+conda info --envs
 activate pydev
 deactivate
 
