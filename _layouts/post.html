@@ -5,6 +5,12 @@ layout: default-old
 <div class="post">
   <h1 class="post-title">{{ page.title }}</h1>
   <span class="post-date">{{ page.date | date_to_string }}</span>
+  <span class="post-date">
+  <span id="./" class="leancloud_visitors" data-flag-title="{{ page.title }}">
+    <em class="post-meta-item-text">阅读量 </em>
+    <i class="leancloud-visitors-count">0</i>
+  </span>
+  </span>
   {{ content }}
 </div>
 
@@ -58,7 +64,7 @@ layout: default-old
         notify:false,
         verify:false,
         avatar:'identicon',
-        placeholder: 'Please comment here!',
+        placeholder: '请在这里评论！（请留下邮箱以便回复）<br/>Please comment here! (Remember to leave your email!)',
         visitor: true
     })
 </script>
