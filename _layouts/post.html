@@ -7,7 +7,7 @@ layout: default-old
   <span class="post-date">
     {{ page.date | date_to_string }}&emsp;
     <span id="{{ page.url }}" class="leancloud_visitors" data-flag-title="{{ page.title }}">
-    阅读量
+      <i class="fa fa-eye"></i> 
     <i class="leancloud-visitors-count">0</i>
     </span>
   </span>
@@ -61,10 +61,10 @@ layout: default-old
         el: '#vcomments',
         appId: 'btJpOw9EeOt18ENMU9KgvyEB-gzGzoHsz',
         appKey: '53reS17fjeYrjTGmOe8ONdAB',
-        notify:false,
-        verify:false,
+        notify: true,
+        verify: false,
         avatar:'identicon',
-        placeholder: '请在这里评论！（请留下邮箱以便回复）\n Please comment here! (Remember to leave your email!)',
+        placeholder: '请在这里评论！（请留下邮箱以便回复）\nPlease comment here and leave your email!',
         visitor: true
     })
 </script>
