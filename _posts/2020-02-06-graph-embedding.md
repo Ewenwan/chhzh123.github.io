@@ -6,7 +6,7 @@ tags: [dl,graph]
 
 由于今年要着手一些图结合AI的工作，因此在此对一些经典文献做一些总结。
 
-这是**图表示学习(representation learning)的第一部分——图嵌入(graph embedding)**，主要涉及DeepWalk [KDD'14]、node2vec [KDD'16]、KnightKing [SOSP'19]、GraphZoom [ICLR'20]四篇论文。
+这是**图表示学习(representation learning)的第一部分——图嵌入(graph embedding)**，主要涉及DeepWalk [KDD'14]、LINE [WWW'15]、node2vec [KDD'16]、KnightKing [SOSP'19]、GraphZoom [ICLR'20]五篇论文。
 
 <!--more-->
 
@@ -14,7 +14,7 @@ tags: [dl,graph]
 
 ## Word Embeddding
 
-先从NLP说起，当代基于深度学习的NLP取得巨大突破很大的原因是将**离散低维的词语符号表示**，转化为**高维空间的连续分布式的语义表示**。
+先从NLP说起，当代基于深度学习的NLP取得巨大突破很大的原因是将**高维离散的词语符号表示**，转化为**低维空间的连续分布式的语义表示**。
 
 举个例子，
 > 我 爱 苹果<br/>我 爱 雪梨
@@ -140,6 +140,9 @@ DeepWalk分别在BlogCatalog、Flicker和YouTube三个数据集上做多标签�
 ![Relational Learning via Latent Social Dimensions (SocDim)](https://image1.slideserve.com/2010663/sociodim-framework-l.jpg)
 
 得到隐含表示后，聚类则变得很简单，DeepWalk是采用了one-vs-rest的logistic回归来分类。最终的实验结果是非常好的，只用1%的训练数据，宏F1和微F1指标都远超之前的方法。
+
+
+## LINE [^8]
 
 
 ## node2vec[^5]
@@ -333,3 +336,4 @@ $$P(e)=P_s(e)\cdot P_d(e,v,w)\cdot P_e(v,w)$$
 [^5]: Aditya Grover, Jure Leskovec (Stanford), *node2vec: Scalable Feature Learning for Networks*, KDD, 2016
 [^6]: Ke Yang, MingXing Zhang, Kang Chen, Xiaosong Ma, Yang Bai, Yong Jiang (Tsinghua), *KnightKing: A Fast Distributed Graph Random Walk Engine*, SOSP, 2019
 [^7]: Chenhui Deng, Zhiqiang Zhao, Yongyu Wang, Zhiru Zhang (Cornell), Zhuo Feng, *GraphZoom: A Multi-Level Spectral Approach for Accurate and Scalable Graph Embedding*, ICLR (Oral), 2020
+[^8]: Jian Tang (MSRA), Meng Qu, Mingzhe Wang, Ming Zhang, Jun Yan, Qiaozhu Mei, *LINE: Large-scale Information Network Embedding*, WWW, 2015

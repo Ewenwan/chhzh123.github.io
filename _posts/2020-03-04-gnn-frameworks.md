@@ -4,9 +4,9 @@ title: 图表示学习（3）- 图神经网络框架
 tags: [dl,graph,system]
 ---
 
-这是**图表示学习(representation learning)的第三部分——图神经网络框架**，主要涉及PyG [ICLR workshop'19]、DGL [ICLR'19]、Euler、NeuGraph [ATC'19]和AliGraph [VLDB'19]五个框架。前面三个框架都开源了，而后面两个则只是发表在系统的会议上，没有开源。
+这是**图表示学习(representation learning)的第三部分——图神经网络框架**，主要涉及PyG [ICLR workshop'19]、DGL [ICLR'19]、Euler、NeuGraph [ATC'19]和AliGraph [VLDB'19]五个框架。除了NeuGraph没有开源外，其他框架都已开源。
 
-| [PyG](https://github.com/rusty1s/pytorch_geometric) | [DGL](https://github.com/dmlc/dgl) | [Euler](https://github.com/alibaba/euler) | NeuGraph | AliGraph |
+| [PyG](https://github.com/rusty1s/pytorch_geometric) | [DGL](https://github.com/dmlc/dgl) | [Euler](https://github.com/alibaba/euler) | NeuGraph | [AliGraph](https://github.com/alibaba/graph-learn) |
 | :--: | :--: | :--: | :--: | :--: |
 | Dortmund | NYU | Alibaba | PKU | Alibaba |
 | ICLR workshop'19 | ICLR'19 | N/A | ATC'19 | VLDB'19 |
