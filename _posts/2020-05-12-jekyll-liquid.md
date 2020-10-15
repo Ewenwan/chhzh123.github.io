@@ -9,7 +9,9 @@ tag: [configuration]
 <!--more-->
 
 参见一段Blog的生成代码
-```html
+<div markdown="0">
+<pre>
+{% raw %}
 {% for post in site.posts %}
   {% assign flag = false %}
   {% for tag in post.tags %}
@@ -22,7 +24,9 @@ tag: [configuration]
     {% include archive-single.html %}
   {% endif %}
 {% endfor %}
-```
+{% endraw %}
+</pre>
+</div>
 
 ## Resources
 * [Jekyll官网](https://jekyllrb.com/)
