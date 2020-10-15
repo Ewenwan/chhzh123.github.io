@@ -332,9 +332,6 @@ Pytorch对应的可视化工具，界面还可以接受，但目前还不够完�
 	* [Cache reference](https://stackoverflow.com/questions/55035313/how-does-linux-perf-calculate-the-cache-references-and-cache-misses-events)
 * Intel PCM
 
-## 网页样式
-* [Bootstrap Alerts](https://getbootstrap.com/docs/4.0/components/alerts/)
-
 ## 其他东西
 * [Github Desktop](https://desktop.github.com/)
 * [Github Page](https://pages.github.com)+[Jekyll](https://github.com/jekyll/jekyll)：就是这个博客啦
