@@ -29,7 +29,7 @@ tag: [configuration]
 </pre>
 </div>
 
-用`{% raw %}{% raw %}{% endraw %}{% endraw %}`可以实现liquid代码的escape。
+用`%raw% %endraw%`可以实现liquid代码的escape，前后要加大括号。
 
 ## Resources
 * [Jekyll官网](https://jekyllrb.com/)
