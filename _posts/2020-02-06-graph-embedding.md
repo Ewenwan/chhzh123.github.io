@@ -143,7 +143,75 @@ DeepWalk分别在BlogCatalog、Flicker和YouTube三个数据集上做多标签�
 
 
 ## LINE [^8]
+LINE采用了一阶相似度(proximity)和二阶相似度进行建模。
+![LINE](https://miro.medium.com/max/718/1*Qhd7AWWWnn-b4fEKHzR_mg.png)
 
+一阶相似度衡量邻居关系，如果两个结点有边相连，则这两个结点的一阶相似度高；二阶相似度则要看邻居的**重叠**关系，如上图的5和6，尽管没有边直接相连，但是它们有大量重叠的邻居，因此他们的相似度也非常高。
+
+### 一阶相似度
+考虑结点$v_i$和$v_j$有边$(i,j)$，定义联合概率
+
+$$p_1(v_i,v_j)=\frac{1}{1+\exp(-\mathbf{u}_i^\top\cdot\mathbf{u}_j)}$$
+
+其中$\mathbf{u}_i\in\mathbb{R}^d$为$v_i$的低维向量表示。直觉上如果两个向量足够近，那么这两个向量的点积应该很大（也即向量点积可以用于衡量相似度，类似于余弦相似度，只是将常数部分忽略）；又为了让其表示概率，则用logistic函数进行映射。
+
+可定义先验概率为$\hat{p}_1(i,j)=\frac{w_{ij}}{\sum_{(i,j)\in E}w_{ij}}$，即所有边中刚好选中$(i,j)$的概率。
+
+为保一阶相似度关系，最直接的方法即衡量两个概率分布之间的距离
+
+$$O_1=d(\hat{p}_1(\cdot,\cdot),p_1(\cdot,\cdot))$$
+
+用KL散度代替距离并忽略常数，即
+
+$\min O_1=\min \left(-\sum_{(i,j)\in E}w_{ij}\log p_1(v_i,v_j)\right)$
+
+### 二阶相似度
+如果两个结点的二阶相似度高，则意味着它们共享相同的邻居/上下文(context)。这样每个结点将会有两种角色，一种是它自己$\mathbf{u}_i$（中心词），另一种是其他结点的上下文$\mathbf{u}_i'$（背景词）。对于有向边$(i,j)$，定义结点$v_i$在上下文$v_j$下的概率为（相当于Softmax）
+
+$$p_2(v_j\mid v_i)=\frac{\exp(\mathbf{u'}_j^\top\cdot\mathbf{u}_i)}{\sum_{k=1}^{|V|}\exp(\mathbf{u'}_k^\top\cdot\mathbf{u}_i)}$$
+
+先验概率$\hat{p}_2(v_j\mid v_i)=\frac{w_{ij}}{d_i}$，其中$d_i=\sum_{k\in \mathcal{N}(v_i)}w_{ik}$为出度。
+为保二阶相似度关系，则最小化（用KL散度代替）
+
+$$O_2=\sum_{i\in V}\lambda_id(\hat{p}_2(\cdot\mid v_i),p_2(\cdot\mid v_i))
+=-\sum_{(i,j)\in E}w_{ij}\log p_2(v_j\mid v_i)$$
+
+### 优化（负采样）
+本部分内容参照[《动手学深度学习》-10.2近似训练](https://zh.d2l.ai/chapter_natural-language-processing/approx-training.html?highlight=negative%20sampling)，课程视频可见[B站](https://www.bilibili.com/video/av18512944/)，原始论文见[^9]。
+
+负采样修改了原来的目标函数。给定中心词 $w_c$ 的一个背景窗口，我们把背景词 $w_o$ 出现在该背景窗口看作一个事件，并将该事件的概率计算为
+
+$$P(D=1\mid w_c, w_o) = \sigma(\boldsymbol{u}_o^\top \boldsymbol{v}_c)$$
+
+这里$D=1$代表该事件发生。设背景词 $w_o$ 出现在中心词 $w_c$ 的一个背景窗口为事件 $P$ ，我们根据分布 $P(w)$ 采样 $K$ 个未出现在该背景窗口中的词，即**噪声词/负样本**。设噪声词 $w_k （ k=1,\ldots,K )$ **不**出现在中心词 $w_c$ 的该背景窗口为事件 $N_k$ 。假设同时含有正类样本和负类样本的事件 $P,N1,\ldots,N_K$ 相互独立，负采样将以上需要最大化的仅考虑正类样本的联合概率改写为（最大似然函数）
+
+$$\prod_{t=1}^{T} \prod_{-m \leq j \leq m,\ j \neq 0} P(w^{(t+j)} \mid w^{(t)})$$
+
+其中条件概率被近似表示为（背景词出现在背景窗口的概率 乘上 噪声词**不**出现在背景窗口的概率）
+
+$$P(w^{(t+j)} \mid w^{(t)}) = 
+\frac{P(w^{(t+j)},w^{(t)})}{P(w^{(t)})} \approx
+P(D=1\mid w^{(t)}, w^{(t+j)})\prod_{k=1,\ w_k \sim P(w)}^K P(D=0\mid w^{(t)}, w_k)$$
+
+设文本序列中时间步 $t$ 的词 $w(t)$ 在词典中的索引为 $i_t$ ，噪声词 $w_k$ 在词典中的索引为 $h_k$ 。有关以上条件概率的对数损失为
+
+$$
+\begin{aligned}
+-\log P(w^{(t+j)} \mid w^{(t)})
+=& -\log P(D=1\mid w^{(t)}, w^{(t+j)}) - \sum_{k=1,\ w_k \sim P(w)}^K \log P(D=0\mid w^{(t)}, w_k)\\
+=&-  \log\, \sigma\left(\boldsymbol{u}_{i_{t+j}}^\top \boldsymbol{v}_{i_t}\right) - \sum_{k=1,\ w_k \sim P(w)}^K \log\left(1-\sigma\left(\boldsymbol{u}_{h_k}^\top \boldsymbol{v}_{i_t}\right)\right)\\
+=&-  \log\, \sigma\left(\boldsymbol{u}_{i_{t+j}}^\top \boldsymbol{v}_{i_t}\right) - \sum_{k=1,\ w_k \sim P(w)}^K \log\sigma\left(-\boldsymbol{u}_{h_k}^\top \boldsymbol{v}_{i_t}\right).
+\end{aligned}
+$$
+
+现在，训练中每一步的梯度计算开销不再与词典大小相关，而与 $K$ 线性相关。当 $K$ 取较小的常数时，负采样在每一步的梯度计算开销较小。
+
+为了让生僻词更容易被采样，通常取$P_n(w)\thicksim U(w)^{3/4}/Z$。举例来说$w$的单字概率为$0.01$，则$0.01^{3/4}=0.03$会变大。
+
+放到LINE模型中则是最小化
+$$
+\log\sigma(\mathbf{u}_j^\top\mathbf{u}_i)+\sum_{i=1}^{K}\mathbb{E}_{v_n\thicksim P_n(v)}[\log\sigma(-\mathbf{u'}_n^\top\cdot\mathbf{u}_i)]
+$$
 
 ## node2vec[^5]
 目标和DeepWalk一样，也是<u>自动地学习结点特征，生成隐含表示(latent representation)</u>。
@@ -337,3 +405,4 @@ $$P(e)=P_s(e)\cdot P_d(e,v,w)\cdot P_e(v,w)$$
 [^6]: Ke Yang, MingXing Zhang, Kang Chen, Xiaosong Ma, Yang Bai, Yong Jiang (Tsinghua), *KnightKing: A Fast Distributed Graph Random Walk Engine*, SOSP, 2019
 [^7]: Chenhui Deng, Zhiqiang Zhao, Yongyu Wang, Zhiru Zhang (Cornell), Zhuo Feng, *GraphZoom: A Multi-Level Spectral Approach for Accurate and Scalable Graph Embedding*, ICLR (Oral), 2020
 [^8]: Jian Tang (MSRA), Meng Qu, Mingzhe Wang, Ming Zhang, Jun Yan, Qiaozhu Mei, *LINE: Large-scale Information Network Embedding*, WWW, 2015
+[^9]: Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg Corrado, Jeffrey Dean (Google), *Distributed representations of words and phrases and their compositionality*, NeurIPS, 2013
