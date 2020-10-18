@@ -166,11 +166,12 @@ $$O_1=d(\hat{p}_1(\cdot,\cdot),p_1(\cdot,\cdot))$$
 $\min O_1=\min \left(-\sum_{(i,j)\in E}w_{ij}\log p_1(v_i,v_j)\right)$
 
 ### 二阶相似度
-如果两个结点的二阶相似度高，则意味着它们共享相同的邻居/上下文(context)。这样每个结点将会有两种角色，一种是它自己$\mathbf{u}_i$（中心词），另一种是其他结点的上下文$\mathbf{u}_i'$（背景词）。对于有向边$(i,j)$，定义结点$v_i$在上下文$v_j$下的概率为（相当于Softmax）
+如果两个结点的二阶相似度高，则意味着它们共享相同的邻居/上下文(context)。这样每个结点将会有两种角色，一种是它自己$\mathbf{u}_i$（中心词），另一种是其他结点的上下文$\mathbf{u}_i'$（背景词）。（在具体实现上即每个结点会有两个embedding。）对于有向边$(i,j)$，定义结点$v_i$在上下文$v_j$下的概率为（相当于Softmax）
 
 $$p_2(v_j\mid v_i)=\frac{\exp(\mathbf{u'}_j^\top\cdot\mathbf{u}_i)}{\sum_{k=1}^{|V|}\exp(\mathbf{u'}_k^\top\cdot\mathbf{u}_i)}$$
 
-先验概率$\hat{p}_2(v_j\mid v_i)=\frac{w_{ij}}{d_i}$，其中$d_i=\sum_{k\in \mathcal{N}(v_i)}w_{ik}$为出度。
+先验概率$$\hat{p}_2 (v_j \mid v_i) = \frac{w_{ij}}{d_i}$$，其中$$d_i = \sum_{k \in \mathcal{N}(v_i)} w_{ik}$$为出度。
+
 为保二阶相似度关系，则最小化（用KL散度代替）
 
 $$O_2=\sum_{i\in V}\lambda_id(\hat{p}_2(\cdot\mid v_i),p_2(\cdot\mid v_i))
@@ -209,9 +210,21 @@ $$
 为了让生僻词更容易被采样，通常取$P_n(w)\thicksim U(w)^{3/4}/Z$。举例来说$w$的单字概率为$0.01$，则$0.01^{3/4}=0.03$会变大。
 
 放到LINE模型中则是最小化
+
 $$
 \log\sigma(\mathbf{u}_j^\top\mathbf{u}_i)+\sum_{i=1}^{K}\mathbb{E}_{v_n\thicksim P_n(v)}[\log\sigma(-\mathbf{u'}_n^\top\cdot\mathbf{u}_i)]
 $$
+
+### 代码实现
+可见DGL的[官方代码库](https://github.com/dmlc/dgl/tree/master/examples/pytorch/ogb/line)。
+
+训练的入口函数为见[line.py](https://github.com/dmlc/dgl/blob/master/examples/pytorch/ogb/line/line.py#L190-L229)，用`with torch.no_grad()`包裹，代表不需要跟踪梯度信息。
+
+先采负边(`neg_nodes`)，然后调用[model.py](https://github.com/dmlc/dgl/blob/7b97298150784fd079d9a28226f54bde049bd425/examples/pytorch/ogb/line/model.py#L269)的`fast_learn`。
+
+得到正边的$\mathbf{u}$和$\mathbf{v}$，见[L369-L371](https://github.com/dmlc/dgl/blob/7b97298150784fd079d9a28226f54bde049bd425/examples/pytorch/ogb/line/model.py#L369-L371)，通过`fast_pos_bp`直接得到**回传梯度**。同理负边算梯度，见[L309-L334](https://github.com/dmlc/dgl/blob/7b97298150784fd079d9a28226f54bde049bd425/examples/pytorch/ogb/line/model.py#L309-L334)。
+
+注意`emb_u`和`emb_v`只包括对应的正/负边结点的embedding，因此后面要通过[`index_add_`](https://pytorch.org/docs/stable/tensors.html#torch.Tensor.index_add_)将对应结点更新后的embedding加回去。
 
 ## node2vec[^5]
 目标和DeepWalk一样，也是<u>自动地学习结点特征，生成隐含表示(latent representation)</u>。
