@@ -241,7 +241,7 @@ Sublime的重度用户，每天跟它打交道的时间估计超过10个小时�
 
 ## 笔记
 笔记怎么做也是我这一年多来摸索的东西，现在基本上用下面两个工具啦。
-* LaTeX<br/>
+### LaTeX
 极重度用户，已经到了写篇文科小报告都要拿LaTeX打的地步...
 日常的话，[数学](https://github.com/chhzh123/Notes-of-Math)和[CS](https://github.com/chhzh123/CS-Notes)的笔记都会用LaTeX打，目前数学大致有一百多页的样子，CS也有几十页，算是给自己大学的学习留档吧。
 因为使用太频繁，到年初才自己制作了份[模板](https://github.com/chhzh123/mylatextmpl)，又瞬间让自己生产力爆炸。
@@ -251,7 +251,22 @@ Sublime的重度用户，每天跟它打交道的时间估计超过10个小时�
 2. BibTeX要学会，生成参考文献神器
 3. 表格可以不用自己打，Excel有宏可以支持
 
-* [TiddlyWiki](https://tiddlywiki.com/)<br/>
+#### MacOS配置
+在macOS上不是安装TeXLive，而是安装[MacTeX](https://tug.org/mactex/)
+* 配合VS Code的LaTeX Workshop一起用，需要将下面路径添加系统路径`PATH`中
+	* `/Library/TeX/texbin`
+* 找不到FontAwesome字体，见此[Issue](https://github.com/posquit0/Awesome-CV/issues/166)，下载安装字体即可
+* MacTeX打中文
+	* https://tex.stackexchange.com/questions/185817/chinese-typing-on-mac
+	* https://www.latexstudio.net/archives/3611.html
+	* https://tex.stackexchange.com/questions/223893/how-do-i-find-out-what-chinese-fonts-are-installed-with-my-mactex-installation
+
+```bash
+sudo tlmgr install collection-latexrecommended
+sudo tlmgr install collection-fontsrecommended
+```
+
+### [TiddlyWiki](https://tiddlywiki.com/)<br/>
 这一个比较少人用，但是非常方便，也是满足了我写md、写LaTeX、贴代码的要求。
 就是一个html页面，里面存自己的笔记，但是页面布局都已经帮你设置好了，直接可以写，还可以上传到服务器上让所有人都可以访问（但是几M大小基本加载不出来...）。
 平时文科类的笔记会存在里面，还有部分有用的代码，其他的话...就当成网页收藏夹了...
