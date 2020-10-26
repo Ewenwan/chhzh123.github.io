@@ -24,7 +24,7 @@ Here is my Curriculum Vitae ([English](../files/HongzhengChen_CV.pdf) / [Chinese
 2. Minghua Shen, **Hongzheng Chen (Corresponding author)**, Nong Xiao, "*Entropy-Directed Scheduling for FPGA High-Level Synthesis*", in Transactions on Computer-Aided Design of Integrated Circuits and Systems (TCAD), 2019. [[PDF](https://ieeexplore.ieee.org/document/8823964)]
 
 ## Awards & Honors
-* **CCF Excellent Student Price** (98 undergrads in China), China Computer Federation (CCF), 2020
+* **CCF Elite Collegiate Award** (98 undergrads in China), China Computer Federation (CCF), 2020
 * **Chinese National Scholarship $\times$ 2** (Top 2%), Ministry of Education of PRC, 2018-2020
 * **First-Prize Scholarship $\times$ 3** (Top 5%), Sun Yat-sen University, 2017-2020
 * **Samsung Scholarship** (Top 1%), Samsung Electronics, 2017-2018
